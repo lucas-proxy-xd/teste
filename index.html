@@ -16,26 +16,65 @@ body {
   flex-direction: column;
 }
 
-/* HEADER ESTILIZADO */
-header {
+/* HEADER PREMIUM */
+.header-premium {
   background: linear-gradient(135deg, #d81b60, #ad1457);
-  color: white;
-  padding: 30px 20px;
+  padding: 40px 20px 30px;
   text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
 }
 
-header h1 {
+.logo {
   margin: 0;
-  font-size: 32px;
-  letter-spacing: 2px;
+  font-size: 36px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  position: relative;
 }
 
-header span {
+.logo span {
   display: block;
   font-size: 14px;
-  opacity: 0.9;
-  margin-top: 5px;
-  letter-spacing: 1px;
+  letter-spacing: 4px;
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+.logo::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shine 4s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+.tagline {
+  margin-top: 10px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  opacity: 0.85;
+}
+
+.header-premium::before {
+  content: "";
+  width: 60px;
+  height: 2px;
+  background: rgba(255,255,255,0.6);
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* LAYOUT */
@@ -50,7 +89,6 @@ header span {
 .video {
   flex: 2;
   position: relative;
-  overflow: hidden;
 }
 
 .video video {
@@ -62,7 +100,6 @@ header span {
   position: relative;
 }
 
-/* LIBERA CLIQUE */
 .video::after {
   content: "";
   position: absolute;
@@ -172,9 +209,12 @@ footer {
 
 <body>
 
-<header>
-  <h1>Studio Julie Barroso</h1>
-  <span>Beleza • Estética • Autoestima</span>
+<header class="header-premium">
+  <h1 class="logo">
+    <span>Studio</span>
+    Julie Barroso
+  </h1>
+  <div class="tagline">Beleza • Estética • Autoestima</div>
 </header>
 
 <div class="container">
@@ -221,8 +261,7 @@ function toggleSound(){
 }
 
 function playVideo(){
-  const video = document.getElementById("videoPlayer");
-  video.play();
+  document.getElementById("videoPlayer").play();
 }
 
 function showTab(tab){
@@ -246,9 +285,7 @@ function showTab(tab){
   }
 
   if(tab === 3){
-    content.innerHTML = `
-      <iframe src="https://maps.google.com/maps?q=Studio%20Julie%20Barroso&output=embed" width="100%" height="200"></iframe>
-    `;
+    content.innerHTML = `<iframe src="https://maps.google.com/maps?q=Studio%20Julie%20Barroso&output=embed" width="100%" height="200"></iframe>`;
   }
 }
 
