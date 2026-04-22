@@ -10,71 +10,86 @@ body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #ffffff, #fce4ec);
-  color: #333;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
-/* HEADER PREMIUM */
+/* ===== INTRO ===== */
+.intro {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #d81b60, #ad1457);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  z-index: 9999;
+  animation: fadeOut 1s ease 4s forwards;
+}
+
+/* OLHOS */
+.eyes {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 20px;
+}
+
+.eye {
+  width: 60px;
+  height: 30px;
+  border-bottom: 4px solid white;
+  border-radius: 0 0 60px 60px;
+  position: relative;
+  animation: blink 3s infinite;
+}
+
+.eye::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+}
+
+/* PISCAR */
+@keyframes blink {
+  0%, 90%, 100% { height: 30px; }
+  95% { height: 5px; }
+}
+
+/* TEXTO */
+.intro h1 {
+  letter-spacing: 4px;
+  font-size: 20px;
+}
+
+/* SUMIR */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* ===== HEADER ===== */
 .header-premium {
   background: linear-gradient(135deg, #d81b60, #ad1457);
-  padding: 40px 20px 30px;
+  padding: 40px 20px;
   text-align: center;
   color: white;
-  position: relative;
-  overflow: hidden;
 }
 
 .logo {
-  margin: 0;
-  font-size: 36px;
-  font-weight: 300;
+  font-size: 34px;
   letter-spacing: 3px;
-  position: relative;
 }
 
 .logo span {
   display: block;
   font-size: 14px;
-  letter-spacing: 4px;
   opacity: 0.8;
-  margin-bottom: 5px;
-}
-
-.logo::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-  animation: shine 4s infinite;
-}
-
-@keyframes shine {
-  0% { left: -100%; }
-  50% { left: 100%; }
-  100% { left: 100%; }
-}
-
-.tagline {
-  margin-top: 10px;
-  font-size: 13px;
-  letter-spacing: 2px;
-  opacity: 0.85;
-}
-
-.header-premium::before {
-  content: "";
-  width: 60px;
-  height: 2px;
-  background: rgba(255,255,255,0.6);
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 /* LAYOUT */
@@ -82,7 +97,6 @@ body {
   display: flex;
   padding: 20px;
   gap: 20px;
-  flex: 1;
 }
 
 /* VIDEO */
@@ -96,58 +110,19 @@ body {
   height: 420px;
   object-fit: cover;
   border-radius: 15px;
-  z-index: 1;
-  position: relative;
 }
 
-.video::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-/* BOTÃO SOM */
+/* SOM */
 .sound-btn {
   position: absolute;
   bottom: 20px;
   left: 20px;
-  background: rgba(216,27,96,0.9);
+  background: #d81b60;
   color: white;
   border: none;
-  padding: 10px 14px;
+  padding: 10px;
   border-radius: 50px;
   cursor: pointer;
-  z-index: 20;
-}
-
-/* BLUR */
-.video.blur video {
-  filter: blur(4px) brightness(0.7);
-}
-
-/* IMAGEM CENTRAL */
-.overlay-img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-80%, -50%) scale(0.8);
-  opacity: 0;
-  transition: 0.6s;
-  z-index: 10;
-}
-
-.overlay-img img {
-  width: 300px;
-  height: 300px;
-  border-radius: 20px;
-  object-fit: cover;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.7);
-}
-
-.overlay-img.active {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
 }
 
 /* SIDEBAR */
@@ -167,7 +142,6 @@ body {
   background: linear-gradient(135deg, #d81b60, #ad1457);
   color: white;
   border-radius: 10px;
-  cursor: pointer;
 }
 
 /* CONTEÚDO */
@@ -194,50 +168,42 @@ footer {
   text-align: center;
   padding: 15px;
 }
-
-/* RESPONSIVO */
-@media(max-width: 768px){
-  .container {
-    flex-direction: column;
-  }
-  .overlay-img {
-    display: none;
-  }
-}
 </style>
 </head>
 
 <body>
 
+<!-- INTRO -->
+<div class="intro">
+  <div class="eyes">
+    <div class="eye"></div>
+    <div class="eye"></div>
+  </div>
+  <h1>STUDIO_JULIEBARROSO</h1>
+</div>
+
 <header class="header-premium">
-  <h1 class="logo">
+  <div class="logo">
     <span>Studio</span>
     Julie Barroso
-  </h1>
-  <div class="tagline">Beleza • Estética • Autoestima</div>
+  </div>
 </header>
 
 <div class="container">
 
-  <div id="videoBox" class="video">
-
+  <div class="video">
     <video id="videoPlayer" autoplay muted loop controls>
       <source src="apresentacao.mp4" type="video/mp4">
     </video>
 
     <button class="sound-btn" onclick="toggleSound()">🔊</button>
-
-    <div id="overlayImg" class="overlay-img">
-      <img id="overlayPhoto">
-    </div>
-
   </div>
 
   <div class="sidebar">
 
     <div class="tabs">
       <button onclick="showTab(1)">Sobre</button>
-      <button onclick="showTab(2)">Procedimentos</button>
+      <button onclick="showTab(2)">Cílios</button>
       <button onclick="showTab(3)">Localização</button>
     </div>
 
@@ -250,65 +216,52 @@ footer {
 </div>
 
 <footer>
-  © Studio Julie Barroso • Todos os direitos reservados
+  © Studio Julie Barroso • Extensão de Cílios 💖
 </footer>
 
 <script>
-
 function toggleSound(){
   const video = document.getElementById("videoPlayer");
   video.muted = !video.muted;
 }
 
-function playVideo(){
-  document.getElementById("videoPlayer").play();
-}
-
 function showTab(tab){
   const content = document.getElementById("content");
-  const overlay = document.getElementById("overlayImg");
-  const video = document.getElementById("videoBox");
-
-  overlay.classList.remove("active");
-  video.classList.remove("blur");
 
   if(tab === 1){
-    content.innerHTML = "<h3>Sobre</h3><p>Um espaço pensado para valorizar sua beleza com conforto e sofisticação.</p>";
+    content.innerHTML = `
+      <h3>Sobre</h3>
+      <p>Especialistas em extensão de cílios, trazendo beleza e autoestima.</p>
+    `;
   }
 
   if(tab === 2){
-    let lista = "<h3>Procedimentos</h3>";
-    for(let i=1;i<=10;i++){
-      lista += `<div class="card" onclick="detalhe(${i})">✨ Procedimento ${i}</div>`;
-    }
+    let lista = "<h3>Serviços de Cílios</h3>";
+    const nomes = ["Clássico","Volume Russo","Híbrido","Mega Volume","Fox Eyes","Lash Lift","Manutenção","Remoção","Design","Personalizado"];
+
+    nomes.forEach((n,i)=>{
+      lista += `<div class="card" onclick="detalhe('${n}')">✨ ${n}</div>`;
+    });
+
     content.innerHTML = lista;
   }
 
   if(tab === 3){
-    content.innerHTML = `<iframe src="https://maps.google.com/maps?q=Studio%20Julie%20Barroso&output=embed" width="100%" height="200"></iframe>`;
+    content.innerHTML = `
+      <iframe src="https://maps.google.com/maps?q=Studio%20Julie%20Barroso&output=embed" width="100%" height="200"></iframe>
+    `;
   }
 }
 
-function detalhe(num){
-  playVideo();
-
+function detalhe(nome){
   const content = document.getElementById("content");
-  const overlay = document.getElementById("overlayImg");
-  const img = document.getElementById("overlayPhoto");
-  const video = document.getElementById("videoBox");
-
-  img.src = "https://source.unsplash.com/600x600/?beauty";
-
-  overlay.classList.add("active");
-  video.classList.add("blur");
 
   content.innerHTML = `
-    <h3>Procedimento ${num}</h3>
-    <p>Realce sua beleza com técnicas modernas e resultados naturais.</p>
+    <h3>${nome}</h3>
+    <p>Técnica profissional para realçar seu olhar com elegância e durabilidade.</p>
     <button onclick="showTab(2)">Voltar</button>
   `;
 }
-
 </script>
 
 </body>
