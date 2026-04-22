@@ -157,18 +157,63 @@ body {
 .intro-tap {
   position: relative;
   z-index: 4;
-  margin-top: 52px;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 10px;
-  letter-spacing: 6px;
-  color: rgba(255,180,220,0.35);
-  text-transform: uppercase;
-  animation: tap-blink 3s ease-in-out infinite;
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   cursor: pointer;
 }
-@keyframes tap-blink {
-  0%, 100% { opacity: .25; }
-  50%       { opacity: .9; }
+
+.intro-tap-btn {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: #fff;
+  text-transform: uppercase;
+  padding: 14px 36px;
+  border: 1px solid rgba(255,150,200,0.6);
+  border-radius: 50px;
+  background: rgba(216,27,96,0.18);
+  animation: btn-pulse 2.4s ease-in-out infinite;
+  backdrop-filter: blur(4px);
+  transition: background 0.3s;
+}
+.intro-tap-btn:hover {
+  background: rgba(216,27,96,0.38);
+}
+
+.intro-tap-arrow {
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid rgba(255,150,200,0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: arrow-bounce 1.8s ease-in-out infinite;
+}
+.intro-tap-arrow::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid rgba(255,180,220,0.8);
+  border-bottom: 1.5px solid rgba(255,180,220,0.8);
+  transform: rotate(45deg) translateY(-2px);
+}
+
+@keyframes btn-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(216,27,96,0.0); opacity: 0.85; }
+  50%       { box-shadow: 0 0 0 10px rgba(216,27,96,0.0); opacity: 1; }
+}
+@keyframes btn-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(216,27,96,0.45); }
+  70%  { box-shadow: 0 0 0 16px rgba(216,27,96,0); }
+  100% { box-shadow: 0 0 0 0   rgba(216,27,96,0); }
+}
+@keyframes arrow-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%       { transform: translateY(5px); opacity: 1; }
 }
 
 /* ===== HEADER ===== */
@@ -300,7 +345,10 @@ footer {
     <div class="intro-divider"></div>
   </div>
 
-  <div class="intro-tap">Toque para entrar</div>
+  <div class="intro-tap">
+    <div class="intro-tap-btn">Toque para entrar</div>
+    <div class="intro-tap-arrow"></div>
+  </div>
 
 </div>
 
