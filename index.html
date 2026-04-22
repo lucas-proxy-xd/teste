@@ -16,75 +16,162 @@ body {
 .intro {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, #d81b60, #8e0f4a);
+  background: radial-gradient(ellipse at 50% 30%, #3d0028 0%, #1a0012 45%, #0d0008 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
   z-index: 9999;
-  animation: fadeOut 1s ease 4s forwards;
+  overflow: hidden;
+  transition: opacity 1s ease, transform 1s ease;
 }
 
-.eyes {
-  display: flex;
-  gap: 60px;
-  margin-bottom: 30px;
+.intro.hide {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
 }
 
-.eye {
-  width: 80px;
-  height: 40px;
-  border-top: 3px solid white;
-  border-radius: 50% 50% 0 0;
+/* ANÉIS */
+.intro-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 0.5px solid rgba(216,27,96,0.18);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring-pulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+.intro-ring:nth-child(1) { width: 380px; height: 380px; animation-delay: 0s; }
+.intro-ring:nth-child(2) { width: 560px; height: 560px; border-color: rgba(216,27,96,0.1); animation-delay: 1s; }
+.intro-ring:nth-child(3) { width: 740px; height: 740px; border-color: rgba(216,27,96,0.06); animation-delay: 2s; }
+
+@keyframes ring-pulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%,-50%) scale(1); }
+  50%       { opacity: 1;   transform: translate(-50%,-50%) scale(1.03); }
+}
+
+/* BRILHO CHÃO */
+.intro-floor {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 340px; height: 90px;
+  background: radial-gradient(ellipse at center, rgba(216,27,96,0.28) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* BRILHO CENTRAL */
+.intro-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px; height: 240px;
+  background: radial-gradient(ellipse at center, rgba(216,27,96,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: glow-breathe 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+  50%       { opacity: 1;   transform: translate(-50%,-50%) scale(1.12); }
+}
+
+/* PARTÍCULAS */
+.intro-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.intro-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,180,220,0.85);
+  animation: particle-rise linear infinite;
+}
+@keyframes particle-rise {
+  0%   { opacity: 0; transform: translateY(0) scale(.5); }
+  15%  { opacity: 1; }
+  85%  { opacity: .4; }
+  100% { opacity: 0; transform: translateY(-600px) scale(.1); }
+}
+
+/* LOGO */
+.intro-logo {
   position: relative;
-  animation: blink 4s infinite;
+  z-index: 4;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.lashes {
-  position: absolute;
-  top: -6px;
-  left: 0;
-  width: 100%;
-  height: 10px;
-}
-
-.lashes::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: white;
-  box-shadow:
-    5px -5px 0 white,
-    15px -7px 0 white,
-    25px -6px 0 white,
-    35px -8px 0 white,
-    45px -6px 0 white,
-    55px -7px 0 white;
-}
-
-@keyframes blink {
-  0%, 92%, 100% { height: 40px; }
-  95% { height: 5px; }
-}
-
-.intro-title {
-  font-size: 20px;
-  letter-spacing: 6px;
-  font-weight: 300;
+.intro-studio {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 11px;
+  letter-spacing: 9px;
+  color: rgba(255,200,230,0.65);
   text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
+.intro-name-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-/* HEADER PREMIUM */
+.intro-line {
+  width: 52px;
+  height: 0.5px;
+  background: rgba(255,150,200,0.55);
+}
+
+.intro-name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 38px;
+  color: #ffffff;
+  font-weight: normal;
+  letter-spacing: 6px;
+  white-space: nowrap;
+}
+
+.intro-tagline {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 10px;
+  letter-spacing: 7px;
+  color: rgba(255,160,210,0.5);
+  text-transform: uppercase;
+  margin-top: 14px;
+}
+
+.intro-divider {
+  width: 40px;
+  height: 0.5px;
+  background: rgba(216,27,96,0.5);
+  margin: 14px auto 0;
+}
+
+/* TOQUE PARA ENTRAR */
+.intro-tap {
+  position: relative;
+  z-index: 4;
+  margin-top: 52px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: rgba(255,180,220,0.35);
+  text-transform: uppercase;
+  animation: tap-blink 3s ease-in-out infinite;
+  cursor: pointer;
+}
+@keyframes tap-blink {
+  0%, 100% { opacity: .25; }
+  50%       { opacity: .9; }
+}
+
+/* ===== HEADER ===== */
 .header-premium {
   background: linear-gradient(135deg, #d81b60, #ad1457);
   padding: 40px 20px;
@@ -123,7 +210,7 @@ body {
   border-radius: 15px;
 }
 
-/* SOM */
+/* BOTÃO SOM */
 .sound-btn {
   position: absolute;
   bottom: 20px;
@@ -153,6 +240,7 @@ body {
   background: linear-gradient(135deg, #d81b60, #ad1457);
   color: white;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 /* CONTEÚDO */
@@ -181,25 +269,42 @@ footer {
 }
 
 /* RESPONSIVO */
-@media(max-width: 768px){
-  .container {
-    flex-direction: column;
-  }
+@media (max-width: 768px) {
+  .container { flex-direction: column; }
+  .intro-name { font-size: 28px; letter-spacing: 4px; }
+  .intro-line { width: 32px; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
-<div class="intro">
-  <div class="eyes">
-    <div class="eye"><div class="lashes"></div></div>
-    <div class="eye"><div class="lashes"></div></div>
+<!-- ===== INTRO ===== -->
+<div class="intro" id="intro" onclick="fecharIntro()">
+
+  <div class="intro-ring"></div>
+  <div class="intro-ring"></div>
+  <div class="intro-ring"></div>
+  <div class="intro-floor"></div>
+  <div class="intro-glow"></div>
+  <div class="intro-particles" id="introParticles"></div>
+
+  <div class="intro-logo">
+    <div class="intro-studio">Studio</div>
+    <div class="intro-name-row">
+      <div class="intro-line"></div>
+      <div class="intro-name">Julie Barroso</div>
+      <div class="intro-line"></div>
+    </div>
+    <div class="intro-tagline">Extensão de Cílios</div>
+    <div class="intro-divider"></div>
   </div>
-  <h1 class="intro-title">STUDIO JULIE BARROSO</h1>
+
+  <div class="intro-tap">Toque para entrar</div>
+
 </div>
 
+<!-- ===== SITE ===== -->
 <header class="header-premium">
   <div class="logo">
     <span>Studio</span>
@@ -217,17 +322,14 @@ footer {
   </div>
 
   <div class="sidebar">
-
     <div class="tabs">
       <button onclick="showTab(1)">Sobre</button>
       <button onclick="showTab(2)">Cílios</button>
       <button onclick="showTab(3)">Localização</button>
     </div>
-
     <div class="content" id="content">
       Clique em uma opção 💖
     </div>
-
   </div>
 
 </div>
@@ -237,50 +339,68 @@ footer {
 </footer>
 
 <script>
+// ---- PARTÍCULAS DA INTRO ----
+(function() {
+  const container = document.getElementById('introParticles');
+  for (let i = 0; i < 45; i++) {
+    const p = document.createElement('div');
+    p.className = 'intro-particle';
+    const size = Math.random() * 2.5 + 0.8;
+    p.style.cssText =
+      'left:'    + (Math.random() * 100) + '%;' +
+      'bottom:'  + (Math.random() * 50)  + 'px;' +
+      'width:'   + size + 'px;' +
+      'height:'  + size + 'px;' +
+      'animation-duration:' + (Math.random() * 8 + 6)  + 's;' +
+      'animation-delay:'    + (Math.random() * 9)       + 's;';
+    container.appendChild(p);
+  }
+})();
 
-function toggleSound(){
-  const video = document.getElementById("videoPlayer");
+// ---- FECHAR INTRO ----
+function fecharIntro() {
+  const intro = document.getElementById('intro');
+  intro.classList.add('hide');
+  setTimeout(function() {
+    intro.style.display = 'none';
+  }, 1000);
+}
+
+// ---- SOM DO VÍDEO ----
+function toggleSound() {
+  const video = document.getElementById('videoPlayer');
   video.muted = !video.muted;
 }
 
-function showTab(tab){
-  const content = document.getElementById("content");
+// ---- ABAS ----
+function showTab(tab) {
+  const content = document.getElementById('content');
 
-  if(tab === 1){
-    content.innerHTML = `
-      <h3>Sobre</h3>
-      <p>Especialistas em extensão de cílios, realçando sua beleza com elegância.</p>
-    `;
+  if (tab === 1) {
+    content.innerHTML = '<h3>Sobre</h3><p>Especialistas em extensão de cílios, trazendo elegância e autoestima.</p>';
   }
 
-  if(tab === 2){
-    let lista = "<h3>Serviços</h3>";
-    const nomes = ["Clássico","Volume Russo","Híbrido","Mega Volume","Fox Eyes","Lash Lift"];
-
-    nomes.forEach(n=>{
-      lista += `<div class="card" onclick="detalhe('${n}')">✨ ${n}</div>`;
+  if (tab === 2) {
+    const nomes = ['Clássico','Volume Russo','Híbrido','Mega Volume','Fox Eyes','Lash Lift'];
+    let lista = '<h3>Serviços</h3>';
+    nomes.forEach(function(n) {
+      lista += '<div class="card" onclick="detalhe(\'' + n + '\')">✨ ' + n + '</div>';
     });
-
     content.innerHTML = lista;
   }
 
-  if(tab === 3){
-    content.innerHTML = `
-      <iframe src="https://maps.google.com/maps?q=Studio%20Julie%20Barroso&output=embed" width="100%" height="200"></iframe>
-    `;
+  if (tab === 3) {
+    content.innerHTML = '<iframe src="https://maps.google.com/maps?q=Studio%20Julie%20Barroso&output=embed" width="100%" height="200"></iframe>';
   }
 }
 
-function detalhe(nome){
-  const content = document.getElementById("content");
-
-  content.innerHTML = `
-    <h3>${nome}</h3>
-    <p>Técnica profissional para destacar seu olhar com naturalidade e sofisticação.</p>
-    <button onclick="showTab(2)">Voltar</button>
-  `;
+function detalhe(nome) {
+  const content = document.getElementById('content');
+  content.innerHTML =
+    '<h3>' + nome + '</h3>' +
+    '<p>Técnica profissional para valorizar seu olhar com sofisticação.</p>' +
+    '<button onclick="showTab(2)">Voltar</button>';
 }
-
 </script>
 
 </body>
