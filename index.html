@@ -12,60 +12,71 @@ body {
   background: linear-gradient(135deg, #ffffff, #fce4ec);
 }
 
-/* ===== INTRO ===== */
+/* ===== INTRO PREMIUM ===== */
 .intro {
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, #d81b60, #ad1457);
+  background: radial-gradient(circle at center, #d81b60, #8e0f4a);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   color: white;
   z-index: 9999;
   animation: fadeOut 1s ease 4s forwards;
 }
 
-/* OLHOS */
 .eyes {
   display: flex;
-  gap: 40px;
-  margin-bottom: 20px;
+  gap: 60px;
+  margin-bottom: 30px;
 }
 
 .eye {
-  width: 60px;
-  height: 30px;
-  border-bottom: 4px solid white;
-  border-radius: 0 0 60px 60px;
+  width: 80px;
+  height: 40px;
+  border-top: 3px solid white;
+  border-radius: 50% 50% 0 0;
   position: relative;
-  animation: blink 3s infinite;
+  animation: blink 4s infinite;
 }
 
-.eye::after {
+.lashes {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+}
+
+.lashes::before {
   content: "";
   position: absolute;
-  top: 10px;
-  left: 20px;
-  width: 10px;
-  height: 10px;
+  left: 0;
+  width: 100%;
+  height: 2px;
   background: white;
-  border-radius: 50%;
+  box-shadow:
+    5px -5px 0 white,
+    15px -7px 0 white,
+    25px -6px 0 white,
+    35px -8px 0 white,
+    45px -6px 0 white,
+    55px -7px 0 white;
 }
 
-/* PISCAR */
 @keyframes blink {
-  0%, 90%, 100% { height: 30px; }
+  0%, 92%, 100% { height: 40px; }
   95% { height: 5px; }
 }
 
-/* TEXTO */
-.intro h1 {
-  letter-spacing: 4px;
+.intro-title {
   font-size: 20px;
+  letter-spacing: 6px;
+  font-weight: 300;
+  text-transform: uppercase;
 }
 
-/* SUMIR */
 @keyframes fadeOut {
   to {
     opacity: 0;
@@ -73,7 +84,7 @@ body {
   }
 }
 
-/* ===== HEADER ===== */
+/* HEADER PREMIUM */
 .header-premium {
   background: linear-gradient(135deg, #d81b60, #ad1457);
   padding: 40px 20px;
@@ -168,6 +179,13 @@ footer {
   text-align: center;
   padding: 15px;
 }
+
+/* RESPONSIVO */
+@media(max-width: 768px){
+  .container {
+    flex-direction: column;
+  }
+}
 </style>
 </head>
 
@@ -176,10 +194,10 @@ footer {
 <!-- INTRO -->
 <div class="intro">
   <div class="eyes">
-    <div class="eye"></div>
-    <div class="eye"></div>
+    <div class="eye"><div class="lashes"></div></div>
+    <div class="eye"><div class="lashes"></div></div>
   </div>
-  <h1>STUDIO_JULIEBARROSO</h1>
+  <h1 class="intro-title">STUDIO JULIE BARROSO</h1>
 </div>
 
 <header class="header-premium">
@@ -195,7 +213,6 @@ footer {
     <video id="videoPlayer" autoplay muted loop controls>
       <source src="apresentacao.mp4" type="video/mp4">
     </video>
-
     <button class="sound-btn" onclick="toggleSound()">🔊</button>
   </div>
 
@@ -220,6 +237,7 @@ footer {
 </footer>
 
 <script>
+
 function toggleSound(){
   const video = document.getElementById("videoPlayer");
   video.muted = !video.muted;
@@ -231,15 +249,15 @@ function showTab(tab){
   if(tab === 1){
     content.innerHTML = `
       <h3>Sobre</h3>
-      <p>Especialistas em extensão de cílios, trazendo beleza e autoestima.</p>
+      <p>Especialistas em extensão de cílios, realçando sua beleza com elegância.</p>
     `;
   }
 
   if(tab === 2){
-    let lista = "<h3>Serviços de Cílios</h3>";
-    const nomes = ["Clássico","Volume Russo","Híbrido","Mega Volume","Fox Eyes","Lash Lift","Manutenção","Remoção","Design","Personalizado"];
+    let lista = "<h3>Serviços</h3>";
+    const nomes = ["Clássico","Volume Russo","Híbrido","Mega Volume","Fox Eyes","Lash Lift"];
 
-    nomes.forEach((n,i)=>{
+    nomes.forEach(n=>{
       lista += `<div class="card" onclick="detalhe('${n}')">✨ ${n}</div>`;
     });
 
@@ -258,10 +276,11 @@ function detalhe(nome){
 
   content.innerHTML = `
     <h3>${nome}</h3>
-    <p>Técnica profissional para realçar seu olhar com elegância e durabilidade.</p>
+    <p>Técnica profissional para destacar seu olhar com naturalidade e sofisticação.</p>
     <button onclick="showTab(2)">Voltar</button>
   `;
 }
+
 </script>
 
 </body>
