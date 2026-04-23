@@ -3,470 +3,495 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Julie Barroso | Extensão de Cílios</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<title>Studio Julie Barroso</title>
 
 <style>
-/* ===== VARIÁVEIS DE TEMA BARBIE PREMIUM ===== */
-:root {
-  --bg-color: #FDF0F5; /* Rosa fundo muito suave */
-  --text-dark: #4A0E2E; /* Ameixa escuro (Magenta fechado) para leitura */
-  --text-light: #9C637A; /* Rosa envelhecido médio */
-  --accent-main: #FF1493; /* Rosa Barbie Vibrante (Deep Pink) */
-  --accent-light: #FF69B4; /* Hot Pink */
-  
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(255, 105, 180, 0.3);
-  --shadow-soft: 0 20px 40px rgba(255, 20, 147, 0.08);
-  
-  --font-title: 'Playfair Display', serif;
-  --font-body: 'Montserrat', sans-serif;
-}
-
-* { 
-  box-sizing: border-box; 
-  margin: 0; 
-  padding: 0; 
-}
+* { box-sizing: border-box; }
 
 body {
-  font-family: var(--font-body);
-  background-color: var(--bg-color);
-  color: var(--text-dark);
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ffffff, #fce4ec);
 }
 
-/* ===== INTRO BARBIE CINEMATOGRÁFICA ===== */
+/* ===== INTRO ===== */
 .intro {
   position: fixed; inset: 0;
-  /* Gradiente Rosa Barbie Poderoso */
-  background: linear-gradient(135deg, #FF1493 0%, #D81B60 100%);
+  background: radial-gradient(ellipse at 50% 35%, #3d0028 0%, #1a0012 50%, #080005 100%);
   display: flex; flex-direction: column;
   justify-content: center; align-items: center;
-  color: #fff; z-index: 9999; overflow: hidden;
+  color: white; z-index: 9999; overflow: hidden;
   cursor: pointer;
-  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 1.1s ease, transform 1.1s ease;
 }
-.intro.hide { opacity: 0; transform: scale(1.05); pointer-events: none; }
+.intro.hide { opacity: 0; transform: scale(1.04); pointer-events: none; }
 
-.intro::after {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+.intro-ring {
+  position: absolute; border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
 }
-
-.intro-logo {
-  text-align: center;
-  z-index: 2;
-  animation: floatUp 2s ease-out forwards;
+.intro-ring:nth-child(1) { width:360px;height:360px;border:.8px solid rgba(216,27,96,.22);animation:ring-pulse 5s ease-in-out infinite 0s; }
+.intro-ring:nth-child(2) { width:540px;height:540px;border:.5px solid rgba(216,27,96,.12);animation:ring-pulse 5s ease-in-out infinite 1s; }
+.intro-ring:nth-child(3) { width:720px;height:720px;border:.5px solid rgba(216,27,96,.06);animation:ring-pulse 5s ease-in-out infinite 2s; }
+@keyframes ring-pulse {
+  0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.025);}
 }
 
-@keyframes floatUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+.intro-floor {
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:500px;height:120px;
+  background:radial-gradient(ellipse at center bottom,rgba(216,27,96,.35) 0%,transparent 70%);
+  pointer-events:none;
 }
 
-.intro-studio {
-  font-size: 11px; letter-spacing: 6px; 
-  color: rgba(255, 255, 255, 0.9); text-transform: uppercase; margin-bottom: 15px;
-  font-weight: 500;
+.intro-glow {
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:280px;height:280px;
+  background:radial-gradient(ellipse at center,rgba(216,27,96,.08) 0%,transparent 70%);
+  border-radius:50%;animation:glow-breathe 4.5s ease-in-out infinite;pointer-events:none;
+}
+@keyframes glow-breathe {
+  0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.15);}
 }
 
-.intro-name {
-  font-family: var(--font-title);
-  font-size: 48px; font-weight: 400; letter-spacing: 2px;
-  color: #FFFFFF;
-  text-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+.intro-particles{position:absolute;inset:0;pointer-events:none;}
+.intro-particle{position:absolute;border-radius:50%;animation:particle-rise linear infinite;}
+@keyframes particle-rise {
+  0%{opacity:0;transform:translateY(0) scale(1);}
+  10%{opacity:1;}80%{opacity:.5;}
+  100%{opacity:0;transform:translateY(-100vh) scale(.2);}
 }
 
-.intro-tap-btn {
-  font-size: 10px; letter-spacing: 3px; color: rgba(255,255,255,0.8);
-  text-transform: uppercase; margin-top: 40px;
-  border-bottom: 1px solid rgba(255,255,255,0.5);
-  padding-bottom: 5px;
-  animation: pulseOpacity 2s infinite;
-}
+.intro-logo{position:relative;z-index:4;text-align:center;display:flex;flex-direction:column;align-items:center;margin-bottom:44px;}
+.intro-studio{font-size:11px;letter-spacing:10px;color:rgba(255,200,230,.6);text-transform:uppercase;margin-bottom:14px;}
+.intro-name-row{display:flex;align-items:center;gap:22px;}
+.intro-line{width:50px;height:.5px;background:rgba(255,150,200,.5);flex-shrink:0;}
+.intro-name{font-family:Georgia,serif;font-size:40px;color:#fff;font-weight:normal;letter-spacing:6px;white-space:nowrap;}
+.intro-tagline{font-size:10px;letter-spacing:7px;color:rgba(255,160,210,.45);text-transform:uppercase;margin-top:16px;}
+.intro-divider{width:36px;height:.5px;background:rgba(216,27,96,.45);margin-top:16px;}
 
-@keyframes pulseOpacity {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+.intro-tap{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.intro-tap-btn{
+  font-size:11px;letter-spacing:5px;color:#fff;text-transform:uppercase;
+  padding:16px 48px;border:1px solid rgba(216,27,96,.7);border-radius:60px;
+  background:linear-gradient(135deg,rgba(216,27,96,.28),rgba(173,20,87,.22));
+  animation:ripple-pulse 2.2s ease-out infinite;white-space:nowrap;
+  transition:background .3s,border-color .3s;
 }
+.intro-tap-btn:hover{background:linear-gradient(135deg,rgba(216,27,96,.5),rgba(173,20,87,.4));border-color:rgba(255,100,170,.9);}
+@keyframes ripple-pulse{
+  0%{box-shadow:0 0 0 0 rgba(216,27,96,.55);}
+  65%{box-shadow:0 0 0 18px rgba(216,27,96,0);}
+  100%{box-shadow:0 0 0 0 rgba(216,27,96,0);}
+}
+.intro-tap-arrow{display:flex;flex-direction:column;align-items:center;gap:4px;animation:arrow-drop 1.6s ease-in-out infinite;}
+.intro-tap-arrow span{display:block;width:10px;height:10px;border-right:1.5px solid rgba(255,140,200,.7);border-bottom:1.5px solid rgba(255,140,200,.7);transform:rotate(45deg);animation:arrow-fade 1.6s ease-in-out infinite;}
+.intro-tap-arrow span:nth-child(2){animation-delay:.2s;opacity:.5;}
+.intro-tap-arrow span:nth-child(3){animation-delay:.4s;opacity:.25;}
+@keyframes arrow-drop{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+@keyframes arrow-fade{0%,100%{opacity:.9;}50%{opacity:.3;}}
 
-/* ===== HEADER ===== */
+/* ===== HEADER PREMIUM ===== */
 .header-premium {
-  padding: 40px 20px 20px;
-  text-align: center;
+  background: linear-gradient(135deg, #6a0d3b 0%, #ad1457 50%, #6a0d3b 100%);
+  padding: 36px 20px 32px;
+  text-align: center; color: white;
+  position: relative; overflow: hidden;
+}
+.header-premium::before {
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 50%,rgba(255,150,200,.12) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 50%,rgba(255,150,200,.10) 0%,transparent 60%);
+}
+.logo-premium{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
+.logo-studio-tag{font-size:10px;letter-spacing:9px;color:rgba(255,200,230,.65);text-transform:uppercase;margin-bottom:10px;}
+.logo-name-row{display:flex;align-items:center;gap:18px;}
+.logo-deco-line{flex:1;max-width:80px;height:.5px;background:linear-gradient(90deg,transparent,rgba(255,180,220,.7),transparent);}
+.logo-main-name{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:36px;font-weight:normal;letter-spacing:7px;color:#fff;white-space:nowrap;
+  text-shadow:0 0 30px rgba(255,100,180,.4),0 0 60px rgba(216,27,96,.2);
+}
+.logo-diamonds{display:flex;align-items:center;gap:8px;margin-top:10px;}
+.logo-diamond{width:5px;height:5px;background:rgba(255,180,220,.6);transform:rotate(45deg);}
+.logo-diamond.big{width:7px;height:7px;background:rgba(255,150,200,.8);}
+.logo-thin-line{width:120px;height:.5px;background:rgba(255,150,200,.35);}
+.logo-tagline-bottom{font-size:9px;letter-spacing:6px;color:rgba(255,180,220,.5);text-transform:uppercase;margin-top:10px;}
+
+/* ===== LAYOUT ===== */
+.container{display:flex;padding:20px;gap:20px;}
+
+.video{flex:2;position:relative;}
+.video video{width:100%;height:420px;object-fit:cover;border-radius:15px;}
+.sound-btn{
+  position:absolute;top:18px;right:18px;z-index:2;
+  display:inline-flex;align-items:center;gap:10px;
+  border:none;border-radius:999px;
+  padding:10px 16px 10px 10px;cursor:pointer;
+  color:white;
+  background:linear-gradient(135deg,rgba(67,17,40,.92),rgba(147,35,87,.88));
+  box-shadow:0 18px 34px rgba(106,13,59,.28);
+  backdrop-filter:blur(10px);
+  transition:transform .25s ease,box-shadow .25s ease,background .25s ease;
+}
+.sound-btn::before{
+  content:"";position:absolute;inset:1px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);pointer-events:none;
+}
+.sound-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 22px 38px rgba(106,13,59,.35);
+}
+.sound-btn.is-on{
+  background:linear-gradient(135deg,rgba(216,27,96,.95),rgba(173,20,87,.90));
+}
+.sound-btn-icon{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.14);
+  font-size:17px;font-weight:700;flex-shrink:0;
+}
+.sound-btn-text{
+  display:flex;flex-direction:column;align-items:flex-start;
+  line-height:1.1;
+}
+.sound-btn-text strong{
+  font-size:12px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;
+}
+.sound-btn-text small{
+  font-size:10px;letter-spacing:.5px;color:rgba(255,240,246,.82);
 }
 
-.logo-main-name {
-  font-family: var(--font-title);
-  font-size: 32px; font-weight: 400; letter-spacing: 4px;
-  color: var(--accent-main);
+.sidebar{flex:1;background:white;padding:20px;border-radius:15px;}
+.tabs{display:grid;gap:12px;}
+.tab-btn{
+  width:100%;padding:14px 16px;border:none;border-radius:18px;
+  background:linear-gradient(145deg,#fff,#fff7fa);
+  color:#6a0d3b;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  box-shadow:0 10px 25px rgba(106,13,59,.08);
+  border:1px solid rgba(216,27,96,.12);
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease,color .22s ease;
 }
-
-.logo-tagline {
-  font-size: 10px; letter-spacing: 4px; color: var(--text-light);
-  text-transform: uppercase; margin-top: 8px; font-weight: 500;
+.tab-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 30px rgba(216,27,96,.14);
+  border-color:rgba(216,27,96,.26);
 }
-
-/* ===== LAYOUT PRINCIPAL ===== */
-.container {
-  display: flex; 
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 30px 60px;
-  gap: 40px;
-  flex: 1;
-  width: 100%;
+.tab-btn.active{
+  color:#fff;
+  background:linear-gradient(135deg,#6a0d3b 0%,#ad1457 55%,#d81b60 100%);
+  border-color:transparent;
+  box-shadow:0 18px 34px rgba(173,20,87,.24);
 }
-
-/* ===== VÍDEO ADAPTADO ===== */
-.video-wrapper {
-  flex: 1.2;
-  position: relative;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: var(--shadow-soft);
-  background-color: #F8D8E6; /* Placeholder rosa suave */
-  display: flex;
+.tab-btn-left{display:flex;align-items:center;gap:12px;text-align:left;}
+.tab-btn-icon{
+  width:40px;height:40px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(216,27,96,.18),rgba(173,20,87,.08));
+  color:#ad1457;font-weight:700;letter-spacing:1px;
+  flex-shrink:0;
 }
-
-.video-wrapper video {
-  width: 100%;
-  height: 600px;
-  object-fit: cover;
-  transition: transform 10s linear;
+.tab-btn.active .tab-btn-icon{
+  background:rgba(255,255,255,.14);
+  color:#fff;
 }
-
-.video-wrapper:hover video {
-  transform: scale(1.03);
+.tab-btn-label{display:flex;flex-direction:column;gap:3px;}
+.tab-btn-label strong{
+  font-size:15px;font-weight:600;letter-spacing:.4px;
 }
-
-/* Botão de som Minimalista */
-.sound-btn {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
-  z-index: 10;
-  background: rgba(255, 20, 147, 0.4); /* Fundo rosa translúcido */
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.5);
-  border-radius: 50px;
-  padding: 12px 24px;
-  color: white;
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.3s ease;
+.tab-btn-label span{
+  font-size:11px;letter-spacing:.4px;color:rgba(106,13,59,.66);
 }
-
-.sound-btn:hover {
-  background: var(--accent-main);
+.tab-btn.active .tab-btn-label span{color:rgba(255,235,243,.82);}
+.tab-btn-arrow{
+  font-size:22px;line-height:1;color:rgba(106,13,59,.38);
+  transition:transform .22s ease,color .22s ease;
 }
-
-.sound-btn-icon { font-size: 14px; }
-
-/* ===== SIDEBAR / CONTEÚDO (GLASSMORPHISM) ===== */
-.sidebar {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.tab-btn:hover .tab-btn-arrow,
+.tab-btn.active .tab-btn-arrow{
+  transform:translateX(3px);
 }
+.tab-btn.active .tab-btn-arrow{color:rgba(255,255,255,.92);}
 
-.tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 30px;
+.content{margin-top:15px;padding:15px;background:#fff;border-radius:10px;}
+
+/* ===== CARDS ===== */
+.card{
+  display:flex;align-items:center;gap:12px;
+  padding:12px;margin-bottom:10px;border-radius:12px;
+  background:#fce4ec;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+  border:1px solid rgba(216,27,96,.1);
 }
-
-.tab-btn {
-  flex: 1;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid rgba(255, 105, 180, 0.2);
-  padding: 15px 0;
-  font-family: var(--font-body);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--text-light);
-  cursor: pointer;
-  transition: all 0.3s ease;
+.card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(216,27,96,.15);}
+.card-thumb{
+  width:52px;height:52px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,#d81b60,#ad1457);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  overflow:hidden;
 }
+.card-thumb img{width:100%;height:100%;object-fit:cover;border-radius:10px;}
+.card-info{display:flex;flex-direction:column;gap:3px;}
+.card-title{font-size:14px;font-weight:600;color:#6a0d3b;}
+.card-desc-mini{font-size:11px;color:#ad1457;opacity:.75;}
 
-.tab-btn:hover { color: var(--accent-main); }
-
-.tab-btn.active {
-  color: var(--accent-main);
-  border-bottom-color: var(--accent-main);
-  font-weight: 600;
+/* ===== DETALHE ===== */
+.detalhe-wrap{display:flex;flex-direction:column;}
+.detalhe-img-wrap{
+  width:100%;height:200px;border-radius:12px;overflow:hidden;
+  background:linear-gradient(135deg,#6a0d3b,#d81b60);
+  display:flex;align-items:center;justify-content:center;
+  font-size:64px;margin-bottom:16px;position:relative;
 }
-
-.content-area {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: var(--shadow-soft);
-  flex: 1;
-  overflow-y: auto;
-  max-height: 520px;
+.detalhe-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.detalhe-img-label{
+  position:absolute;bottom:10px;left:12px;
+  font-size:11px;letter-spacing:3px;color:rgba(255,255,255,.7);text-transform:uppercase;
 }
-
-/* Custom Scrollbar elegante */
-.content-area::-webkit-scrollbar { width: 4px; }
-.content-area::-webkit-scrollbar-track { background: transparent; }
-.content-area::-webkit-scrollbar-thumb { background: var(--accent-light); border-radius: 10px; }
-
-/* ===== CARDS DE SERVIÇOS ===== */
-.card {
-  display: flex; align-items: center; gap: 20px;
-  padding: 15px 0; border-bottom: 1px solid rgba(255, 105, 180, 0.15);
-  cursor: pointer; transition: transform 0.3s ease, padding-left 0.3s ease;
+.detalhe-nome{font-family:Georgia,serif;font-size:22px;font-weight:normal;color:#6a0d3b;letter-spacing:2px;margin-bottom:8px;}
+.detalhe-linha{width:40px;height:1.5px;background:linear-gradient(90deg,#d81b60,#ad1457);border-radius:2px;margin-bottom:12px;}
+.detalhe-texto{font-size:13px;line-height:1.7;color:#555;margin-bottom:16px;}
+.detalhe-info{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.detalhe-badge{
+  font-size:11px;letter-spacing:1px;padding:6px 12px;border-radius:20px;
+  background:#fce4ec;color:#ad1457;border:1px solid rgba(216,27,96,.2);
 }
-.card:last-child { border-bottom: none; }
-.card:hover { transform: translateX(5px); padding-left: 10px; }
-
-.card-thumb {
-  width: 60px; height: 60px; border-radius: 50%;
-  background-color: #FDF0F5;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px; overflow: hidden; flex-shrink: 0;
-  border: 1px solid var(--glass-border);
+.btn-voltar{
+  background:none;border:1px solid rgba(216,27,96,.4);color:#d81b60;
+  padding:11px 20px;border-radius:8px;cursor:pointer;font-size:13px;
+  transition:background .2s;width:100%;margin-top:4px;
 }
-.card-thumb img { width: 100%; height: 100%; object-fit: cover; }
-
-.card-info { display: flex; flex-direction: column; gap: 4px; }
-.card-title { font-family: var(--font-title); font-size: 18px; color: var(--text-dark); }
-.card-desc-mini { font-size: 11px; color: var(--text-light); font-weight: 400; }
-.card-arrow { margin-left: auto; color: var(--accent-main); opacity: 0; transition: opacity 0.3s; }
-.card:hover .card-arrow { opacity: 1; }
-
-/* ===== DETALHE DO SERVIÇO ===== */
-.detalhe-wrap { animation: fadeIn 0.4s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-.detalhe-img-wrap {
-  width: 100%; height: 220px; border-radius: 16px; overflow: hidden;
-  background-color: #FDF0F5; display: flex; align-items: center; justify-content: center;
-  font-size: 60px; margin-bottom: 24px; border: 1px solid var(--glass-border);
-}
-.detalhe-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-
-.detalhe-nome { font-family: var(--font-title); font-size: 28px; color: var(--accent-main); margin-bottom: 10px; }
-.detalhe-texto { font-size: 13px; line-height: 1.8; color: var(--text-dark); margin-bottom: 24px; font-weight: 400; }
-
-.detalhe-info { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
-.detalhe-item { display: flex; flex-direction: column; gap: 4px; }
-.detalhe-item-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); }
-.detalhe-item-value { font-size: 12px; color: var(--accent-main); font-weight: 600; }
-
-.btn-voltar {
-  background: transparent; border: 1px solid var(--accent-main); color: var(--accent-main);
-  padding: 14px 24px; border-radius: 40px; cursor: pointer; font-size: 11px; text-transform: uppercase;
-  letter-spacing: 2px; transition: all 0.3s ease; width: 100%; font-family: var(--font-body); font-weight: 500;
-}
-.btn-voltar:hover { background: var(--accent-main); color: #fff; }
+.btn-voltar:hover{background:#fce4ec;}
 
 /* ===== FOOTER ===== */
-footer {
-  text-align: center; padding: 30px; font-size: 10px;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--text-light);
-  margin-top: auto;
-}
+footer{background:linear-gradient(135deg,#d81b60,#ad1457);color:white;text-align:center;padding:15px;}
 
 /* ===== RESPONSIVO ===== */
-@media(max-width: 900px){
-  .container { flex-direction: column; padding: 10px 20px 40px; gap: 20px; }
-  .video-wrapper video { height: 400px; }
-  .intro-name { font-size: 36px; }
-  .content-area { max-height: none; padding: 20px; }
-}
-@media(max-width: 480px){
-  .video-wrapper video { height: 350px; }
-  .logo-main-name { font-size: 26px; }
-  .tab-btn { font-size: 9px; }
+@media(max-width:768px){
+  .container{flex-direction:column;}
+  .intro-name{font-size:28px;letter-spacing:4px;}
+  .intro-line{width:32px;}
+  .logo-main-name{font-size:26px;letter-spacing:5px;}
+  .logo-deco-line{max-width:40px;}
+  .video video{height:240px;}
+  .sound-btn{top:14px;right:14px;padding:9px 14px 9px 9px;}
+  .sound-btn-icon{width:34px;height:34px;}
+  .tab-btn{padding:13px 14px;}
+  .detalhe-img-wrap{height:260px;border-radius:0;margin:-15px -15px 16px -15px;width:calc(100% + 30px);}
 }
 </style>
 </head>
 <body>
 
+<!-- INTRO -->
 <div class="intro" id="intro" onclick="fecharIntro()">
+  <div class="intro-ring"></div>
+  <div class="intro-ring"></div>
+  <div class="intro-ring"></div>
+  <div class="intro-floor"></div>
+  <div class="intro-glow"></div>
+  <div class="intro-particles" id="introParticles"></div>
   <div class="intro-logo">
     <div class="intro-studio">Studio</div>
-    <div class="intro-name">Julie Barroso</div>
-    <div class="intro-studio" style="letter-spacing: 4px; font-size: 9px; color: rgba(255,255,255,0.7);">Extensão de Cílios</div>
-    <div class="intro-tap-btn">Toque para descobrir</div>
+    <div class="intro-name-row">
+      <div class="intro-line"></div>
+      <div class="intro-name">Julie Barroso</div>
+      <div class="intro-line"></div>
+    </div>
+    <div class="intro-tagline">Extensão de Cílios</div>
+    <div class="intro-divider"></div>
+  </div>
+  <div class="intro-tap">
+    <div class="intro-tap-btn">Toque para entrar</div>
+    <div class="intro-tap-arrow"><span></span><span></span><span></span></div>
   </div>
 </div>
 
+<!-- HEADER -->
 <header class="header-premium">
-  <div class="logo-main-name">Julie Barroso</div>
-  <div class="logo-tagline">Studio de Cílios</div>
+  <div class="logo-premium">
+    <div class="logo-studio-tag">Studio</div>
+    <div class="logo-name-row">
+      <div class="logo-deco-line"></div>
+      <div class="logo-main-name">Julie Barroso</div>
+      <div class="logo-deco-line"></div>
+    </div>
+    <div class="logo-diamonds">
+      <div class="logo-thin-line"></div>
+      <div class="logo-diamond"></div>
+      <div class="logo-diamond big"></div>
+      <div class="logo-diamond"></div>
+      <div class="logo-thin-line"></div>
+    </div>
+    <div class="logo-tagline-bottom">Extensão de Cílios</div>
+  </div>
 </header>
 
+<!-- SITE -->
 <div class="container">
-  
-  <div class="video-wrapper">
-    <video id="videoPlayer" autoplay muted loop playsinline>
+  <div class="video">
+    <video id="videoPlayer" autoplay muted loop controls>
       <source src="apresentacao.mp4" type="video/mp4">
-      Seu navegador não suporta vídeos.
     </video>
-    <button class="sound-btn" id="soundBtn" onclick="toggleSound()">
-      <span class="sound-btn-icon" id="soundIcon">🔇</span>
-      <span id="soundText">Som Desativado</span>
+    <button class="sound-btn is-muted" id="soundBtn" type="button" onclick="toggleSound()" aria-label="Ativar audio" aria-pressed="false">
+      <span class="sound-btn-icon" id="soundIcon">&#9835;</span>
+      <span class="sound-btn-text">
+        <strong>Som do video</strong>
+        <small id="soundState">Toque para ativar</small>
+      </span>
     </button>
   </div>
-
   <div class="sidebar">
     <div class="tabs">
-      <button class="tab-btn active" data-tab="1" onclick="showTab(1)">Sobre</button>
-      <button class="tab-btn" data-tab="2" onclick="showTab(2)">Serviços</button>
-      <button class="tab-btn" data-tab="3" onclick="showTab(3)">Localização</button>
+      <button class="tab-btn" type="button" data-tab="1" onclick="showTab(1)">
+        <span class="tab-btn-left">
+          <span class="tab-btn-icon">S</span>
+          <span class="tab-btn-label">
+            <strong>Sobre</strong>
+            <span>Conheca o studio</span>
+          </span>
+        </span>
+        <span class="tab-btn-arrow">&rsaquo;</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="2" onclick="showTab(2)">
+        <span class="tab-btn-left">
+          <span class="tab-btn-icon">C</span>
+          <span class="tab-btn-label">
+            <strong>Cilios</strong>
+            <span>Veja os servicos</span>
+          </span>
+        </span>
+        <span class="tab-btn-arrow">&rsaquo;</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="3" onclick="showTab(3)">
+        <span class="tab-btn-left">
+          <span class="tab-btn-icon">L</span>
+          <span class="tab-btn-label">
+            <strong>Localizacao</strong>
+            <span>Mapa e acesso</span>
+          </span>
+        </span>
+        <span class="tab-btn-arrow">&rsaquo;</span>
+      </button>
     </div>
-    
-    <div class="content-area" id="content">
-      </div>
+    <div class="content" id="content">Clique em uma opção 💖</div>
   </div>
 </div>
 
-<footer>© Studio Julie Barroso • Todos os direitos reservados</footer>
+<footer>© Studio Julie Barroso • Extensão de Cílios 💖</footer>
 
 <script>
-/* DADOS DO CATÁLOGO */
+/* DADOS — adicione imagem: 'caminho/foto.jpg' em cada procedimento quando tiver as fotos */
 var proc = {
-  'Clássico':     { imagem:'', emoji:'✨', resumo:'Natural e delicado, ideal para o dia a dia.', duracao:'2h', fixacao:'3–4 semanas', descricao:'O fio a fio clássico aplica uma extensão por cílio natural, resultando em um olhar mais alongado e definido, mantendo a máxima leveza e elegância. A escolha perfeita para uma beleza sofisticada e discreta.' },
-  'Volume Russo': { imagem:'', emoji:'🖤', resumo:'Volume intenso e profundamente sofisticado.', duracao:'2h30', fixacao:'3–4 semanas', descricao:'Técnica artesanal que aplica delicados leques de fios ultrafinos por cílio natural. Cria um efeito preenchido e luxuoso, perfeito para quem busca um olhar marcante e inesquecível.' },
-  'Híbrido':      { imagem:'', emoji:'💫', resumo:'A união perfeita entre textura e volume.', duracao:'2h', fixacao:'3–4 semanas', descricao:'Combina estrategicamente fios clássicos e leques de volume russo na mesma aplicação. O resultado é um design texturizado, moderno e incrivelmente versátil para qualquer ocasião.' },
-  'Mega Volume':  { imagem:'', emoji:'👑', resumo:'O máximo de drama, densidade e glamour.', duracao:'3h', fixacao:'3–4 semanas', descricao:'Leques avançados com fios de espessura mínima, garantindo densidade extrema sem pesar os fios naturais. Para mulheres que não abrem mão de uma presença arrebatadora.' },
-  'Fox Eyes':     { imagem:'', emoji:'🦊', resumo:'Efeito alongado, sensual e moderno.', duracao:'2h', fixacao:'3–4 semanas', descricao:'Técnica de mapping que alonga os cílios na extremidade externa dos olhos. Levanta o olhar, criando um efeito delineado que é a tendência absoluta do momento.' },
-  'Lash Lift':    { imagem:'', emoji:'🌿', resumo:'Beleza natural realçada e curvada.', duracao:'1h', fixacao:'6–8 semanas', descricao:'Tratamento que nutre, curva e pigmenta seus próprios cílios. Um procedimento de baixa manutenção que abre o olhar instantaneamente, durando semanas com aspecto impecável.' }
+  'Clássico':     { imagem:'classico.jpg',     emoji:'👁️', resumo:'Natural e delicado',            duracao:'2h',   fixacao:'3–4 semanas', indicado:'Uso diário',         descricao:'O fio a fio clássico aplica uma extensão por cílio natural, resultando em um olhar mais alongado e definido, mantendo leveza e naturalidade. Ideal para o dia a dia.' },
+  'Volume Russo': { imagem:'volumerusso.jpg',   emoji:'✨',  resumo:'Volume intenso e sofisticado',  duracao:'2h30', fixacao:'3–4 semanas', indicado:'Festas e eventos',    descricao:'Técnica que aplica leques de 2 a 6 fios ultrafinos por cílio natural, criando um efeito dramático e cheio. Perfeito para quem busca um olhar marcante e sedutor.' },
+  'Híbrido':      { imagem:'hibrido.jpg',       emoji:'💫',  resumo:'O melhor dos dois mundos',     duracao:'2h',   fixacao:'3–4 semanas', indicado:'Uso versátil',        descricao:'Combina fios clássicos e volume russo na mesma aplicação, gerando textura variada e um olhar sofisticado com profundidade. Versátil para qualquer ocasião.' },
+  'Mega Volume':  { imagem:'megavolume.jpg',    emoji:'👑',  resumo:'Drama e glamour máximo',       duracao:'3h',   fixacao:'3–4 semanas', indicado:'Looks arrojados',     descricao:'Leques com 7 a 16 fios ultrafinos por cílio natural. Resultado dramático, cheio e marcante. Para quem quer o máximo de impacto e presença.' },
+  'Fox Eyes':     { imagem:'foxeyes.jpg',       emoji:'🦊',  resumo:'Efeito gatinho alongado',      duracao:'2h',   fixacao:'3–4 semanas', indicado:'Tendência atual',     descricao:'Técnica que alonga os cílios da extremidade externa dos olhos, criando o famoso efeito olho de raposa — sensual, moderno e muito elegante.' },
+  'Lash Lift':    { imagem:'lashlift.jpg',      emoji:'🌙',  resumo:'Seus cílios naturais realçados', duracao:'1h', fixacao:'6–8 semanas', indicado:'Baixa manutenção',   descricao:'Procedimento que curva e levanta seus próprios cílios, sem extensões. Com opção de tingimento, o resultado é um olhar aberto e renovado por até 8 semanas.' }
 };
 
-/* FECHAR INTRODUÇÃO */
-function fecharIntro() {
-  var el = document.getElementById('intro');
+/* PARTÍCULAS */
+(function(){
+  var c = document.getElementById('introParticles');
+  var cores = ['rgba(255,180,220,.9)','rgba(255,140,200,.8)','rgba(255,210,235,.7)','rgba(216,27,96,.6)','rgba(255,255,255,.5)','rgba(255,160,210,.75)'];
+  for(var i=0;i<80;i++){
+    var p=document.createElement('div'); p.className='intro-particle';
+    var s=Math.random()*4+1;
+    p.style.cssText='left:'+(Math.random()*100)+'%;bottom:'+(Math.random()*30)+'px;width:'+s+'px;height:'+s+'px;background:'+cores[Math.floor(Math.random()*cores.length)]+';animation-duration:'+(Math.random()*10+6)+'s;animation-delay:'+(Math.random()*12)+'s;';
+    c.appendChild(p);
+  }
+})();
+
+function fecharIntro(){
+  var el=document.getElementById('intro');
   el.classList.add('hide');
-  setTimeout(function(){ el.style.display = 'none'; }, 1500);
+  setTimeout(function(){el.style.display='none';},1100);
 }
 
-/* CONTROLE DE SOM CUSTOMIZADO */
-function toggleSound() {
-  var v = document.getElementById('videoPlayer');
-  var icon = document.getElementById('soundIcon');
-  var text = document.getElementById('soundText');
-  
-  v.muted = !v.muted;
-  
-  if(v.muted) {
-    icon.textContent = '🔇';
-    text.textContent = 'Som Desativado';
-  } else {
-    icon.textContent = '🔊';
-    text.textContent = 'Som Ativado';
-  }
+function updateSoundButton(){
+  var v=document.getElementById('videoPlayer');
+  var btn=document.getElementById('soundBtn');
+  var icon=document.getElementById('soundIcon');
+  var state=document.getElementById('soundState');
+  var muted=v.muted;
+
+  btn.classList.toggle('is-muted',muted);
+  btn.classList.toggle('is-on',!muted);
+  btn.setAttribute('aria-label',muted ? 'Ativar audio' : 'Desativar audio');
+  btn.setAttribute('aria-pressed',(!muted).toString());
+  icon.innerHTML=muted ? '&#9835;' : '&#9834;';
+  state.textContent=muted ? 'Toque para ativar' : 'Som ligado';
 }
 
-/* CONTROLE DAS ABAS */
-function showTab(tab) {
-  var buttons = document.querySelectorAll('.tab-btn');
-  buttons.forEach(btn => {
-    btn.classList.toggle('active', parseInt(btn.getAttribute('data-tab')) === tab);
+function toggleSound(){
+  var v=document.getElementById('videoPlayer');
+  v.muted=!v.muted;
+  updateSoundButton();
+}
+
+function updateActiveTab(tab){
+  var buttons=document.querySelectorAll('.tab-btn');
+  buttons.forEach(function(btn){
+    var active=Number(btn.getAttribute('data-tab'))===tab;
+    btn.classList.toggle('active',active);
+    btn.setAttribute('aria-pressed',active ? 'true' : 'false');
   });
+}
 
-  var content = document.getElementById('content');
-  
-  if(tab === 1) {
-    content.innerHTML = `
-      <h3 style="font-family: var(--font-title); font-size: 24px; font-weight: 400; margin-bottom: 15px; color: var(--accent-main);">A Arte do Olhar</h3>
-      <p style="font-size: 13px; line-height: 1.8; color: var(--text-dark); font-weight: 400; margin-bottom: 15px;">
-        Bem-vinda ao espaço onde a beleza encontra a técnica milimétrica. No Studio Julie Barroso, acreditamos que a extensão de cílios vai além da estética — é sobre confiança, luxo e personalização.
-      </p>
-      <p style="font-size: 13px; line-height: 1.8; color: var(--text-dark); font-weight: 400;">
-        Utilizamos exclusivamente materiais premium e métodos aprovados de visagismo para desenhar o conjunto perfeito para o formato do seu rosto.
-      </p>
-    `;
+function showTab(tab){
+  var content=document.getElementById('content');
+  updateActiveTab(tab);
+  if(tab===1){
+    content.innerHTML='<h3 style="color:#6a0d3b;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:10px;">Sobre nós</h3><p style="color:#555;line-height:1.7;font-size:13px;">Especialistas em extensão de cílios, trazendo elegância e autoestima para cada cliente. Técnicas exclusivas, produtos premium e atendimento personalizado.</p>';
   }
-  else if(tab === 2) {
-    var html = '<div style="display:flex; flex-direction:column;">';
+  if(tab===2){
+    var html='<h3 style="color:#6a0d3b;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:12px;">Nossos serviços</h3>';
     Object.keys(proc).forEach(function(n){
-      var p = proc[n];
-      var thumbHtml = p.imagem 
-        ? `<img src="${p.imagem}" alt="${n}">` 
-        : p.emoji;
-        
-      html += `
-        <div class="card" onclick="detalhe('${n}')">
-          <div class="card-thumb">${thumbHtml}</div>
-          <div class="card-info">
-            <div class="card-title">${n}</div>
-            <div class="card-desc-mini">${p.resumo}</div>
-          </div>
-          <div class="card-arrow">→</div>
-        </div>
-      `;
+      var thumbHtml = proc[n].imagem
+        ? '<div class="card-thumb"><img src="'+proc[n].imagem+'" alt="'+n+'"></div>'
+        : '<div class="card-thumb">'+proc[n].emoji+'</div>';
+      html+='<div class="card" onclick="detalhe(\''+n+'\')">'+thumbHtml+'<div class="card-info"><div class="card-title">'+n+'</div><div class="card-desc-mini">'+proc[n].resumo+'</div></div></div>';
     });
-    html += '</div>';
-    content.innerHTML = html;
+    content.innerHTML=html;
   }
-  else if(tab === 3) {
-    content.innerHTML = `
-      <h3 style="font-family: var(--font-title); font-size: 24px; font-weight: 400; margin-bottom: 15px; color: var(--accent-main);">Nosso Endereço</h3>
-      <p style="font-size: 12px; color: var(--text-dark); margin-bottom: 20px;">Um ambiente pensado para o seu total relaxamento.</p>
-      <div style="width:100%; height:250px; background:#F8D8E6; border-radius:12px; overflow:hidden;">
-        <iframe src="https://maps.google.com/maps?q=Studio+Julie+Barroso&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:none;"></iframe>
-      </div>
-    `;
+  if(tab===3){
+    content.innerHTML='<h3 style="color:#6a0d3b;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:12px;">Localização</h3><iframe src="https://maps.google.com/maps?q=Studio%20Julie%20Barroso&output=embed" width="100%" height="200" style="border-radius:10px;border:none;"></iframe>';
   }
 }
 
-/* EXIBIR DETALHES DO PROCEDIMENTO */
-function detalhe(nome) {
-  var p = proc[nome];
-  var content = document.getElementById('content');
-  
-  var imgHtml = p.imagem 
-    ? `<img src="${p.imagem}" alt="${nome}">` 
-    : p.emoji;
-    
-  content.innerHTML = `
-    <div class="detalhe-wrap">
-      <div class="detalhe-img-wrap">${imgHtml}</div>
-      <div class="detalhe-nome">${nome}</div>
-      <p class="detalhe-texto">${p.descricao}</p>
-      
-      <div class="detalhe-info">
-        <div class="detalhe-item">
-          <span class="detalhe-item-label">Duração</span>
-          <span class="detalhe-item-value">${p.duracao}</span>
-        </div>
-        <div class="detalhe-item">
-          <span class="detalhe-item-label">Manutenção</span>
-          <span class="detalhe-item-value">${p.fixacao}</span>
-        </div>
-      </div>
-      
-      <button class="btn-voltar" onclick="showTab(2)">Retornar ao Menu</button>
-    </div>
-  `;
+function detalhe(nome){
+  var p=proc[nome];
+  var content=document.getElementById('content');
+  var imgHtml=p.imagem
+    ? '<img src="'+p.imagem+'" alt="'+nome+'">'
+    : '<span style="font-size:64px">'+p.emoji+'</span>';
+  content.innerHTML=
+    '<div class="detalhe-wrap">'+
+      '<div class="detalhe-img-wrap">'+imgHtml+'<div class="detalhe-img-label">Studio Julie Barroso</div></div>'+
+      '<div class="detalhe-nome">'+nome+'</div>'+
+      '<div class="detalhe-linha"></div>'+
+      '<p class="detalhe-texto">'+p.descricao+'</p>'+
+      '<div class="detalhe-info">'+
+        '<div class="detalhe-badge">⏱ '+p.duracao+'</div>'+
+        '<div class="detalhe-badge">📅 '+p.fixacao+'</div>'+
+        '<div class="detalhe-badge">💡 '+p.indicado+'</div>'+
+      '</div>'+
+      '<button class="btn-voltar" onclick="showTab(2)">← Voltar aos serviços</button>'+
+    '</div>';
+  if(window.innerWidth<=768){
+    setTimeout(function(){ content.scrollIntoView({behavior:'smooth',block:'start'}); },50);
+  }
 }
 
-// Iniciar na aba de serviços (aba 2) para ser mais direto comercialmente
-showTab(2);
+updateSoundButton();
 </script>
-
 </body>
 </html>
