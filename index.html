@@ -129,16 +129,96 @@ body {
 
 .video{flex:2;position:relative;}
 .video video{width:100%;height:420px;object-fit:cover;border-radius:15px;}
-.sound-btn{position:absolute;bottom:20px;left:20px;background:#d81b60;color:white;border:none;padding:10px;border-radius:50px;cursor:pointer;}
+.sound-btn{
+  position:absolute;top:18px;right:18px;z-index:2;
+  display:inline-flex;align-items:center;gap:10px;
+  border:none;border-radius:999px;
+  padding:10px 16px 10px 10px;cursor:pointer;
+  color:white;
+  background:linear-gradient(135deg,rgba(67,17,40,.92),rgba(147,35,87,.88));
+  box-shadow:0 18px 34px rgba(106,13,59,.28);
+  backdrop-filter:blur(10px);
+  transition:transform .25s ease,box-shadow .25s ease,background .25s ease;
+}
+.sound-btn::before{
+  content:"";position:absolute;inset:1px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);pointer-events:none;
+}
+.sound-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 22px 38px rgba(106,13,59,.35);
+}
+.sound-btn.is-on{
+  background:linear-gradient(135deg,rgba(216,27,96,.95),rgba(173,20,87,.90));
+}
+.sound-btn-icon{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.14);
+  font-size:17px;font-weight:700;flex-shrink:0;
+}
+.sound-btn-text{
+  display:flex;flex-direction:column;align-items:flex-start;
+  line-height:1.1;
+}
+.sound-btn-text strong{
+  font-size:12px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;
+}
+.sound-btn-text small{
+  font-size:10px;letter-spacing:.5px;color:rgba(255,240,246,.82);
+}
 
 .sidebar{flex:1;background:white;padding:20px;border-radius:15px;}
-.tabs button{
-  width:100%;padding:14px;margin-bottom:10px;border:none;
-  background:linear-gradient(135deg,#d81b60,#ad1457);
-  color:white;border-radius:10px;cursor:pointer;font-size:14px;letter-spacing:1px;
-  transition:opacity .2s;
+.tabs{display:grid;gap:12px;}
+.tab-btn{
+  width:100%;padding:14px 16px;border:none;border-radius:18px;
+  background:linear-gradient(145deg,#fff,#fff7fa);
+  color:#6a0d3b;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  box-shadow:0 10px 25px rgba(106,13,59,.08);
+  border:1px solid rgba(216,27,96,.12);
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease,color .22s ease;
 }
-.tabs button:hover{opacity:.85;}
+.tab-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 30px rgba(216,27,96,.14);
+  border-color:rgba(216,27,96,.26);
+}
+.tab-btn.active{
+  color:#fff;
+  background:linear-gradient(135deg,#6a0d3b 0%,#ad1457 55%,#d81b60 100%);
+  border-color:transparent;
+  box-shadow:0 18px 34px rgba(173,20,87,.24);
+}
+.tab-btn-left{display:flex;align-items:center;gap:12px;text-align:left;}
+.tab-btn-icon{
+  width:40px;height:40px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(216,27,96,.18),rgba(173,20,87,.08));
+  color:#ad1457;font-weight:700;letter-spacing:1px;
+  flex-shrink:0;
+}
+.tab-btn.active .tab-btn-icon{
+  background:rgba(255,255,255,.14);
+  color:#fff;
+}
+.tab-btn-label{display:flex;flex-direction:column;gap:3px;}
+.tab-btn-label strong{
+  font-size:15px;font-weight:600;letter-spacing:.4px;
+}
+.tab-btn-label span{
+  font-size:11px;letter-spacing:.4px;color:rgba(106,13,59,.66);
+}
+.tab-btn.active .tab-btn-label span{color:rgba(255,235,243,.82);}
+.tab-btn-arrow{
+  font-size:22px;line-height:1;color:rgba(106,13,59,.38);
+  transition:transform .22s ease,color .22s ease;
+}
+.tab-btn:hover .tab-btn-arrow,
+.tab-btn.active .tab-btn-arrow{
+  transform:translateX(3px);
+}
+.tab-btn.active .tab-btn-arrow{color:rgba(255,255,255,.92);}
 
 .content{margin-top:15px;padding:15px;background:#fff;border-radius:10px;}
 
@@ -201,6 +281,9 @@ footer{background:linear-gradient(135deg,#d81b60,#ad1457);color:white;text-align
   .logo-main-name{font-size:26px;letter-spacing:5px;}
   .logo-deco-line{max-width:40px;}
   .video video{height:240px;}
+  .sound-btn{top:14px;right:14px;padding:9px 14px 9px 9px;}
+  .sound-btn-icon{width:34px;height:34px;}
+  .tab-btn{padding:13px 14px;}
   .detalhe-img-wrap{height:260px;border-radius:0;margin:-15px -15px 16px -15px;width:calc(100% + 30px);}
 }
 </style>
@@ -257,13 +340,46 @@ footer{background:linear-gradient(135deg,#d81b60,#ad1457);color:white;text-align
     <video id="videoPlayer" autoplay muted loop controls>
       <source src="apresentacao.mp4" type="video/mp4">
     </video>
-    <button class="sound-btn" onclick="toggleSound()">🔊</button>
+    <button class="sound-btn is-muted" id="soundBtn" type="button" onclick="toggleSound()" aria-label="Ativar audio" aria-pressed="false">
+      <span class="sound-btn-icon" id="soundIcon">&#9835;</span>
+      <span class="sound-btn-text">
+        <strong>Som do video</strong>
+        <small id="soundState">Toque para ativar</small>
+      </span>
+    </button>
   </div>
   <div class="sidebar">
     <div class="tabs">
-      <button onclick="showTab(1)">Sobre</button>
-      <button onclick="showTab(2)">Cílios</button>
-      <button onclick="showTab(3)">Localização</button>
+      <button class="tab-btn" type="button" data-tab="1" onclick="showTab(1)">
+        <span class="tab-btn-left">
+          <span class="tab-btn-icon">S</span>
+          <span class="tab-btn-label">
+            <strong>Sobre</strong>
+            <span>Conheca o studio</span>
+          </span>
+        </span>
+        <span class="tab-btn-arrow">&rsaquo;</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="2" onclick="showTab(2)">
+        <span class="tab-btn-left">
+          <span class="tab-btn-icon">C</span>
+          <span class="tab-btn-label">
+            <strong>Cilios</strong>
+            <span>Veja os servicos</span>
+          </span>
+        </span>
+        <span class="tab-btn-arrow">&rsaquo;</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="3" onclick="showTab(3)">
+        <span class="tab-btn-left">
+          <span class="tab-btn-icon">L</span>
+          <span class="tab-btn-label">
+            <strong>Localizacao</strong>
+            <span>Mapa e acesso</span>
+          </span>
+        </span>
+        <span class="tab-btn-arrow">&rsaquo;</span>
+      </button>
     </div>
     <div class="content" id="content">Clique em uma opção 💖</div>
   </div>
@@ -300,12 +416,39 @@ function fecharIntro(){
   setTimeout(function(){el.style.display='none';},1100);
 }
 
+function updateSoundButton(){
+  var v=document.getElementById('videoPlayer');
+  var btn=document.getElementById('soundBtn');
+  var icon=document.getElementById('soundIcon');
+  var state=document.getElementById('soundState');
+  var muted=v.muted;
+
+  btn.classList.toggle('is-muted',muted);
+  btn.classList.toggle('is-on',!muted);
+  btn.setAttribute('aria-label',muted ? 'Ativar audio' : 'Desativar audio');
+  btn.setAttribute('aria-pressed',(!muted).toString());
+  icon.innerHTML=muted ? '&#9835;' : '&#9834;';
+  state.textContent=muted ? 'Toque para ativar' : 'Som ligado';
+}
+
 function toggleSound(){
-  var v=document.getElementById('videoPlayer'); v.muted=!v.muted;
+  var v=document.getElementById('videoPlayer');
+  v.muted=!v.muted;
+  updateSoundButton();
+}
+
+function updateActiveTab(tab){
+  var buttons=document.querySelectorAll('.tab-btn');
+  buttons.forEach(function(btn){
+    var active=Number(btn.getAttribute('data-tab'))===tab;
+    btn.classList.toggle('active',active);
+    btn.setAttribute('aria-pressed',active ? 'true' : 'false');
+  });
 }
 
 function showTab(tab){
   var content=document.getElementById('content');
+  updateActiveTab(tab);
   if(tab===1){
     content.innerHTML='<h3 style="color:#6a0d3b;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:10px;">Sobre nós</h3><p style="color:#555;line-height:1.7;font-size:13px;">Especialistas em extensão de cílios, trazendo elegância e autoestima para cada cliente. Técnicas exclusivas, produtos premium e atendimento personalizado.</p>';
   }
@@ -347,6 +490,8 @@ function detalhe(nome){
     setTimeout(function(){ content.scrollIntoView({behavior:'smooth',block:'start'}); },50);
   }
 }
+
+updateSoundButton();
 </script>
 </body>
 </html>
