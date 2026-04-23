@@ -6,9 +6,10 @@
 <title>Studio Julie Barroso</title>
 
 <!-- CONFIGURACAO RAPIDA DO VIDEO -->
-<!-- Para trocar o video depois, substitua apenas o link abaixo pelo novo link de compartilhamento do Google Drive. -->
+<!-- Troque apenas o link abaixo quando quiser mudar o video. -->
+<!-- Aceita link de compartilhamento do Google Drive ou link direto para arquivo .mp4 -->
 <script>
-const VIDEO_DRIVE_LINK = 'https://drive.google.com/file/d/1vKWkvMAR3tg35BvBdgQIXNjh4fMMdfRR/view?usp=sharing';
+const VIDEO_URL = 'https://drive.google.com/file/d/1vKWkvMAR3tg35BvBdgQIXNjh4fMMdfRR/view?usp=sharing';
 </script>
 
 <style>
@@ -134,7 +135,13 @@ body {
 .container{display:flex;padding:20px;gap:20px;}
 
 .video{flex:2;position:relative;}
-.video video{width:100%;height:420px;object-fit:cover;border-radius:15px;}
+.video video,
+.video iframe{
+  width:100%;height:420px;border-radius:15px;
+  background:#12000c;
+}
+.video video{object-fit:cover;}
+.video iframe{border:none;}
 .sound-btn{
   position:absolute;top:18px;right:18px;z-index:2;
   display:inline-flex;align-items:center;gap:10px;
@@ -286,7 +293,8 @@ footer{background:linear-gradient(135deg,#d81b60,#ad1457);color:white;text-align
   .intro-line{width:32px;}
   .logo-main-name{font-size:26px;letter-spacing:5px;}
   .logo-deco-line{max-width:40px;}
-  .video video{height:240px;}
+  .video video,
+  .video iframe{height:240px;}
   .sound-btn{top:14px;right:14px;padding:9px 14px 9px 9px;}
   .sound-btn-icon{width:34px;height:34px;}
   .tab-btn{padding:13px 14px;}
@@ -343,10 +351,11 @@ footer{background:linear-gradient(135deg,#d81b60,#ad1457);color:white;text-align
 <!-- SITE -->
 <div class="container">
   <div class="video">
-    <video id="videoPlayer" autoplay muted loop controls>
+    <video id="videoPlayer" autoplay muted loop controls hidden>
       <source id="videoSource" src="" type="video/mp4">
     </video>
-    <button class="sound-btn is-muted" id="soundBtn" type="button" onclick="toggleSound()" aria-label="Ativar audio" aria-pressed="false">
+    <iframe id="drivePlayer" title="Video de apresentacao" allow="autoplay; fullscreen" hidden></iframe>
+    <button class="sound-btn is-muted" id="soundBtn" type="button" onclick="toggleSound()" aria-label="Ativar audio" aria-pressed="false" hidden>
       <span class="sound-btn-icon" id="soundIcon">&#9835;</span>
       <span class="sound-btn-text">
         <strong>Som do video</strong>
@@ -427,14 +436,35 @@ function getDriveFileId(link){
   return '';
 }
 
+function isDriveLink(link){
+  return /drive\.google\.com/i.test(link || '');
+}
+
 function applyVideoSource(){
   var video=document.getElementById('videoPlayer');
   var source=document.getElementById('videoSource');
-  var fileId=getDriveFileId(VIDEO_DRIVE_LINK);
+  var drivePlayer=document.getElementById('drivePlayer');
+  var soundBtn=document.getElementById('soundBtn');
+  var link=(VIDEO_URL || '').trim();
+  var fileId=getDriveFileId(link);
 
-  if(!fileId) return;
+  if(!link) return;
 
-  source.src='https://drive.google.com/uc?export=download&id='+fileId;
+  if(isDriveLink(link) && fileId){
+    source.src='';
+    video.pause();
+    video.hidden=true;
+    drivePlayer.src='https://drive.google.com/file/d/'+fileId+'/preview';
+    drivePlayer.hidden=false;
+    soundBtn.hidden=true;
+    return;
+  }
+
+  drivePlayer.src='';
+  drivePlayer.hidden=true;
+  video.hidden=false;
+  soundBtn.hidden=false;
+  source.src=link;
   video.load();
 }
 
