@@ -3,964 +3,470 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Julie Barroso</title>
+<title>Studio Julie Barroso | Extensão de Cílios</title>
 
-<!-- CONFIGURACAO RAPIDA DO VIDEO -->
-<!-- Troque apenas o link abaixo quando quiser mudar o video. -->
-<!-- Aceita link de compartilhamento do Google Drive ou link direto para arquivo .mp4 -->
-<script>
-const VIDEO_URL = 'https://drive.google.com/file/d/1vKWkvMAR3tg35BvBdgQIXNjh4fMMdfRR/view?usp=sharing';
-var currentVideoMode = 'file';
-var driveFallbackTimer = null;
-var pendingDriveFileId = '';
-var useDrivePreviewOnInteraction = false;
-</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; }
-
+/* ===== VARIÁVEIS DE TEMA BARBIE PREMIUM ===== */
 :root {
-  --rose-950:#2a101f;
-  --rose-900:#4f1838;
-  --rose-800:#9d2f68;
-  --rose-700:#d94782;
-  --rose-600:#ee5f97;
-  --rose-500:#f77dac;
-  --rose-300:#ffc1d9;
-  --rose-200:#ffd8e8;
-  --rose-100:#fff0f6;
-  --baby-rose:#ffeaf3;
-  --baby-rose-soft:#fff6fa;
+  --bg-color: #FDF0F5; /* Rosa fundo muito suave */
+  --text-dark: #4A0E2E; /* Ameixa escuro (Magenta fechado) para leitura */
+  --text-light: #9C637A; /* Rosa envelhecido médio */
+  --accent-main: #FF1493; /* Rosa Barbie Vibrante (Deep Pink) */
+  --accent-light: #FF69B4; /* Hot Pink */
+  
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 105, 180, 0.3);
+  --shadow-soft: 0 20px 40px rgba(255, 20, 147, 0.08);
+  
+  --font-title: 'Playfair Display', serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
 }
 
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #ffffff, var(--rose-100));
-  color:var(--rose-950);
-  overflow-x:hidden;
+  font-family: var(--font-body);
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ===== INTRO ===== */
+/* ===== INTRO BARBIE CINEMATOGRÁFICA ===== */
 .intro {
   position: fixed; inset: 0;
-  background:
-    radial-gradient(circle at 50% 34%, rgba(255,216,232,.68) 0%, rgba(255,193,217,.7) 26%, transparent 50%),
-    radial-gradient(circle at 18% 18%, rgba(255,216,232,.88) 0%, transparent 32%),
-    radial-gradient(circle at 82% 76%, rgba(247,125,172,.5) 0%, transparent 40%),
-    linear-gradient(145deg, #ffe1ec 0%, #ffc7dc 48%, #f7a6c7 100%);
+  /* Gradiente Rosa Barbie Poderoso */
+  background: linear-gradient(135deg, #FF1493 0%, #D81B60 100%);
   display: flex; flex-direction: column;
   justify-content: center; align-items: center;
-  color: var(--rose-800); z-index: 9999; overflow: hidden;
+  color: #fff; z-index: 9999; overflow: hidden;
   cursor: pointer;
-  transition: opacity 1.1s ease, transform 1.1s ease;
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.intro.hide { opacity: 0; transform: scale(1.04); pointer-events: none; }
+.intro.hide { opacity: 0; transform: scale(1.05); pointer-events: none; }
 
-.intro-ring {
-  position: absolute; border-radius: 50%;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
+.intro::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
   pointer-events: none;
 }
-.intro-ring:nth-child(1) { width:360px;height:360px;border:.8px solid rgba(238,95,151,.24);animation:ring-pulse 5s ease-in-out infinite 0s; }
-.intro-ring:nth-child(2) { width:540px;height:540px;border:.5px solid rgba(247,125,172,.28);animation:ring-pulse 5s ease-in-out infinite 1s; }
-.intro-ring:nth-child(3) { width:720px;height:720px;border:.5px solid rgba(255,193,217,.34);animation:ring-pulse 5s ease-in-out infinite 2s; }
-@keyframes ring-pulse {
-  0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1);}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.025);}
+
+.intro-logo {
+  text-align: center;
+  z-index: 2;
+  animation: floatUp 2s ease-out forwards;
 }
 
-.intro-floor {
-  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:500px;height:120px;
-  background:radial-gradient(ellipse at center bottom,rgba(238,95,151,.32) 0%,transparent 70%);
-  pointer-events:none;
+@keyframes floatUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.intro-glow {
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:280px;height:280px;
-  background:radial-gradient(ellipse at center,rgba(255,193,217,.42) 0%,rgba(238,95,151,.24) 48%,transparent 74%);
-  border-radius:50%;animation:glow-breathe 4.5s ease-in-out infinite;pointer-events:none;
-}
-@keyframes glow-breathe {
-  0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1);}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.15);}
+.intro-studio {
+  font-size: 11px; letter-spacing: 6px; 
+  color: rgba(255, 255, 255, 0.9); text-transform: uppercase; margin-bottom: 15px;
+  font-weight: 500;
 }
 
-.intro-particles{position:absolute;inset:0;pointer-events:none;filter:blur(.15px);}
-.intro-particle{
-  position:absolute;
-  border-radius:50%;
-  opacity:0;
-  box-shadow:0 0 14px rgba(255,214,232,.2);
-  animation:particle-rise linear infinite;
-}
-@keyframes particle-rise {
-  0%{opacity:0;transform:translate3d(0,0,0) scale(.92);}
-  12%{opacity:var(--particle-opacity,.9);}
-  55%{opacity:calc(var(--particle-opacity,.9) * .82);}
-  100%{opacity:0;transform:translate3d(var(--drift-x,0px),-104vh,0) scale(var(--scale-end,.3));}
+.intro-name {
+  font-family: var(--font-title);
+  font-size: 48px; font-weight: 400; letter-spacing: 2px;
+  color: #FFFFFF;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
 }
 
-.intro-logo{position:relative;z-index:4;text-align:center;display:flex;flex-direction:column;align-items:center;margin-bottom:44px;}
-.intro-studio{font-size:11px;letter-spacing:10px;color:rgba(112,34,74,.78);text-transform:uppercase;margin-bottom:14px;font-weight:500;}
-.intro-name-row{display:flex;align-items:center;gap:22px;}
-.intro-line{width:50px;height:.5px;background:rgba(238,95,151,.34);flex-shrink:0;}
-.intro-name{font-family:Georgia,serif;font-size:44px;color:var(--rose-800);font-weight:normal;letter-spacing:5.5px;white-space:nowrap;text-shadow:0 10px 34px rgba(238,95,151,.2);}
-.intro-tagline{font-size:10px;letter-spacing:7px;color:rgba(112,34,74,.76);text-transform:uppercase;margin-top:16px;font-weight:500;}
-.intro-divider{width:36px;height:.5px;background:rgba(247,125,172,.5);margin-top:16px;}
-
-.intro-tap{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:16px;}
-.intro-tap-btn{
-  font-size:11px;letter-spacing:5px;color:rgba(79,24,56,.94);text-transform:uppercase;font-weight:600;
-  padding:16px 48px;border:1px solid rgba(247,125,172,.34);border-radius:60px;
-  background:linear-gradient(135deg,rgba(255,246,250,.8),rgba(255,193,217,.76));
-  animation:ripple-pulse 2.2s ease-out infinite;white-space:nowrap;
-  box-shadow:0 18px 42px rgba(238,95,151,.18);
-  transition:background .3s,border-color .3s,transform .3s;
+.intro-tap-btn {
+  font-size: 10px; letter-spacing: 3px; color: rgba(255,255,255,0.8);
+  text-transform: uppercase; margin-top: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+  padding-bottom: 5px;
+  animation: pulseOpacity 2s infinite;
 }
-.intro-tap-btn:hover{background:linear-gradient(135deg,#fff,rgba(255,193,217,.8));border-color:rgba(238,95,151,.48);transform:translateY(-2px);}
-@keyframes ripple-pulse{
-  0%{box-shadow:0 18px 42px rgba(238,95,151,.18),0 0 0 0 rgba(247,125,172,.32);}
-  65%{box-shadow:0 0 0 18px rgba(247,125,172,0);}
-  100%{box-shadow:0 18px 42px rgba(238,95,151,.18),0 0 0 0 rgba(247,125,172,0);}
-}
-.intro-tap-arrow{display:flex;flex-direction:column;align-items:center;gap:4px;animation:arrow-drop 1.6s ease-in-out infinite;}
-.intro-tap-arrow span{display:block;width:10px;height:10px;border-right:1.5px solid rgba(217,71,130,.52);border-bottom:1.5px solid rgba(217,71,130,.52);transform:rotate(45deg);animation:arrow-fade 1.6s ease-in-out infinite;}
-.intro-tap-arrow span:nth-child(2){animation-delay:.2s;opacity:.5;}
-.intro-tap-arrow span:nth-child(3){animation-delay:.4s;opacity:.25;}
-@keyframes arrow-drop{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
-@keyframes arrow-fade{0%,100%{opacity:.9;}50%{opacity:.3;}}
 
-/* ===== HEADER PREMIUM ===== */
+@keyframes pulseOpacity {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ===== HEADER ===== */
 .header-premium {
-  background: linear-gradient(135deg, var(--rose-800) 0%, var(--rose-600) 52%, var(--rose-800) 100%);
-  padding: 36px 20px 32px;
-  text-align: center; color: white;
-  position: relative; overflow: hidden;
-}
-.header-premium::before {
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse at 20% 50%,rgba(255,216,232,.22) 0%,transparent 60%),
-    radial-gradient(ellipse at 80% 50%,rgba(255,216,232,.18) 0%,transparent 60%);
-}
-.logo-premium{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
-.logo-studio-tag{font-size:10px;letter-spacing:9px;color:rgba(255,200,230,.65);text-transform:uppercase;margin-bottom:10px;}
-.logo-name-row{display:flex;align-items:center;gap:18px;}
-.logo-deco-line{flex:1;max-width:80px;height:.5px;background:linear-gradient(90deg,transparent,rgba(255,180,220,.7),transparent);}
-.logo-main-name{
-  font-family:Georgia,'Times New Roman',serif;
-  font-size:36px;font-weight:normal;letter-spacing:7px;color:#fff;white-space:nowrap;
-  text-shadow:0 0 30px rgba(255,193,217,.44),0 0 60px rgba(247,125,172,.26);
-}
-.logo-diamonds{display:flex;align-items:center;gap:8px;margin-top:10px;}
-.logo-diamond{width:5px;height:5px;background:rgba(255,180,220,.6);transform:rotate(45deg);}
-.logo-diamond.big{width:7px;height:7px;background:rgba(255,150,200,.8);}
-.logo-thin-line{width:120px;height:.5px;background:rgba(255,150,200,.35);}
-.logo-tagline-bottom{font-size:9px;letter-spacing:6px;color:rgba(255,180,220,.5);text-transform:uppercase;margin-top:10px;}
-
-/* ===== LAYOUT ===== */
-.container{
-  display:flex;
-  gap:20px;
-  width:min(100%,1280px);
-  margin:0 auto;
-  padding:24px 20px 28px;
+  padding: 40px 20px 20px;
+  text-align: center;
 }
 
-.video{flex:1.35;display:flex;flex-direction:column;gap:14px;min-width:0;}
-.video-frame{
-  position:relative;
-  overflow:hidden;
-  aspect-ratio:16 / 9;
-  border-radius:28px;
-  padding:8px;
-  background:
-    linear-gradient(145deg,rgba(255,255,255,.98),rgba(255,244,248,.9)) padding-box,
-    linear-gradient(135deg,rgba(255,209,227,.88),rgba(157,47,104,.42)) border-box;
-  border:1px solid transparent;
-  box-shadow:0 22px 46px rgba(157,47,104,.12), inset 0 1px 0 rgba(255,255,255,.6);
-}
-.video-frame::before{
-  content:"";
-  position:absolute;
-  inset:8px;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.14);
-  pointer-events:none;
-  z-index:2;
-}
-.video-frame video,
-.video-frame iframe{
-  display:block;
-  width:100%;
-  height:100%;
-  border-radius:20px;
-  background:var(--rose-950);
-}
-.video-frame video[hidden],
-.video-frame iframe[hidden]{
-  display:none !important;
-}
-.video-frame video{object-fit:cover;}
-.video-frame iframe{border:none;}
-.video-frame.is-drive-preview iframe{
-  height:100%;
-  border-radius:20px;
-}
-.video-frame.is-drive-preview::after{
-  content:"";
-  position:absolute;
-  top:14px;
-  right:14px;
-  width:58px;
-  height:58px;
-  border-radius:18px;
-  background:linear-gradient(145deg,rgba(18,10,16,.96),rgba(33,12,24,.9));
-  box-shadow:0 8px 18px rgba(0,0,0,.22);
-  pointer-events:none;
-  z-index:3;
-}
-.video-frame.is-direct-video video{
-  border-radius:20px;
-}
-.sidebar{
-  flex:1;min-width:320px;
-  background:rgba(255,255,255,.92);
-  padding:24px;border-radius:28px;
-  box-shadow:0 18px 45px rgba(157,47,104,.08);
-  border:1px solid rgba(255,210,230,.75);
-  backdrop-filter:blur(10px);
-}
-.tabs{display:grid;gap:12px;}
-.tab-btn{
-  width:100%;padding:14px 16px;border:none;border-radius:18px;
-  background:linear-gradient(145deg,#fff,var(--rose-100));
-  color:var(--rose-800);cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;gap:14px;
-  box-shadow:0 10px 25px rgba(157,47,104,.08);
-  border:1px solid rgba(238,95,151,.14);
-  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease,color .22s ease;
-}
-.tab-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 16px 30px rgba(238,95,151,.16);
-  border-color:rgba(238,95,151,.32);
-}
-.tab-btn.active{
-  color:#fff;
-  background:linear-gradient(135deg,var(--rose-800) 0%,var(--rose-600) 55%,var(--rose-500) 100%);
-  border-color:transparent;
-  box-shadow:0 18px 34px rgba(238,95,151,.26);
-}
-.tab-btn-left{display:flex;align-items:center;gap:12px;text-align:left;}
-.tab-btn-icon{
-  width:40px;height:40px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,rgba(238,95,151,.18),rgba(247,125,172,.1));
-  color:var(--rose-700);font-weight:700;letter-spacing:1px;
-  flex-shrink:0;
-}
-.tab-btn.active .tab-btn-icon{
-  background:rgba(255,255,255,.14);
-  color:#fff;
-}
-.tab-btn-label{display:flex;flex-direction:column;gap:3px;}
-.tab-btn-label strong{
-  font-size:15px;font-weight:600;letter-spacing:.4px;
-}
-.tab-btn-label span{
-  font-size:11px;letter-spacing:.4px;color:rgba(157,47,104,.66);
-}
-.tab-btn.active .tab-btn-label span{color:rgba(255,235,243,.82);}
-.tab-btn-arrow{
-  font-size:22px;line-height:1;color:rgba(157,47,104,.38);
-  transition:transform .22s ease,color .22s ease;
-}
-.tab-btn:hover .tab-btn-arrow,
-.tab-btn.active .tab-btn-arrow{
-  transform:translateX(3px);
-}
-.tab-btn.active .tab-btn-arrow{color:rgba(255,255,255,.92);}
-
-.content{
-  margin-top:18px;
-  padding:18px;
-  background:rgba(255,255,255,.92);
-  border-radius:20px;
-  min-height:220px;
-}
-.content iframe{
-  width:100%;
-  max-width:100%;
-  border:none;
-  border-radius:16px;
+.logo-main-name {
+  font-family: var(--font-title);
+  font-size: 32px; font-weight: 400; letter-spacing: 4px;
+  color: var(--accent-main);
 }
 
-/* ===== CARDS ===== */
-.card{
-  display:flex;align-items:center;gap:12px;
-  padding:12px;margin-bottom:10px;border-radius:12px;
-  background:var(--rose-100);cursor:pointer;
-  transition:transform .2s,box-shadow .2s;
-  border:1px solid rgba(238,95,151,.12);
+.logo-tagline {
+  font-size: 10px; letter-spacing: 4px; color: var(--text-light);
+  text-transform: uppercase; margin-top: 8px; font-weight: 500;
 }
-.card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(238,95,151,.17);}
-.card-thumb{
-  width:52px;height:52px;border-radius:10px;flex-shrink:0;
-  background:linear-gradient(135deg,var(--rose-600),var(--rose-700));
-  display:flex;align-items:center;justify-content:center;font-size:22px;
-  overflow:hidden;
-}
-.card-thumb img{width:100%;height:100%;object-fit:cover;border-radius:10px;}
-.card-info{display:flex;flex-direction:column;gap:3px;}
-.card-title{font-size:14px;font-weight:600;color:var(--rose-800);}
-.card-desc-mini{font-size:11px;color:var(--rose-700);opacity:.78;}
 
-/* ===== DETALHE ===== */
-.detalhe-wrap{display:flex;flex-direction:column;}
-.detalhe-img-wrap{
-  width:100%;height:200px;border-radius:12px;overflow:hidden;
-  background:linear-gradient(135deg,var(--rose-800),var(--rose-500));
-  display:flex;align-items:center;justify-content:center;
-  font-size:64px;margin-bottom:16px;position:relative;
+/* ===== LAYOUT PRINCIPAL ===== */
+.container {
+  display: flex; 
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 30px 60px;
+  gap: 40px;
+  flex: 1;
+  width: 100%;
 }
-.detalhe-img-wrap img{width:100%;height:100%;object-fit:cover;}
-.detalhe-img-label{
-  position:absolute;bottom:10px;left:12px;
-  font-size:11px;letter-spacing:3px;color:rgba(255,255,255,.7);text-transform:uppercase;
+
+/* ===== VÍDEO ADAPTADO ===== */
+.video-wrapper {
+  flex: 1.2;
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background-color: #F8D8E6; /* Placeholder rosa suave */
+  display: flex;
 }
-.detalhe-nome{font-family:Georgia,serif;font-size:22px;font-weight:normal;color:var(--rose-800);letter-spacing:2px;margin-bottom:8px;}
-.detalhe-linha{width:40px;height:1.5px;background:linear-gradient(90deg,var(--rose-500),var(--rose-700));border-radius:2px;margin-bottom:12px;}
-.detalhe-texto{font-size:13px;line-height:1.7;color:#555;margin-bottom:16px;}
-.detalhe-info{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-.detalhe-badge{
-  font-size:11px;letter-spacing:1px;padding:6px 12px;border-radius:20px;
-  background:var(--rose-100);color:var(--rose-700);border:1px solid rgba(238,95,151,.22);
+
+.video-wrapper video {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  transition: transform 10s linear;
 }
-.btn-voltar{
-  background:none;border:1px solid rgba(238,95,151,.44);color:var(--rose-600);
-  padding:11px 20px;border-radius:8px;cursor:pointer;font-size:13px;
-  transition:background .2s;width:100%;margin-top:4px;
+
+.video-wrapper:hover video {
+  transform: scale(1.03);
 }
-.btn-voltar:hover{background:var(--rose-100);}
+
+/* Botão de som Minimalista */
+.sound-btn {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  z-index: 10;
+  background: rgba(255, 20, 147, 0.4); /* Fundo rosa translúcido */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 50px;
+  padding: 12px 24px;
+  color: white;
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.sound-btn:hover {
+  background: var(--accent-main);
+}
+
+.sound-btn-icon { font-size: 14px; }
+
+/* ===== SIDEBAR / CONTEÚDO (GLASSMORPHISM) ===== */
+.sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(255, 105, 180, 0.2);
+  padding: 15px 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover { color: var(--accent-main); }
+
+.tab-btn.active {
+  color: var(--accent-main);
+  border-bottom-color: var(--accent-main);
+  font-weight: 600;
+}
+
+.content-area {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: var(--shadow-soft);
+  flex: 1;
+  overflow-y: auto;
+  max-height: 520px;
+}
+
+/* Custom Scrollbar elegante */
+.content-area::-webkit-scrollbar { width: 4px; }
+.content-area::-webkit-scrollbar-track { background: transparent; }
+.content-area::-webkit-scrollbar-thumb { background: var(--accent-light); border-radius: 10px; }
+
+/* ===== CARDS DE SERVIÇOS ===== */
+.card {
+  display: flex; align-items: center; gap: 20px;
+  padding: 15px 0; border-bottom: 1px solid rgba(255, 105, 180, 0.15);
+  cursor: pointer; transition: transform 0.3s ease, padding-left 0.3s ease;
+}
+.card:last-child { border-bottom: none; }
+.card:hover { transform: translateX(5px); padding-left: 10px; }
+
+.card-thumb {
+  width: 60px; height: 60px; border-radius: 50%;
+  background-color: #FDF0F5;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; overflow: hidden; flex-shrink: 0;
+  border: 1px solid var(--glass-border);
+}
+.card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.card-info { display: flex; flex-direction: column; gap: 4px; }
+.card-title { font-family: var(--font-title); font-size: 18px; color: var(--text-dark); }
+.card-desc-mini { font-size: 11px; color: var(--text-light); font-weight: 400; }
+.card-arrow { margin-left: auto; color: var(--accent-main); opacity: 0; transition: opacity 0.3s; }
+.card:hover .card-arrow { opacity: 1; }
+
+/* ===== DETALHE DO SERVIÇO ===== */
+.detalhe-wrap { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.detalhe-img-wrap {
+  width: 100%; height: 220px; border-radius: 16px; overflow: hidden;
+  background-color: #FDF0F5; display: flex; align-items: center; justify-content: center;
+  font-size: 60px; margin-bottom: 24px; border: 1px solid var(--glass-border);
+}
+.detalhe-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+.detalhe-nome { font-family: var(--font-title); font-size: 28px; color: var(--accent-main); margin-bottom: 10px; }
+.detalhe-texto { font-size: 13px; line-height: 1.8; color: var(--text-dark); margin-bottom: 24px; font-weight: 400; }
+
+.detalhe-info { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
+.detalhe-item { display: flex; flex-direction: column; gap: 4px; }
+.detalhe-item-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); }
+.detalhe-item-value { font-size: 12px; color: var(--accent-main); font-weight: 600; }
+
+.btn-voltar {
+  background: transparent; border: 1px solid var(--accent-main); color: var(--accent-main);
+  padding: 14px 24px; border-radius: 40px; cursor: pointer; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 2px; transition: all 0.3s ease; width: 100%; font-family: var(--font-body); font-weight: 500;
+}
+.btn-voltar:hover { background: var(--accent-main); color: #fff; }
 
 /* ===== FOOTER ===== */
-footer{
-  background:linear-gradient(135deg,var(--rose-600),var(--rose-700));
-  color:white;text-align:center;padding:15px 18px;
-  font-size:13px;
+footer {
+  text-align: center; padding: 30px; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--text-light);
+  margin-top: auto;
 }
 
 /* ===== RESPONSIVO ===== */
-@media(max-width:1024px){
-  .container{
-    flex-direction:column;
-    padding:18px 16px 24px;
-    gap:16px;
-  }
-  .video,
-  .sidebar{
-    width:100%;
-  }
-  .sidebar{
-    min-width:0;
-  }
-  .video-frame video,
-  .video-frame iframe{
-    height:360px;
-  }
+@media(max-width: 900px){
+  .container { flex-direction: column; padding: 10px 20px 40px; gap: 20px; }
+  .video-wrapper video { height: 400px; }
+  .intro-name { font-size: 36px; }
+  .content-area { max-height: none; padding: 20px; }
 }
-
-@media(max-width:768px){
-  .intro{
-    padding:24px 18px;
-  }
-  .intro-ring:nth-child(1){width:250px;height:250px;}
-  .intro-ring:nth-child(2){width:340px;height:340px;}
-  .intro-ring:nth-child(3){width:430px;height:430px;}
-  .intro-floor{width:320px;height:90px;}
-  .intro-logo{margin-bottom:32px;}
-  .intro-name-row{
-    gap:14px;
-    width:100%;
-    justify-content:center;
-  }
-  .intro-name{
-    font-size:30px;
-    letter-spacing:4px;
-    white-space:normal;
-    text-align:center;
-    line-height:1.15;
-  }
-  .intro-studio{
-    font-size:10px;
-    letter-spacing:7px;
-  }
-  .intro-tagline{
-    font-size:9px;
-    letter-spacing:4px;
-    text-align:center;
-  }
-  .intro-line{width:32px;}
-  .intro-tap-btn{
-    width:min(100%,280px);
-    padding:15px 22px;
-    text-align:center;
-    letter-spacing:3px;
-  }
-  .header-premium{
-    padding:28px 16px 24px;
-  }
-  .logo-premium{
-    width:100%;
-  }
-  .logo-studio-tag{
-    font-size:9px;
-    letter-spacing:6px;
-  }
-  .logo-name-row{
-    gap:10px;
-    width:100%;
-    justify-content:center;
-  }
-  .logo-main-name{
-    display:block;
-    margin:0 auto;
-    font-size:26px;
-    letter-spacing:4px;
-    white-space:normal;
-    text-align:center;
-    line-height:1.15;
-  }
-  .logo-diamonds{
-    width:100%;
-    justify-content:center;
-  }
-  .logo-deco-line{max-width:34px;}
-  .logo-thin-line{width:72px;}
-  .logo-tagline-bottom{
-    width:100%;
-    font-size:8px;
-    letter-spacing:4px;
-    text-align:center;
-  }
-  .container{
-    padding:14px 12px 22px;
-    gap:14px;
-  }
-  .video{
-    gap:14px;
-  }
-  .video-frame{
-    border-radius:24px;
-  }
-  .video-frame.is-direct-video video{
-    height:100%;
-    border-radius:20px;
-  }
-  .sidebar{
-    padding:16px;
-    border-radius:22px;
-  }
-  .tabs{
-    gap:10px;
-  }
-  .tab-btn{
-    padding:13px 14px;
-    border-radius:16px;
-  }
-  .tab-btn-icon{
-    width:38px;
-    height:38px;
-    border-radius:12px;
-  }
-  .tab-btn-label strong{
-    font-size:16px;
-  }
-  .tab-btn-label span{
-    font-size:12px;
-  }
-  .content{
-    margin-top:14px;
-    padding:16px;
-    min-height:180px;
-    border-radius:18px;
-  }
-  .content h3{
-    font-size:21px !important;
-    margin-bottom:12px !important;
-  }
-  .content p{
-    font-size:14px !important;
-    line-height:1.75 !important;
-  }
-  .card{
-    padding:14px;
-    border-radius:14px;
-    align-items:flex-start;
-  }
-  .card-thumb{
-    width:56px;
-    height:56px;
-  }
-  .card-title{
-    font-size:15px;
-  }
-  .card-desc-mini{
-    font-size:12px;
-  }
-  .detalhe-img-wrap{
-    height:220px;
-    border-radius:16px;
-    margin:0 0 16px;
-    width:100%;
-  }
-  .detalhe-img-label{
-    letter-spacing:2px;
-    font-size:10px;
-  }
-  .detalhe-nome{
-    font-size:20px;
-    letter-spacing:1px;
-  }
-  .detalhe-texto{
-    font-size:14px;
-  }
-  .detalhe-badge{
-    font-size:11px;
-  }
-  .btn-voltar{
-    padding:13px 16px;
-    font-size:14px;
-  }
-  footer{
-    font-size:12px;
-    padding:14px 16px;
-  }
-}
-
-@media(max-width:480px){
-  .intro{
-    padding:22px 14px;
-  }
-  .intro-line,
-  .logo-deco-line{
-    display:none;
-  }
-  .intro-name{
-    font-size:26px;
-    letter-spacing:3px;
-  }
-  .intro-tagline{
-    max-width:220px;
-    line-height:1.5;
-  }
-  .header-premium{
-    padding:24px 14px 20px;
-  }
-  .logo-main-name{
-    font-size:22px;
-    letter-spacing:3px;
-  }
-  .logo-thin-line{
-    width:42px;
-  }
-  .container{
-    padding:12px 10px 18px;
-  }
-  .video-frame video,
-  .video-frame iframe{
-    border-radius:18px;
-  }
-  .video-frame.is-direct-video video{
-    height:100%;
-  }
-  .content iframe{
-    min-height:220px;
-  }
-  .sidebar{
-    padding:14px;
-    border-radius:20px;
-  }
-  .tab-btn{
-    padding:12px;
-    gap:10px;
-  }
-  .tab-btn-left{
-    gap:10px;
-  }
-  .tab-btn-icon{
-    width:34px;
-    height:34px;
-    font-size:17px;
-  }
-  .tab-btn-label strong{
-    font-size:15px;
-  }
-  .tab-btn-label span{
-    font-size:11px;
-  }
-  .tab-btn-arrow{
-    font-size:18px;
-  }
-  .content{
-    padding:14px;
-  }
-  .card{
-    gap:10px;
-    padding:12px;
-  }
-  .card-thumb{
-    width:50px;
-    height:50px;
-  }
-  .detalhe-img-wrap{
-    height:190px;
-  }
-  .detalhe-info{
-    gap:6px;
-  }
+@media(max-width: 480px){
+  .video-wrapper video { height: 350px; }
+  .logo-main-name { font-size: 26px; }
+  .tab-btn { font-size: 9px; }
 }
 </style>
 </head>
 <body>
 
-<!-- INTRO -->
 <div class="intro" id="intro" onclick="fecharIntro()">
-  <div class="intro-ring"></div>
-  <div class="intro-ring"></div>
-  <div class="intro-ring"></div>
-  <div class="intro-floor"></div>
-  <div class="intro-glow"></div>
-  <div class="intro-particles" id="introParticles"></div>
   <div class="intro-logo">
     <div class="intro-studio">Studio</div>
-    <div class="intro-name-row">
-      <div class="intro-line"></div>
-      <div class="intro-name">Julie Barroso</div>
-      <div class="intro-line"></div>
-    </div>
-    <div class="intro-tagline">Extensão de Cílios</div>
-    <div class="intro-divider"></div>
-  </div>
-  <div class="intro-tap">
-    <div class="intro-tap-btn">Toque para entrar</div>
-    <div class="intro-tap-arrow"><span></span><span></span><span></span></div>
+    <div class="intro-name">Julie Barroso</div>
+    <div class="intro-studio" style="letter-spacing: 4px; font-size: 9px; color: rgba(255,255,255,0.7);">Extensão de Cílios</div>
+    <div class="intro-tap-btn">Toque para descobrir</div>
   </div>
 </div>
 
-<!-- HEADER -->
 <header class="header-premium">
-  <div class="logo-premium">
-    <div class="logo-studio-tag">Studio</div>
-    <div class="logo-name-row">
-      <div class="logo-deco-line"></div>
-      <div class="logo-main-name">Julie Barroso</div>
-      <div class="logo-deco-line"></div>
-    </div>
-    <div class="logo-diamonds">
-      <div class="logo-thin-line"></div>
-      <div class="logo-diamond"></div>
-      <div class="logo-diamond big"></div>
-      <div class="logo-diamond"></div>
-      <div class="logo-thin-line"></div>
-    </div>
-    <div class="logo-tagline-bottom">Extensão de Cílios</div>
-  </div>
+  <div class="logo-main-name">Julie Barroso</div>
+  <div class="logo-tagline">Studio de Cílios</div>
 </header>
 
-<!-- SITE -->
 <div class="container">
-  <div class="video">
-    <div class="video-frame">
-      <video id="videoPlayer" autoplay muted loop playsinline preload="auto" controls hidden>
-        <source id="videoSource" src="" type="video/mp4">
-      </video>
-      <iframe id="drivePlayer" title="Video de apresentacao" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen hidden></iframe>
-    </div>
+  
+  <div class="video-wrapper">
+    <video id="videoPlayer" autoplay muted loop playsinline>
+      <source src="apresentacao.mp4" type="video/mp4">
+      Seu navegador não suporta vídeos.
+    </video>
+    <button class="sound-btn" id="soundBtn" onclick="toggleSound()">
+      <span class="sound-btn-icon" id="soundIcon">🔇</span>
+      <span id="soundText">Som Desativado</span>
+    </button>
   </div>
+
   <div class="sidebar">
     <div class="tabs">
-      <button class="tab-btn" type="button" data-tab="1" onclick="showTab(1)">
-        <span class="tab-btn-left">
-          <span class="tab-btn-icon">S</span>
-          <span class="tab-btn-label">
-            <strong>Sobre</strong>
-            <span>Conheca o studio</span>
-          </span>
-        </span>
-        <span class="tab-btn-arrow">&rsaquo;</span>
-      </button>
-      <button class="tab-btn" type="button" data-tab="2" onclick="showTab(2)">
-        <span class="tab-btn-left">
-          <span class="tab-btn-icon">C</span>
-          <span class="tab-btn-label">
-            <strong>Cilios</strong>
-            <span>Veja os servicos</span>
-          </span>
-        </span>
-        <span class="tab-btn-arrow">&rsaquo;</span>
-      </button>
-      <button class="tab-btn" type="button" data-tab="3" onclick="showTab(3)">
-        <span class="tab-btn-left">
-          <span class="tab-btn-icon">L</span>
-          <span class="tab-btn-label">
-            <strong>Localizacao</strong>
-            <span>Mapa e acesso</span>
-          </span>
-        </span>
-        <span class="tab-btn-arrow">&rsaquo;</span>
-      </button>
+      <button class="tab-btn active" data-tab="1" onclick="showTab(1)">Sobre</button>
+      <button class="tab-btn" data-tab="2" onclick="showTab(2)">Serviços</button>
+      <button class="tab-btn" data-tab="3" onclick="showTab(3)">Localização</button>
     </div>
-    <div class="content" id="content">Clique em uma opção 💖</div>
+    
+    <div class="content-area" id="content">
+      </div>
   </div>
 </div>
 
-<footer>© Studio Julie Barroso • Extensão de Cílios 💖</footer>
+<footer>© Studio Julie Barroso • Todos os direitos reservados</footer>
 
 <script>
-/* DADOS — adicione imagem: 'caminho/foto.jpg' em cada procedimento quando tiver as fotos */
+/* DADOS DO CATÁLOGO */
 var proc = {
-  'Clássico':     { imagem:'classico.jpg',     emoji:'👁️', resumo:'Natural e delicado',            duracao:'2h',   fixacao:'3–4 semanas', indicado:'Uso diário',         descricao:'O fio a fio clássico aplica uma extensão por cílio natural, resultando em um olhar mais alongado e definido, mantendo leveza e naturalidade. Ideal para o dia a dia.' },
-  'Volume Russo': { imagem:'volumerusso.jpg',   emoji:'✨',  resumo:'Volume intenso e sofisticado',  duracao:'2h30', fixacao:'3–4 semanas', indicado:'Festas e eventos',    descricao:'Técnica que aplica leques de 2 a 6 fios ultrafinos por cílio natural, criando um efeito dramático e cheio. Perfeito para quem busca um olhar marcante e sedutor.' },
-  'Híbrido':      { imagem:'hibrido.jpg',       emoji:'💫',  resumo:'O melhor dos dois mundos',     duracao:'2h',   fixacao:'3–4 semanas', indicado:'Uso versátil',        descricao:'Combina fios clássicos e volume russo na mesma aplicação, gerando textura variada e um olhar sofisticado com profundidade. Versátil para qualquer ocasião.' },
-  'Mega Volume':  { imagem:'megavolume.jpg',    emoji:'👑',  resumo:'Drama e glamour máximo',       duracao:'3h',   fixacao:'3–4 semanas', indicado:'Looks arrojados',     descricao:'Leques com 7 a 16 fios ultrafinos por cílio natural. Resultado dramático, cheio e marcante. Para quem quer o máximo de impacto e presença.' },
-  'Fox Eyes':     { imagem:'foxeyes.jpg',       emoji:'🦊',  resumo:'Efeito gatinho alongado',      duracao:'2h',   fixacao:'3–4 semanas', indicado:'Tendência atual',     descricao:'Técnica que alonga os cílios da extremidade externa dos olhos, criando o famoso efeito olho de raposa — sensual, moderno e muito elegante.' },
-  'Lash Lift':    { imagem:'lashlift.jpg',      emoji:'🌙',  resumo:'Seus cílios naturais realçados', duracao:'1h', fixacao:'6–8 semanas', indicado:'Baixa manutenção',   descricao:'Procedimento que curva e levanta seus próprios cílios, sem extensões. Com opção de tingimento, o resultado é um olhar aberto e renovado por até 8 semanas.' }
+  'Clássico':     { imagem:'', emoji:'✨', resumo:'Natural e delicado, ideal para o dia a dia.', duracao:'2h', fixacao:'3–4 semanas', descricao:'O fio a fio clássico aplica uma extensão por cílio natural, resultando em um olhar mais alongado e definido, mantendo a máxima leveza e elegância. A escolha perfeita para uma beleza sofisticada e discreta.' },
+  'Volume Russo': { imagem:'', emoji:'🖤', resumo:'Volume intenso e profundamente sofisticado.', duracao:'2h30', fixacao:'3–4 semanas', descricao:'Técnica artesanal que aplica delicados leques de fios ultrafinos por cílio natural. Cria um efeito preenchido e luxuoso, perfeito para quem busca um olhar marcante e inesquecível.' },
+  'Híbrido':      { imagem:'', emoji:'💫', resumo:'A união perfeita entre textura e volume.', duracao:'2h', fixacao:'3–4 semanas', descricao:'Combina estrategicamente fios clássicos e leques de volume russo na mesma aplicação. O resultado é um design texturizado, moderno e incrivelmente versátil para qualquer ocasião.' },
+  'Mega Volume':  { imagem:'', emoji:'👑', resumo:'O máximo de drama, densidade e glamour.', duracao:'3h', fixacao:'3–4 semanas', descricao:'Leques avançados com fios de espessura mínima, garantindo densidade extrema sem pesar os fios naturais. Para mulheres que não abrem mão de uma presença arrebatadora.' },
+  'Fox Eyes':     { imagem:'', emoji:'🦊', resumo:'Efeito alongado, sensual e moderno.', duracao:'2h', fixacao:'3–4 semanas', descricao:'Técnica de mapping que alonga os cílios na extremidade externa dos olhos. Levanta o olhar, criando um efeito delineado que é a tendência absoluta do momento.' },
+  'Lash Lift':    { imagem:'', emoji:'🌿', resumo:'Beleza natural realçada e curvada.', duracao:'1h', fixacao:'6–8 semanas', descricao:'Tratamento que nutre, curva e pigmenta seus próprios cílios. Um procedimento de baixa manutenção que abre o olhar instantaneamente, durando semanas com aspecto impecável.' }
 };
 
-/* PARTÍCULAS */
-(function(){
-  var c = document.getElementById('introParticles');
-  var cores = ['rgba(255,193,217,.92)','rgba(247,125,172,.86)','rgba(255,216,232,.74)','rgba(238,95,151,.66)','rgba(255,255,255,.5)','rgba(255,172,206,.78)'];
-  for(var i=0;i<140;i++){
-    var p=document.createElement('div'); p.className='intro-particle';
-    var tier=i%3;
-    var s=tier===0 ? (Math.random()*1.8+1.2) : tier===1 ? (Math.random()*2.4+2.2) : (Math.random()*3+3.4);
-    var drift=(Math.random()*36-18).toFixed(2)+'px';
-    var opacity=(tier===0 ? (Math.random()*0.22+0.3) : tier===1 ? (Math.random()*0.18+0.46) : (Math.random()*0.16+0.58)).toFixed(2);
-    var duration=(Math.random()*7 + (tier===0 ? 12 : tier===1 ? 10 : 8)).toFixed(2)+'s';
-    var delay=(Math.random()*14).toFixed(2)+'s';
-    var bottom=(Math.random()*20).toFixed(2)+'px';
-    var scaleEnd=(Math.random()*0.28+0.24).toFixed(2);
-    p.style.cssText='left:'+(Math.random()*100).toFixed(2)+'%;bottom:'+bottom+';width:'+s.toFixed(2)+'px;height:'+s.toFixed(2)+'px;background:'+cores[Math.floor(Math.random()*cores.length)]+';animation-duration:'+duration+';animation-delay:'+delay+';--drift-x:'+drift+';--particle-opacity:'+opacity+';--scale-end:'+scaleEnd+';';
-    c.appendChild(p);
-  }
-})();
-
-function getDriveFileId(link){
-  if(!link) return '';
-  var match = link.match(/\/file\/d\/([^\/]+)/);
-  if(match && match[1]) return match[1];
-
-  match = link.match(/[?&]id=([^&]+)/);
-  if(match && match[1]) return match[1];
-
-  return '';
-}
-
-function isDriveLink(link){
-  return /drive\.google\.com/i.test(link || '');
-}
-
-function shouldUseDrivePreviewFallback(){
-  return !window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
-}
-
-function shouldPreferDrivePreviewOnTouch(){
-  return window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
-}
-
-function requestVideoPlayback(){
-  var video=document.getElementById('videoPlayer');
-  var playPromise;
-
-  if(currentVideoMode!=='file' || video.hidden) return;
-
-  video.muted=true;
-  video.defaultMuted=true;
-  playPromise=video.play();
-  if(playPromise && typeof playPromise.catch==='function'){
-    playPromise.catch(function(){});
-  }
-}
-
-function showDrivePreview(fileId){
-  var video=document.getElementById('videoPlayer');
-  var source=document.getElementById('videoSource');
-  var drivePlayer=document.getElementById('drivePlayer');
-  var videoFrame=document.querySelector('.video-frame');
-
-  currentVideoMode='drive';
-  source.src='';
-  video.pause();
-  video.hidden=true;
-  videoFrame.classList.remove('is-direct-video');
-  videoFrame.classList.add('is-drive-preview');
-  drivePlayer.src='https://drive.google.com/file/d/'+fileId+'/preview?autoplay=1';
-  drivePlayer.hidden=false;
-}
-
-function showDirectVideo(src){
-  var video=document.getElementById('videoPlayer');
-  var source=document.getElementById('videoSource');
-  var drivePlayer=document.getElementById('drivePlayer');
-  var videoFrame=document.querySelector('.video-frame');
-  var playPromise;
-
-  currentVideoMode='file';
-  if(driveFallbackTimer){
-    clearTimeout(driveFallbackTimer);
-    driveFallbackTimer=null;
-  }
-
-  drivePlayer.src='';
-  drivePlayer.hidden=true;
-  videoFrame.classList.remove('is-drive-preview');
-  videoFrame.classList.add('is-direct-video');
-  video.controls=true;
-  video.hidden=false;
-  source.src=src;
-  video.load();
-  playPromise=video.play();
-  if(playPromise && typeof playPromise.catch==='function'){
-    playPromise.catch(function(){});
-  }
-}
-
-function applyVideoSource(){
-  var link=(VIDEO_URL || '').trim();
-  var fileId=getDriveFileId(link);
-  var directDriveUrl;
-  var driveThumbnailUrl;
-  var videoPlayer=document.getElementById('videoPlayer');
-  var videoSource=document.getElementById('videoSource');
-  var drivePlayer=document.getElementById('drivePlayer');
-
-  if(!link) return;
-
-  if(isDriveLink(link) && fileId){
-    directDriveUrl='https://drive.google.com/uc?export=download&id='+fileId;
-    driveThumbnailUrl='https://drive.google.com/thumbnail?id='+fileId+'&sz=w1600';
-    videoPlayer.poster=driveThumbnailUrl;
-    pendingDriveFileId=fileId;
-    useDrivePreviewOnInteraction=shouldPreferDrivePreviewOnTouch();
-    if(useDrivePreviewOnInteraction){
-      currentVideoMode='file';
-      drivePlayer.src='';
-      drivePlayer.hidden=true;
-      videoSource.src='';
-      videoPlayer.controls=false;
-      videoPlayer.hidden=false;
-      videoPlayer.load();
-      return;
-    }
-    showDirectVideo(directDriveUrl);
-    if(shouldUseDrivePreviewFallback()){
-      driveFallbackTimer=setTimeout(function(){
-        var video=document.getElementById('videoPlayer');
-        if(currentVideoMode==='file' && video.readyState<2){
-          showDrivePreview(fileId);
-        }
-      },7000);
-    }
-    return;
-  }
-
-  document.getElementById('videoPlayer').removeAttribute('poster');
-  showDirectVideo(link);
-}
-
-function activatePreferredVideoMode(){
-  if(useDrivePreviewOnInteraction && pendingDriveFileId){
-    useDrivePreviewOnInteraction=false;
-    showDrivePreview(pendingDriveFileId);
-    return;
-  }
-  requestVideoPlayback();
-}
-
-function fecharIntro(){
-  var el=document.getElementById('intro');
-  activatePreferredVideoMode();
+/* FECHAR INTRODUÇÃO */
+function fecharIntro() {
+  var el = document.getElementById('intro');
   el.classList.add('hide');
-  setTimeout(function(){el.style.display='none';},1100);
+  setTimeout(function(){ el.style.display = 'none'; }, 1500);
 }
 
-function updateActiveTab(tab){
-  var buttons=document.querySelectorAll('.tab-btn');
-  buttons.forEach(function(btn){
-    var active=Number(btn.getAttribute('data-tab'))===tab;
-    btn.classList.toggle('active',active);
-    btn.setAttribute('aria-pressed',active ? 'true' : 'false');
+/* CONTROLE DE SOM CUSTOMIZADO */
+function toggleSound() {
+  var v = document.getElementById('videoPlayer');
+  var icon = document.getElementById('soundIcon');
+  var text = document.getElementById('soundText');
+  
+  v.muted = !v.muted;
+  
+  if(v.muted) {
+    icon.textContent = '🔇';
+    text.textContent = 'Som Desativado';
+  } else {
+    icon.textContent = '🔊';
+    text.textContent = 'Som Ativado';
+  }
+}
+
+/* CONTROLE DAS ABAS */
+function showTab(tab) {
+  var buttons = document.querySelectorAll('.tab-btn');
+  buttons.forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.getAttribute('data-tab')) === tab);
   });
-}
 
-function showTab(tab){
-  var content=document.getElementById('content');
-  updateActiveTab(tab);
-  if(tab===1){
-    content.innerHTML='<h3 style="color:#9d2f68;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:10px;">Sobre nós</h3><p style="color:#555;line-height:1.7;font-size:13px;">Especialistas em extensão de cílios, trazendo elegância e autoestima para cada cliente. Técnicas exclusivas, produtos premium e atendimento personalizado.</p>';
+  var content = document.getElementById('content');
+  
+  if(tab === 1) {
+    content.innerHTML = `
+      <h3 style="font-family: var(--font-title); font-size: 24px; font-weight: 400; margin-bottom: 15px; color: var(--accent-main);">A Arte do Olhar</h3>
+      <p style="font-size: 13px; line-height: 1.8; color: var(--text-dark); font-weight: 400; margin-bottom: 15px;">
+        Bem-vinda ao espaço onde a beleza encontra a técnica milimétrica. No Studio Julie Barroso, acreditamos que a extensão de cílios vai além da estética — é sobre confiança, luxo e personalização.
+      </p>
+      <p style="font-size: 13px; line-height: 1.8; color: var(--text-dark); font-weight: 400;">
+        Utilizamos exclusivamente materiais premium e métodos aprovados de visagismo para desenhar o conjunto perfeito para o formato do seu rosto.
+      </p>
+    `;
   }
-  if(tab===2){
-    var html='<h3 style="color:#9d2f68;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:12px;">Nossos serviços</h3>';
+  else if(tab === 2) {
+    var html = '<div style="display:flex; flex-direction:column;">';
     Object.keys(proc).forEach(function(n){
-      var thumbHtml = proc[n].imagem
-        ? '<div class="card-thumb"><img src="'+proc[n].imagem+'" alt="'+n+'"></div>'
-        : '<div class="card-thumb">'+proc[n].emoji+'</div>';
-      html+='<div class="card" onclick="detalhe(\''+n+'\')">'+thumbHtml+'<div class="card-info"><div class="card-title">'+n+'</div><div class="card-desc-mini">'+proc[n].resumo+'</div></div></div>';
+      var p = proc[n];
+      var thumbHtml = p.imagem 
+        ? `<img src="${p.imagem}" alt="${n}">` 
+        : p.emoji;
+        
+      html += `
+        <div class="card" onclick="detalhe('${n}')">
+          <div class="card-thumb">${thumbHtml}</div>
+          <div class="card-info">
+            <div class="card-title">${n}</div>
+            <div class="card-desc-mini">${p.resumo}</div>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+      `;
     });
-    content.innerHTML=html;
+    html += '</div>';
+    content.innerHTML = html;
   }
-  if(tab===3){
-    content.innerHTML='<h3 style="color:#9d2f68;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:12px;">Localização</h3><iframe src="https://maps.google.com/maps?q=Studio%20Julie%20Barroso&output=embed" width="100%" height="200" style="border-radius:10px;border:none;"></iframe>';
-  }
-}
-
-function detalhe(nome){
-  var p=proc[nome];
-  var content=document.getElementById('content');
-  var imgHtml=p.imagem
-    ? '<img src="'+p.imagem+'" alt="'+nome+'">'
-    : '<span style="font-size:64px">'+p.emoji+'</span>';
-  content.innerHTML=
-    '<div class="detalhe-wrap">'+
-      '<div class="detalhe-img-wrap">'+imgHtml+'<div class="detalhe-img-label">Studio Julie Barroso</div></div>'+
-      '<div class="detalhe-nome">'+nome+'</div>'+
-      '<div class="detalhe-linha"></div>'+
-      '<p class="detalhe-texto">'+p.descricao+'</p>'+
-      '<div class="detalhe-info">'+
-        '<div class="detalhe-badge">⏱ '+p.duracao+'</div>'+
-        '<div class="detalhe-badge">📅 '+p.fixacao+'</div>'+
-        '<div class="detalhe-badge">💡 '+p.indicado+'</div>'+
-      '</div>'+
-      '<button class="btn-voltar" onclick="showTab(2)">← Voltar aos serviços</button>'+
-    '</div>';
-  if(window.innerWidth<=768){
-    setTimeout(function(){ content.scrollIntoView({behavior:'smooth',block:'start'}); },50);
+  else if(tab === 3) {
+    content.innerHTML = `
+      <h3 style="font-family: var(--font-title); font-size: 24px; font-weight: 400; margin-bottom: 15px; color: var(--accent-main);">Nosso Endereço</h3>
+      <p style="font-size: 12px; color: var(--text-dark); margin-bottom: 20px;">Um ambiente pensado para o seu total relaxamento.</p>
+      <div style="width:100%; height:250px; background:#F8D8E6; border-radius:12px; overflow:hidden;">
+        <iframe src="https://maps.google.com/maps?q=Studio+Julie+Barroso&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:none;"></iframe>
+      </div>
+    `;
   }
 }
 
-document.getElementById('videoPlayer').addEventListener('loadeddata',function(){
-  if(driveFallbackTimer){
-    clearTimeout(driveFallbackTimer);
-    driveFallbackTimer=null;
-  }
-});
+/* EXIBIR DETALHES DO PROCEDIMENTO */
+function detalhe(nome) {
+  var p = proc[nome];
+  var content = document.getElementById('content');
+  
+  var imgHtml = p.imagem 
+    ? `<img src="${p.imagem}" alt="${nome}">` 
+    : p.emoji;
+    
+  content.innerHTML = `
+    <div class="detalhe-wrap">
+      <div class="detalhe-img-wrap">${imgHtml}</div>
+      <div class="detalhe-nome">${nome}</div>
+      <p class="detalhe-texto">${p.descricao}</p>
+      
+      <div class="detalhe-info">
+        <div class="detalhe-item">
+          <span class="detalhe-item-label">Duração</span>
+          <span class="detalhe-item-value">${p.duracao}</span>
+        </div>
+        <div class="detalhe-item">
+          <span class="detalhe-item-label">Manutenção</span>
+          <span class="detalhe-item-value">${p.fixacao}</span>
+        </div>
+      </div>
+      
+      <button class="btn-voltar" onclick="showTab(2)">Retornar ao Menu</button>
+    </div>
+  `;
+}
 
-document.getElementById('videoPlayer').addEventListener('error',function(){
-  var fileId=getDriveFileId((VIDEO_URL || '').trim());
-  if(fileId && currentVideoMode==='file' && shouldUseDrivePreviewFallback()){
-    showDrivePreview(fileId);
-  }
-});
-
-applyVideoSource();
+// Iniciar na aba de serviços (aba 2) para ser mais direto comercialmente
+showTab(2);
 </script>
+
 </body>
 </html>
