@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Julie Barroso</title>
+
+<!-- CONFIGURACAO RAPIDA DO VIDEO -->
+<!-- Troque apenas o link abaixo quando quiser mudar o video. -->
+<!-- Aceita link de compartilhamento do Google Drive ou link direto para arquivo .mp4 -->
+<script>
+const VIDEO_URL = 'https://drive.google.com/file/d/1vKWkvMAR3tg35BvBdgQIXNjh4fMMdfRR/view?usp=sharing';
+var currentVideoMode = 'file';
+var driveFallbackTimer = null;
+</script>
+
+<style>
+* { box-sizing: border-box; }
+
+:root {
+  --rose-950:#2a101f;
+  --rose-900:#4f1838;
+  --rose-800:#9d2f68;
+  --rose-700:#d94782;
+  --rose-600:#ee5f97;
+  --rose-500:#f77dac;
+  --rose-300:#ffc1d9;
+  --rose-200:#ffd8e8;
+  --rose-100:#fff0f6;
+  --baby-rose:#ffeaf3;
+  --baby-rose-soft:#fff6fa;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ffffff, var(--rose-100));
+  color:var(--rose-950);
+  overflow-x:hidden;
+}
+
+/* ===== INTRO ===== */
+.intro {
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(255,216,232,.68) 0%, rgba(255,193,217,.7) 26%, transparent 50%),
+    radial-gradient(circle at 18% 18%, rgba(255,216,232,.88) 0%, transparent 32%),
+    radial-gradient(circle at 82% 76%, rgba(247,125,172,.5) 0%, transparent 40%),
+    linear-gradient(145deg, #ffe1ec 0%, #ffc7dc 48%, #f7a6c7 100%);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  color: var(--rose-800); z-index: 9999; overflow: hidden;
+  cursor: pointer;
+  transition: opacity 1.1s ease, transform 1.1s ease;
+}
+.intro.hide { opacity: 0; transform: scale(1.04); pointer-events: none; }
+
+.intro-ring {
+  position: absolute; border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.intro-ring:nth-child(1) { width:360px;height:360px;border:.8px solid rgba(238,95,151,.24);animation:ring-pulse 5s ease-in-out infinite 0s; }
+.intro-ring:nth-child(2) { width:540px;height:540px;border:.5px solid rgba(247,125,172,.28);animation:ring-pulse 5s ease-in-out infinite 1s; }
+.intro-ring:nth-child(3) { width:720px;height:720px;border:.5px solid rgba(255,193,217,.34);animation:ring-pulse 5s ease-in-out infinite 2s; }
+@keyframes ring-pulse {
+  0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.025);}
+}
+
+.intro-floor {
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:500px;height:120px;
+  background:radial-gradient(ellipse at center bottom,rgba(238,95,151,.32) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+.intro-glow {
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:280px;height:280px;
+  background:radial-gradient(ellipse at center,rgba(255,193,217,.42) 0%,rgba(238,95,151,.24) 48%,transparent 74%);
+  border-radius:50%;animation:glow-breathe 4.5s ease-in-out infinite;pointer-events:none;
+}
+@keyframes glow-breathe {
+  0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.15);}
+}
+
+.intro-particles{position:absolute;inset:0;pointer-events:none;}
+.intro-particle{position:absolute;border-radius:50%;animation:particle-rise linear infinite;}
+@keyframes particle-rise {
+  0%{opacity:0;transform:translateY(0) scale(1);}
+  10%{opacity:1;}80%{opacity:.5;}
+  100%{opacity:0;transform:translateY(-100vh) scale(.2);}
+}
+
+.intro-logo{position:relative;z-index:4;text-align:center;display:flex;flex-direction:column;align-items:center;margin-bottom:44px;}
+.intro-studio{font-size:11px;letter-spacing:10px;color:rgba(157,47,104,.58);text-transform:uppercase;margin-bottom:14px;}
+.intro-name-row{display:flex;align-items:center;gap:22px;}
+.intro-line{width:50px;height:.5px;background:rgba(238,95,151,.34);flex-shrink:0;}
+.intro-name{font-family:Georgia,serif;font-size:40px;color:var(--rose-800);font-weight:normal;letter-spacing:6px;white-space:nowrap;text-shadow:0 10px 34px rgba(238,95,151,.2);}
+.intro-tagline{font-size:10px;letter-spacing:7px;color:rgba(217,71,130,.66);text-transform:uppercase;margin-top:16px;}
+.intro-divider{width:36px;height:.5px;background:rgba(247,125,172,.5);margin-top:16px;}
+
+.intro-tap{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.intro-tap-btn{
+  font-size:11px;letter-spacing:5px;color:var(--rose-800);text-transform:uppercase;
+  padding:16px 48px;border:1px solid rgba(247,125,172,.34);border-radius:60px;
+  background:linear-gradient(135deg,rgba(255,246,250,.8),rgba(255,193,217,.76));
+  animation:ripple-pulse 2.2s ease-out infinite;white-space:nowrap;
+  box-shadow:0 18px 42px rgba(238,95,151,.18);
+  transition:background .3s,border-color .3s,transform .3s;
+}
+.intro-tap-btn:hover{background:linear-gradient(135deg,#fff,rgba(255,193,217,.8));border-color:rgba(238,95,151,.48);transform:translateY(-2px);}
+@keyframes ripple-pulse{
+  0%{box-shadow:0 18px 42px rgba(238,95,151,.18),0 0 0 0 rgba(247,125,172,.32);}
+  65%{box-shadow:0 0 0 18px rgba(247,125,172,0);}
+  100%{box-shadow:0 18px 42px rgba(238,95,151,.18),0 0 0 0 rgba(247,125,172,0);}
+}
+.intro-tap-arrow{display:flex;flex-direction:column;align-items:center;gap:4px;animation:arrow-drop 1.6s ease-in-out infinite;}
+.intro-tap-arrow span{display:block;width:10px;height:10px;border-right:1.5px solid rgba(217,71,130,.52);border-bottom:1.5px solid rgba(217,71,130,.52);transform:rotate(45deg);animation:arrow-fade 1.6s ease-in-out infinite;}
+.intro-tap-arrow span:nth-child(2){animation-delay:.2s;opacity:.5;}
+.intro-tap-arrow span:nth-child(3){animation-delay:.4s;opacity:.25;}
+@keyframes arrow-drop{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+@keyframes arrow-fade{0%,100%{opacity:.9;}50%{opacity:.3;}}
+
+/* ===== HEADER PREMIUM ===== */
+.header-premium {
+  background: linear-gradient(135deg, var(--rose-800) 0%, var(--rose-600) 52%, var(--rose-800) 100%);
+  padding: 36px 20px 32px;
+  text-align: center; color: white;
+  position: relative; overflow: hidden;
+}
+.header-premium::before {
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 50%,rgba(255,216,232,.22) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 50%,rgba(255,216,232,.18) 0%,transparent 60%);
+}
+.logo-premium{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
+.logo-studio-tag{font-size:10px;letter-spacing:9px;color:rgba(255,200,230,.65);text-transform:uppercase;margin-bottom:10px;}
+.logo-name-row{display:flex;align-items:center;gap:18px;}
+.logo-deco-line{flex:1;max-width:80px;height:.5px;background:linear-gradient(90deg,transparent,rgba(255,180,220,.7),transparent);}
+.logo-main-name{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:36px;font-weight:normal;letter-spacing:7px;color:#fff;white-space:nowrap;
+  text-shadow:0 0 30px rgba(255,193,217,.44),0 0 60px rgba(247,125,172,.26);
+}
+.logo-diamonds{display:flex;align-items:center;gap:8px;margin-top:10px;}
+.logo-diamond{width:5px;height:5px;background:rgba(255,180,220,.6);transform:rotate(45deg);}
+.logo-diamond.big{width:7px;height:7px;background:rgba(255,150,200,.8);}
+.logo-thin-line{width:120px;height:.5px;background:rgba(255,150,200,.35);}
+.logo-tagline-bottom{font-size:9px;letter-spacing:6px;color:rgba(255,180,220,.5);text-transform:uppercase;margin-top:10px;}
+
+/* ===== LAYOUT ===== */
+.container{
+  display:flex;
+  gap:20px;
+  width:min(100%,1280px);
+  margin:0 auto;
+  padding:24px 20px 28px;
+}
+
+.video{flex:1.35;display:flex;flex-direction:column;gap:14px;min-width:0;}
+.video-frame{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  padding:10px;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.96),rgba(255,240,246,.86)) padding-box,
+    linear-gradient(135deg,rgba(255,216,232,.9),rgba(238,95,151,.42)) border-box;
+  border:1px solid transparent;
+  box-shadow:0 24px 52px rgba(157,47,104,.14);
+}
+.video-frame video,
+.video-frame iframe{
+  display:block;
+  width:100%;height:420px;border-radius:22px;
+  background:var(--rose-950);
+}
+.video-frame video[hidden],
+.video-frame iframe[hidden],
+.video-controls[hidden]{
+  display:none !important;
+}
+.video-frame video{object-fit:cover;}
+.video-frame iframe{border:none;}
+.video-frame.is-drive-preview{
+  padding:8px;
+}
+.video-frame.is-drive-preview iframe{
+  height:auto;
+  aspect-ratio:16 / 9;
+  min-height:0;
+  border-radius:20px;
+}
+.video-frame.is-drive-preview .video-player-badge{
+  display:none;
+}
+.video-frame.is-drive-preview::after{
+  content:"";
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:3;
+  width:118px;
+  height:62px;
+  background:#000;
+  border-top-right-radius:20px;
+  border-bottom-left-radius:18px;
+  pointer-events:auto;
+}
+.video-frame.is-direct-video video{
+  border-radius:22px;
+}
+.video-player-badge{
+  position:absolute;
+  top:24px;
+  left:24px;
+  z-index:4;
+  padding:9px 14px;
+  border-radius:999px;
+  background:rgba(255,246,250,.88);
+  color:var(--rose-800);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  box-shadow:0 12px 26px rgba(42,16,31,.14);
+  backdrop-filter:blur(12px);
+}
+.video-controls{
+  position:absolute;
+  left:22px;
+  right:22px;
+  bottom:22px;
+  z-index:4;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+  border-radius:999px;
+  background:rgba(255,246,250,.9);
+  border:1px solid rgba(255,216,232,.82);
+  box-shadow:0 16px 38px rgba(42,16,31,.18);
+  backdrop-filter:blur(14px);
+}
+.video-control-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--rose-600),var(--rose-700));
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 10px 22px rgba(238,95,151,.28);
+  transition:transform .22s ease,background .22s ease,box-shadow .22s ease;
+}
+.video-control-btn:hover{
+  transform:translateY(-2px);
+  background:linear-gradient(135deg,var(--rose-500),var(--rose-600));
+  box-shadow:0 14px 28px rgba(238,95,151,.34);
+}
+.video-control-btn span{
+  font-size:18px;
+  line-height:1;
+}
+.video-control-btn[hidden]{
+  display:none !important;
+}
+.video-progress-track{
+  flex:1;
+  height:8px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(217,71,130,.16);
+}
+.video-progress-fill{
+  display:block;
+  width:0%;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,var(--rose-500),var(--rose-700));
+  transition:width .2s linear;
+}
+.sidebar{
+  flex:1;min-width:320px;
+  background:rgba(255,255,255,.92);
+  padding:24px;border-radius:28px;
+  box-shadow:0 18px 45px rgba(157,47,104,.08);
+  border:1px solid rgba(255,210,230,.75);
+  backdrop-filter:blur(10px);
+}
+.tabs{display:grid;gap:12px;}
+.tab-btn{
+  width:100%;padding:14px 16px;border:none;border-radius:18px;
+  background:linear-gradient(145deg,#fff,var(--rose-100));
+  color:var(--rose-800);cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  box-shadow:0 10px 25px rgba(157,47,104,.08);
+  border:1px solid rgba(238,95,151,.14);
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease,color .22s ease;
+}
+.tab-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 30px rgba(238,95,151,.16);
+  border-color:rgba(238,95,151,.32);
+}
+.tab-btn.active{
+  color:#fff;
+  background:linear-gradient(135deg,var(--rose-800) 0%,var(--rose-600) 55%,var(--rose-500) 100%);
+  border-color:transparent;
+  box-shadow:0 18px 34px rgba(238,95,151,.26);
+}
+.tab-btn-left{display:flex;align-items:center;gap:12px;text-align:left;}
+.tab-btn-icon{
+  width:40px;height:40px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(238,95,151,.18),rgba(247,125,172,.1));
+  color:var(--rose-700);font-weight:700;letter-spacing:1px;
+  flex-shrink:0;
+}
+.tab-btn.active .tab-btn-icon{
+  background:rgba(255,255,255,.14);
+  color:#fff;
+}
+.tab-btn-label{display:flex;flex-direction:column;gap:3px;}
+.tab-btn-label strong{
+  font-size:15px;font-weight:600;letter-spacing:.4px;
+}
+.tab-btn-label span{
+  font-size:11px;letter-spacing:.4px;color:rgba(157,47,104,.66);
+}
+.tab-btn.active .tab-btn-label span{color:rgba(255,235,243,.82);}
+.tab-btn-arrow{
+  font-size:22px;line-height:1;color:rgba(157,47,104,.38);
+  transition:transform .22s ease,color .22s ease;
+}
+.tab-btn:hover .tab-btn-arrow,
+.tab-btn.active .tab-btn-arrow{
+  transform:translateX(3px);
+}
+.tab-btn.active .tab-btn-arrow{color:rgba(255,255,255,.92);}
+
+.content{
+  margin-top:18px;
+  padding:18px;
+  background:rgba(255,255,255,.92);
+  border-radius:20px;
+  min-height:220px;
+}
+.content iframe{
+  width:100%;
+  max-width:100%;
+  border:none;
+  border-radius:16px;
+}
+
+/* ===== CARDS ===== */
+.card{
+  display:flex;align-items:center;gap:12px;
+  padding:12px;margin-bottom:10px;border-radius:12px;
+  background:var(--rose-100);cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+  border:1px solid rgba(238,95,151,.12);
+}
+.card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(238,95,151,.17);}
+.card-thumb{
+  width:52px;height:52px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--rose-600),var(--rose-700));
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  overflow:hidden;
+}
+.card-thumb img{width:100%;height:100%;object-fit:cover;border-radius:10px;}
+.card-info{display:flex;flex-direction:column;gap:3px;}
+.card-title{font-size:14px;font-weight:600;color:var(--rose-800);}
+.card-desc-mini{font-size:11px;color:var(--rose-700);opacity:.78;}
+
+/* ===== DETALHE ===== */
+.detalhe-wrap{display:flex;flex-direction:column;}
+.detalhe-img-wrap{
+  width:100%;height:200px;border-radius:12px;overflow:hidden;
+  background:linear-gradient(135deg,var(--rose-800),var(--rose-500));
+  display:flex;align-items:center;justify-content:center;
+  font-size:64px;margin-bottom:16px;position:relative;
+}
+.detalhe-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.detalhe-img-label{
+  position:absolute;bottom:10px;left:12px;
+  font-size:11px;letter-spacing:3px;color:rgba(255,255,255,.7);text-transform:uppercase;
+}
+.detalhe-nome{font-family:Georgia,serif;font-size:22px;font-weight:normal;color:var(--rose-800);letter-spacing:2px;margin-bottom:8px;}
+.detalhe-linha{width:40px;height:1.5px;background:linear-gradient(90deg,var(--rose-500),var(--rose-700));border-radius:2px;margin-bottom:12px;}
+.detalhe-texto{font-size:13px;line-height:1.7;color:#555;margin-bottom:16px;}
+.detalhe-info{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.detalhe-badge{
+  font-size:11px;letter-spacing:1px;padding:6px 12px;border-radius:20px;
+  background:var(--rose-100);color:var(--rose-700);border:1px solid rgba(238,95,151,.22);
+}
+.btn-voltar{
+  background:none;border:1px solid rgba(238,95,151,.44);color:var(--rose-600);
+  padding:11px 20px;border-radius:8px;cursor:pointer;font-size:13px;
+  transition:background .2s;width:100%;margin-top:4px;
+}
+.btn-voltar:hover{background:var(--rose-100);}
+
+/* ===== FOOTER ===== */
+footer{
+  background:linear-gradient(135deg,var(--rose-600),var(--rose-700));
+  color:white;text-align:center;padding:15px 18px;
+  font-size:13px;
+}
+
+/* ===== RESPONSIVO ===== */
+@media(max-width:1024px){
+  .container{
+    flex-direction:column;
+    padding:18px 16px 24px;
+    gap:16px;
+  }
+  .video,
+  .sidebar{
+    width:100%;
+  }
+  .sidebar{
+    min-width:0;
+  }
+  .video-frame video,
+  .video-frame iframe{
+    height:360px;
+  }
+}
+
+@media(max-width:768px){
+  .intro{
+    padding:24px 18px;
+  }
+  .intro-ring:nth-child(1){width:250px;height:250px;}
+  .intro-ring:nth-child(2){width:340px;height:340px;}
+  .intro-ring:nth-child(3){width:430px;height:430px;}
+  .intro-floor{width:320px;height:90px;}
+  .intro-logo{margin-bottom:32px;}
+  .intro-name-row{
+    gap:14px;
+    width:100%;
+    justify-content:center;
+  }
+  .intro-name{
+    font-size:28px;
+    letter-spacing:4px;
+    white-space:normal;
+    text-align:center;
+    line-height:1.15;
+  }
+  .intro-studio{
+    font-size:10px;
+    letter-spacing:7px;
+  }
+  .intro-tagline{
+    font-size:9px;
+    letter-spacing:4px;
+    text-align:center;
+  }
+  .intro-line{width:32px;}
+  .intro-tap-btn{
+    width:min(100%,280px);
+    padding:15px 22px;
+    text-align:center;
+    letter-spacing:3px;
+  }
+  .header-premium{
+    padding:28px 16px 24px;
+  }
+  .logo-premium{
+    width:100%;
+  }
+  .logo-studio-tag{
+    font-size:9px;
+    letter-spacing:6px;
+  }
+  .logo-name-row{
+    gap:10px;
+    width:100%;
+    justify-content:center;
+  }
+  .logo-main-name{
+    display:block;
+    margin:0 auto;
+    font-size:26px;
+    letter-spacing:4px;
+    white-space:normal;
+    text-align:center;
+    line-height:1.15;
+  }
+  .logo-diamonds{
+    width:100%;
+    justify-content:center;
+  }
+  .logo-deco-line{max-width:34px;}
+  .logo-thin-line{width:72px;}
+  .logo-tagline-bottom{
+    width:100%;
+    font-size:8px;
+    letter-spacing:4px;
+    text-align:center;
+  }
+  .container{
+    padding:14px 12px 22px;
+    gap:14px;
+  }
+  .video{
+    gap:14px;
+  }
+  .video-frame{
+    border-radius:24px;
+  }
+  .video-frame.is-direct-video video{
+    height:auto;
+    aspect-ratio:16 / 9;
+    min-height:300px;
+    height:clamp(300px,58vw,380px);
+    max-height:none;
+    border-radius:20px;
+  }
+  .sidebar{
+    padding:16px;
+    border-radius:22px;
+  }
+  .video-player-badge{
+    top:20px;
+    left:20px;
+  }
+  .video-controls{
+    left:18px;
+    right:18px;
+    bottom:18px;
+  }
+  .video-control-btn{
+    width:42px;
+    height:42px;
+  }
+  .tabs{
+    gap:10px;
+  }
+  .tab-btn{
+    padding:13px 14px;
+    border-radius:16px;
+  }
+  .tab-btn-icon{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+  }
+  .tab-btn-label strong{
+    font-size:16px;
+  }
+  .tab-btn-label span{
+    font-size:12px;
+  }
+  .content{
+    margin-top:14px;
+    padding:16px;
+    min-height:180px;
+    border-radius:18px;
+  }
+  .content h3{
+    font-size:21px !important;
+    margin-bottom:12px !important;
+  }
+  .content p{
+    font-size:14px !important;
+    line-height:1.75 !important;
+  }
+  .card{
+    padding:14px;
+    border-radius:14px;
+    align-items:flex-start;
+  }
+  .card-thumb{
+    width:56px;
+    height:56px;
+  }
+  .card-title{
+    font-size:15px;
+  }
+  .card-desc-mini{
+    font-size:12px;
+  }
+  .detalhe-img-wrap{
+    height:220px;
+    border-radius:16px;
+    margin:0 0 16px;
+    width:100%;
+  }
+  .detalhe-img-label{
+    letter-spacing:2px;
+    font-size:10px;
+  }
+  .detalhe-nome{
+    font-size:20px;
+    letter-spacing:1px;
+  }
+  .detalhe-texto{
+    font-size:14px;
+  }
+  .detalhe-badge{
+    font-size:11px;
+  }
+  .btn-voltar{
+    padding:13px 16px;
+    font-size:14px;
+  }
+  footer{
+    font-size:12px;
+    padding:14px 16px;
+  }
+}
+
+@media(max-width:480px){
+  .intro{
+    padding:22px 14px;
+  }
+  .intro-line,
+  .logo-deco-line{
+    display:none;
+  }
+  .intro-name{
+    font-size:24px;
+    letter-spacing:3px;
+  }
+  .intro-tagline{
+    max-width:220px;
+    line-height:1.5;
+  }
+  .header-premium{
+    padding:24px 14px 20px;
+  }
+  .logo-main-name{
+    font-size:22px;
+    letter-spacing:3px;
+  }
+  .logo-thin-line{
+    width:42px;
+  }
+  .container{
+    padding:12px 10px 18px;
+  }
+  .video-frame video,
+  .video-frame iframe{
+    min-height:210px;
+    border-radius:18px;
+  }
+  .video-frame.is-direct-video video{
+    min-height:280px;
+    height:clamp(280px,74vw,360px);
+  }
+  .video-player-badge{
+    top:18px;
+    left:18px;
+    padding:8px 11px;
+    font-size:9px;
+    letter-spacing:1.5px;
+  }
+  .video-controls{
+    left:16px;
+    right:16px;
+    bottom:16px;
+    gap:8px;
+    padding:8px;
+  }
+  .video-control-btn{
+    width:38px;
+    height:38px;
+  }
+  .video-control-btn span{
+    font-size:16px;
+  }
+  .video-progress-track{
+    height:7px;
+  }
+  .content iframe{
+    min-height:220px;
+  }
+  .sidebar{
+    padding:14px;
+    border-radius:20px;
+  }
+  .tab-btn{
+    padding:12px;
+    gap:10px;
+  }
+  .tab-btn-left{
+    gap:10px;
+  }
+  .tab-btn-icon{
+    width:34px;
+    height:34px;
+    font-size:17px;
+  }
+  .tab-btn-label strong{
+    font-size:15px;
+  }
+  .tab-btn-label span{
+    font-size:11px;
+  }
+  .tab-btn-arrow{
+    font-size:18px;
+  }
+  .content{
+    padding:14px;
+  }
+  .card{
+    gap:10px;
+    padding:12px;
+  }
+  .card-thumb{
+    width:50px;
+    height:50px;
+  }
+  .detalhe-img-wrap{
+    height:190px;
+  }
+  .detalhe-info{
+    gap:6px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div class="intro" id="intro" onclick="fecharIntro()">
+  <div class="intro-ring"></div>
+  <div class="intro-ring"></div>
+  <div class="intro-ring"></div>
+  <div class="intro-floor"></div>
+  <div class="intro-glow"></div>
+  <div class="intro-particles" id="introParticles"></div>
+  <div class="intro-logo">
+    <div class="intro-studio">Studio</div>
+    <div class="intro-name-row">
+      <div class="intro-line"></div>
+      <div class="intro-name">Julie Barroso</div>
+      <div class="intro-line"></div>
+    </div>
+    <div class="intro-tagline">Extensão de Cílios</div>
+    <div class="intro-divider"></div>
+  </div>
+  <div class="intro-tap">
+    <div class="intro-tap-btn">Toque para entrar</div>
+    <div class="intro-tap-arrow"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header-premium">
+  <div class="logo-premium">
+    <div class="logo-studio-tag">Studio</div>
+    <div class="logo-name-row">
+      <div class="logo-deco-line"></div>
+      <div class="logo-main-name">Julie Barroso</div>
+      <div class="logo-deco-line"></div>
+    </div>
+    <div class="logo-diamonds">
+      <div class="logo-thin-line"></div>
+      <div class="logo-diamond"></div>
+      <div class="logo-diamond big"></div>
+      <div class="logo-diamond"></div>
+      <div class="logo-thin-line"></div>
+    </div>
+    <div class="logo-tagline-bottom">Extensão de Cílios</div>
+  </div>
+</header>
+
+<!-- SITE -->
+<div class="container">
+  <div class="video">
+    <div class="video-frame">
+      <video id="videoPlayer" autoplay muted loop playsinline preload="auto" hidden>
+        <source id="videoSource" src="" type="video/mp4">
+      </video>
+      <iframe id="drivePlayer" title="Video de apresentacao" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen hidden></iframe>
+      <div class="video-player-badge">Apresentacao</div>
+      <div class="video-controls" id="videoControls" hidden>
+        <button class="video-control-btn video-play-btn" id="videoPlayBtn" type="button" aria-label="Pausar video" aria-pressed="true">
+          <span id="videoPlayIcon">&#10074;&#10074;</span>
+        </button>
+        <div class="video-progress-track" aria-hidden="true">
+          <span class="video-progress-fill" id="videoProgressFill"></span>
+        </div>
+        <button class="video-control-btn video-mute-btn" id="videoMuteBtn" type="button" aria-label="Ativar som" aria-pressed="false">
+          <span id="videoMuteIcon">&#128264;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="tabs">
+      <button class="tab-btn" type="button" data-tab="1" onclick="showTab(1)">
+        <span class="tab-btn-left">
+          <span class="tab-btn-icon">S</span>
+          <span class="tab-btn-label">
+            <strong>Sobre</strong>
+            <span>Conheca o studio</span>
+          </span>
+        </span>
+        <span class="tab-btn-arrow">&rsaquo;</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="2" onclick="showTab(2)">
+        <span class="tab-btn-left">
+          <span class="tab-btn-icon">C</span>
+          <span class="tab-btn-label">
+            <strong>Cilios</strong>
+            <span>Veja os servicos</span>
+          </span>
+        </span>
+        <span class="tab-btn-arrow">&rsaquo;</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="3" onclick="showTab(3)">
+        <span class="tab-btn-left">
+          <span class="tab-btn-icon">L</span>
+          <span class="tab-btn-label">
+            <strong>Localizacao</strong>
+            <span>Mapa e acesso</span>
+          </span>
+        </span>
+        <span class="tab-btn-arrow">&rsaquo;</span>
+      </button>
+    </div>
+    <div class="content" id="content">Clique em uma opção 💖</div>
+  </div>
+</div>
+
+<footer>© Studio Julie Barroso • Extensão de Cílios 💖</footer>
+
+<script>
+/* DADOS — adicione imagem: 'caminho/foto.jpg' em cada procedimento quando tiver as fotos */
+var proc = {
+  'Clássico':     { imagem:'classico.jpg',     emoji:'👁️', resumo:'Natural e delicado',            duracao:'2h',   fixacao:'3–4 semanas', indicado:'Uso diário',         descricao:'O fio a fio clássico aplica uma extensão por cílio natural, resultando em um olhar mais alongado e definido, mantendo leveza e naturalidade. Ideal para o dia a dia.' },
+  'Volume Russo': { imagem:'volumerusso.jpg',   emoji:'✨',  resumo:'Volume intenso e sofisticado',  duracao:'2h30', fixacao:'3–4 semanas', indicado:'Festas e eventos',    descricao:'Técnica que aplica leques de 2 a 6 fios ultrafinos por cílio natural, criando um efeito dramático e cheio. Perfeito para quem busca um olhar marcante e sedutor.' },
+  'Híbrido':      { imagem:'hibrido.jpg',       emoji:'💫',  resumo:'O melhor dos dois mundos',     duracao:'2h',   fixacao:'3–4 semanas', indicado:'Uso versátil',        descricao:'Combina fios clássicos e volume russo na mesma aplicação, gerando textura variada e um olhar sofisticado com profundidade. Versátil para qualquer ocasião.' },
+  'Mega Volume':  { imagem:'megavolume.jpg',    emoji:'👑',  resumo:'Drama e glamour máximo',       duracao:'3h',   fixacao:'3–4 semanas', indicado:'Looks arrojados',     descricao:'Leques com 7 a 16 fios ultrafinos por cílio natural. Resultado dramático, cheio e marcante. Para quem quer o máximo de impacto e presença.' },
+  'Fox Eyes':     { imagem:'foxeyes.jpg',       emoji:'🦊',  resumo:'Efeito gatinho alongado',      duracao:'2h',   fixacao:'3–4 semanas', indicado:'Tendência atual',     descricao:'Técnica que alonga os cílios da extremidade externa dos olhos, criando o famoso efeito olho de raposa — sensual, moderno e muito elegante.' },
+  'Lash Lift':    { imagem:'lashlift.jpg',      emoji:'🌙',  resumo:'Seus cílios naturais realçados', duracao:'1h', fixacao:'6–8 semanas', indicado:'Baixa manutenção',   descricao:'Procedimento que curva e levanta seus próprios cílios, sem extensões. Com opção de tingimento, o resultado é um olhar aberto e renovado por até 8 semanas.' }
+};
+
+/* PARTÍCULAS */
+(function(){
+  var c = document.getElementById('introParticles');
+  var cores = ['rgba(255,193,217,.92)','rgba(247,125,172,.86)','rgba(255,216,232,.74)','rgba(238,95,151,.66)','rgba(255,255,255,.5)','rgba(255,172,206,.78)'];
+  for(var i=0;i<80;i++){
+    var p=document.createElement('div'); p.className='intro-particle';
+    var s=Math.random()*4+1;
+    p.style.cssText='left:'+(Math.random()*100)+'%;bottom:'+(Math.random()*30)+'px;width:'+s+'px;height:'+s+'px;background:'+cores[Math.floor(Math.random()*cores.length)]+';animation-duration:'+(Math.random()*10+6)+'s;animation-delay:'+(Math.random()*12)+'s;';
+    c.appendChild(p);
+  }
+})();
+
+function getDriveFileId(link){
+  if(!link) return '';
+  var match = link.match(/\/file\/d\/([^\/]+)/);
+  if(match && match[1]) return match[1];
+
+  match = link.match(/[?&]id=([^&]+)/);
+  if(match && match[1]) return match[1];
+
+  return '';
+}
+
+function isDriveLink(link){
+  return /drive\.google\.com/i.test(link || '');
+}
+
+function showDrivePreview(fileId){
+  var video=document.getElementById('videoPlayer');
+  var source=document.getElementById('videoSource');
+  var drivePlayer=document.getElementById('drivePlayer');
+  var videoControls=document.getElementById('videoControls');
+  var videoMuteBtn=document.getElementById('videoMuteBtn');
+  var videoFrame=document.querySelector('.video-frame');
+
+  currentVideoMode='drive';
+  source.src='';
+  video.pause();
+  video.hidden=true;
+  videoMuteBtn.hidden=true;
+  videoControls.hidden=true;
+  videoFrame.classList.remove('is-direct-video');
+  videoFrame.classList.add('is-drive-preview');
+  drivePlayer.src='https://drive.google.com/file/d/'+fileId+'/preview';
+  drivePlayer.hidden=false;
+}
+
+function showDirectVideo(src){
+  var video=document.getElementById('videoPlayer');
+  var source=document.getElementById('videoSource');
+  var drivePlayer=document.getElementById('drivePlayer');
+  var videoControls=document.getElementById('videoControls');
+  var videoMuteBtn=document.getElementById('videoMuteBtn');
+  var videoFrame=document.querySelector('.video-frame');
+  var playPromise;
+
+  currentVideoMode='file';
+  if(driveFallbackTimer){
+    clearTimeout(driveFallbackTimer);
+    driveFallbackTimer=null;
+  }
+
+  drivePlayer.src='';
+  drivePlayer.hidden=true;
+  videoControls.hidden=false;
+  videoMuteBtn.hidden=false;
+  videoFrame.classList.remove('is-drive-preview');
+  videoFrame.classList.add('is-direct-video');
+  video.hidden=false;
+  source.src=src;
+  video.load();
+  playPromise=video.play();
+  if(playPromise && typeof playPromise.catch==='function'){
+    playPromise.catch(function(){});
+  }
+}
+
+function updateMuteButton(){
+  var video=document.getElementById('videoPlayer');
+  var btn=document.getElementById('videoMuteBtn');
+  var controls=document.getElementById('videoControls');
+  var icon=document.getElementById('videoMuteIcon');
+  var muted=video.muted || video.volume===0;
+
+  if(currentVideoMode!=='file'){
+    btn.hidden=true;
+    controls.hidden=true;
+    return;
+  }
+
+  controls.hidden=false;
+  btn.hidden=false;
+  btn.setAttribute('aria-label',muted ? 'Ativar som' : 'Desativar som');
+  btn.setAttribute('aria-pressed',(!muted).toString());
+  icon.innerHTML=muted ? '&#128264;' : '&#128266;';
+}
+
+function updatePlayButton(){
+  var video=document.getElementById('videoPlayer');
+  var btn=document.getElementById('videoPlayBtn');
+  var icon=document.getElementById('videoPlayIcon');
+  var playing=!video.paused && !video.ended;
+
+  btn.setAttribute('aria-label',playing ? 'Pausar video' : 'Reproduzir video');
+  btn.setAttribute('aria-pressed',playing ? 'true' : 'false');
+  icon.innerHTML=playing ? '&#10074;&#10074;' : '&#9658;';
+}
+
+function updateVideoProgress(){
+  var video=document.getElementById('videoPlayer');
+  var fill=document.getElementById('videoProgressFill');
+  var progress=0;
+
+  if(video.duration && isFinite(video.duration)){
+    progress=(video.currentTime / video.duration) * 100;
+  }
+
+  fill.style.width=Math.max(0,Math.min(100,progress))+'%';
+}
+
+function togglePlay(){
+  var video=document.getElementById('videoPlayer');
+  var playPromise;
+  if(currentVideoMode!=='file') return;
+
+  if(video.paused){
+    playPromise=video.play();
+    if(playPromise && typeof playPromise.catch==='function'){
+      playPromise.catch(function(){});
+    }
+  } else {
+    video.pause();
+  }
+
+  updatePlayButton();
+}
+
+function toggleMute(){
+  var video=document.getElementById('videoPlayer');
+  var playPromise;
+  if(currentVideoMode!=='file') return;
+
+  if(video.muted || video.volume===0){
+    video.muted=false;
+    video.defaultMuted=false;
+    video.volume=1;
+    playPromise=video.play();
+    if(playPromise && typeof playPromise.catch==='function'){
+      playPromise.catch(function(){});
+    }
+  } else {
+    video.muted=true;
+    video.defaultMuted=true;
+  }
+
+  updateMuteButton();
+}
+
+function applyVideoSource(){
+  var link=(VIDEO_URL || '').trim();
+  var fileId=getDriveFileId(link);
+  var directDriveUrl;
+  var driveThumbnailUrl;
+
+  if(!link) return;
+
+  if(isDriveLink(link) && fileId){
+    directDriveUrl='https://drive.google.com/uc?export=download&id='+fileId;
+    driveThumbnailUrl='https://drive.google.com/thumbnail?id='+fileId+'&sz=w1600';
+    document.getElementById('videoPlayer').poster=driveThumbnailUrl;
+    showDirectVideo(directDriveUrl);
+    driveFallbackTimer=setTimeout(function(){
+      var video=document.getElementById('videoPlayer');
+      if(currentVideoMode==='file' && video.readyState<2){
+        showDrivePreview(fileId);
+      }
+    },3000);
+    return;
+  }
+
+  document.getElementById('videoPlayer').removeAttribute('poster');
+  showDirectVideo(link);
+}
+
+function fecharIntro(){
+  var el=document.getElementById('intro');
+  el.classList.add('hide');
+  setTimeout(function(){el.style.display='none';},1100);
+}
+
+function updateActiveTab(tab){
+  var buttons=document.querySelectorAll('.tab-btn');
+  buttons.forEach(function(btn){
+    var active=Number(btn.getAttribute('data-tab'))===tab;
+    btn.classList.toggle('active',active);
+    btn.setAttribute('aria-pressed',active ? 'true' : 'false');
+  });
+}
+
+function showTab(tab){
+  var content=document.getElementById('content');
+  updateActiveTab(tab);
+  if(tab===1){
+    content.innerHTML='<h3 style="color:#9d2f68;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:10px;">Sobre nós</h3><p style="color:#555;line-height:1.7;font-size:13px;">Especialistas em extensão de cílios, trazendo elegância e autoestima para cada cliente. Técnicas exclusivas, produtos premium e atendimento personalizado.</p>';
+  }
+  if(tab===2){
+    var html='<h3 style="color:#9d2f68;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:12px;">Nossos serviços</h3>';
+    Object.keys(proc).forEach(function(n){
+      var thumbHtml = proc[n].imagem
+        ? '<div class="card-thumb"><img src="'+proc[n].imagem+'" alt="'+n+'"></div>'
+        : '<div class="card-thumb">'+proc[n].emoji+'</div>';
+      html+='<div class="card" onclick="detalhe(\''+n+'\')">'+thumbHtml+'<div class="card-info"><div class="card-title">'+n+'</div><div class="card-desc-mini">'+proc[n].resumo+'</div></div></div>';
+    });
+    content.innerHTML=html;
+  }
+  if(tab===3){
+    content.innerHTML='<h3 style="color:#9d2f68;font-family:Georgia,serif;font-weight:normal;letter-spacing:1px;margin-bottom:12px;">Localização</h3><iframe src="https://maps.google.com/maps?q=Studio%20Julie%20Barroso&output=embed" width="100%" height="200" style="border-radius:10px;border:none;"></iframe>';
+  }
+}
+
+function detalhe(nome){
+  var p=proc[nome];
+  var content=document.getElementById('content');
+  var imgHtml=p.imagem
+    ? '<img src="'+p.imagem+'" alt="'+nome+'">'
+    : '<span style="font-size:64px">'+p.emoji+'</span>';
+  content.innerHTML=
+    '<div class="detalhe-wrap">'+
+      '<div class="detalhe-img-wrap">'+imgHtml+'<div class="detalhe-img-label">Studio Julie Barroso</div></div>'+
+      '<div class="detalhe-nome">'+nome+'</div>'+
+      '<div class="detalhe-linha"></div>'+
+      '<p class="detalhe-texto">'+p.descricao+'</p>'+
+      '<div class="detalhe-info">'+
+        '<div class="detalhe-badge">⏱ '+p.duracao+'</div>'+
+        '<div class="detalhe-badge">📅 '+p.fixacao+'</div>'+
+        '<div class="detalhe-badge">💡 '+p.indicado+'</div>'+
+      '</div>'+
+      '<button class="btn-voltar" onclick="showTab(2)">← Voltar aos serviços</button>'+
+    '</div>';
+  if(window.innerWidth<=768){
+    setTimeout(function(){ content.scrollIntoView({behavior:'smooth',block:'start'}); },50);
+  }
+}
+
+document.getElementById('videoPlayer').addEventListener('loadeddata',function(){
+  if(driveFallbackTimer){
+    clearTimeout(driveFallbackTimer);
+    driveFallbackTimer=null;
+  }
+  updateMuteButton();
+  updatePlayButton();
+  updateVideoProgress();
+});
+
+document.getElementById('videoPlayer').addEventListener('volumechange',function(){
+  updateMuteButton();
+});
+
+document.getElementById('videoPlayer').addEventListener('play',function(){
+  updatePlayButton();
+});
+
+document.getElementById('videoPlayer').addEventListener('pause',function(){
+  updatePlayButton();
+});
+
+document.getElementById('videoPlayer').addEventListener('timeupdate',function(){
+  updateVideoProgress();
+});
+
+document.getElementById('videoPlayer').addEventListener('click',function(){
+  togglePlay();
+});
+
+document.getElementById('videoPlayer').addEventListener('error',function(){
+  var fileId=getDriveFileId((VIDEO_URL || '').trim());
+  if(fileId && currentVideoMode==='file'){
+    showDrivePreview(fileId);
+  }
+});
+
+document.getElementById('videoMuteBtn').addEventListener('click',function(event){
+  event.preventDefault();
+  event.stopPropagation();
+  toggleMute();
+});
+
+document.getElementById('videoPlayBtn').addEventListener('click',function(event){
+  event.preventDefault();
+  event.stopPropagation();
+  togglePlay();
+});
+
+applyVideoSource();
+updateMuteButton();
+updatePlayButton();
+updateVideoProgress();
+</script>
+</body>
+</html>
