@@ -745,6 +745,10 @@ function isDriveLink(link){
   return /drive\.google\.com/i.test(link || '');
 }
 
+function shouldUseDrivePreviewFallback(){
+  return window.innerWidth > 768;
+}
+
 function requestVideoPlayback(){
   var video=document.getElementById('videoPlayer');
   var playPromise;
@@ -814,12 +818,14 @@ function applyVideoSource(){
     driveThumbnailUrl='https://drive.google.com/thumbnail?id='+fileId+'&sz=w1600';
     document.getElementById('videoPlayer').poster=driveThumbnailUrl;
     showDirectVideo(directDriveUrl);
-    driveFallbackTimer=setTimeout(function(){
-      var video=document.getElementById('videoPlayer');
-      if(currentVideoMode==='file' && video.readyState<2){
-        showDrivePreview(fileId);
-      }
-    },3000);
+    if(shouldUseDrivePreviewFallback()){
+      driveFallbackTimer=setTimeout(function(){
+        var video=document.getElementById('videoPlayer');
+        if(currentVideoMode==='file' && video.readyState<2){
+          showDrivePreview(fileId);
+        }
+      },7000);
+    }
     return;
   }
 
@@ -897,7 +903,7 @@ document.getElementById('videoPlayer').addEventListener('loadeddata',function(){
 
 document.getElementById('videoPlayer').addEventListener('error',function(){
   var fileId=getDriveFileId((VIDEO_URL || '').trim());
-  if(fileId && currentVideoMode==='file'){
+  if(fileId && currentVideoMode==='file' && shouldUseDrivePreviewFallback()){
     showDrivePreview(fileId);
   }
 });
