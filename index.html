@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Studio Julie Barroso</title>
 
+<!-- CONFIGURACAO RAPIDA DO VIDEO -->
+<!-- Para trocar o video depois, substitua apenas o link abaixo pelo novo link de compartilhamento do Google Drive. -->
+<script>
+const VIDEO_DRIVE_LINK = 'https://drive.google.com/file/d/1vKWkvMAR3tg35BvBdgQIXNjh4fMMdfRR/view?usp=sharing';
+</script>
+
 <style>
 * { box-sizing: border-box; }
 
@@ -338,7 +344,7 @@ footer{background:linear-gradient(135deg,#d81b60,#ad1457);color:white;text-align
 <div class="container">
   <div class="video">
     <video id="videoPlayer" autoplay muted loop controls>
-      <source src="apresentacao.mp4" type="video/mp4">
+      <source id="videoSource" src="" type="video/mp4">
     </video>
     <button class="sound-btn is-muted" id="soundBtn" type="button" onclick="toggleSound()" aria-label="Ativar audio" aria-pressed="false">
       <span class="sound-btn-icon" id="soundIcon">&#9835;</span>
@@ -409,6 +415,28 @@ var proc = {
     c.appendChild(p);
   }
 })();
+
+function getDriveFileId(link){
+  if(!link) return '';
+  var match = link.match(/\/file\/d\/([^\/]+)/);
+  if(match && match[1]) return match[1];
+
+  match = link.match(/[?&]id=([^&]+)/);
+  if(match && match[1]) return match[1];
+
+  return '';
+}
+
+function applyVideoSource(){
+  var video=document.getElementById('videoPlayer');
+  var source=document.getElementById('videoSource');
+  var fileId=getDriveFileId(VIDEO_DRIVE_LINK);
+
+  if(!fileId) return;
+
+  source.src='https://drive.google.com/uc?export=download&id='+fileId;
+  video.load();
+}
 
 function fecharIntro(){
   var el=document.getElementById('intro');
@@ -491,6 +519,7 @@ function detalhe(nome){
   }
 }
 
+applyVideoSource();
 updateSoundButton();
 </script>
 </body>
