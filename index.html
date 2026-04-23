@@ -374,6 +374,9 @@ footer{
   .header-premium{
     padding:28px 16px 24px;
   }
+  .logo-premium{
+    width:100%;
+  }
   .logo-studio-tag{
     font-size:9px;
     letter-spacing:6px;
@@ -381,17 +384,25 @@ footer{
   .logo-name-row{
     gap:10px;
     width:100%;
+    justify-content:center;
   }
   .logo-main-name{
+    display:block;
+    margin:0 auto;
     font-size:26px;
     letter-spacing:4px;
     white-space:normal;
     text-align:center;
     line-height:1.15;
   }
+  .logo-diamonds{
+    width:100%;
+    justify-content:center;
+  }
   .logo-deco-line{max-width:34px;}
   .logo-thin-line{width:72px;}
   .logo-tagline-bottom{
+    width:100%;
     font-size:8px;
     letter-spacing:4px;
     text-align:center;
@@ -409,8 +420,9 @@ footer{
   .video-frame.is-direct-video video{
     height:auto;
     aspect-ratio:16 / 9;
-    min-height:240px;
-    max-height:420px;
+    min-height:300px;
+    height:clamp(300px,58vw,380px);
+    max-height:none;
     border-radius:20px;
   }
   .video-frame.is-drive-preview{
@@ -541,7 +553,8 @@ footer{
     border-radius:18px;
   }
   .video-frame.is-direct-video video{
-    min-height:210px;
+    min-height:280px;
+    height:clamp(280px,74vw,360px);
   }
   .video-frame.is-drive-preview{
     padding:8px;
