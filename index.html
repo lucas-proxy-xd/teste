@@ -10,6 +10,8 @@
 <!-- Aceita link de compartilhamento do Google Drive ou link direto para arquivo .mp4 -->
 <script>
 const VIDEO_URL = 'https://drive.google.com/file/d/1vKWkvMAR3tg35BvBdgQIXNjh4fMMdfRR/view?usp=sharing';
+var currentVideoMode = 'file';
+var driveFallbackTimer = null;
 </script>
 
 <style>
@@ -19,6 +21,8 @@ body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #ffffff, #fce4ec);
+  color:#2f1424;
+  overflow-x:hidden;
 }
 
 /* ===== INTRO ===== */
@@ -132,56 +136,40 @@ body {
 .logo-tagline-bottom{font-size:9px;letter-spacing:6px;color:rgba(255,180,220,.5);text-transform:uppercase;margin-top:10px;}
 
 /* ===== LAYOUT ===== */
-.container{display:flex;padding:20px;gap:20px;}
+.container{
+  display:flex;
+  gap:20px;
+  width:min(100%,1280px);
+  margin:0 auto;
+  padding:24px 20px 28px;
+}
 
-.video{flex:2;position:relative;}
-.video video,
-.video iframe{
-  width:100%;height:420px;border-radius:15px;
+.video{flex:1.35;display:flex;flex-direction:column;gap:14px;min-width:0;}
+.video-frame{position:relative;}
+.video-frame video,
+.video-frame iframe{
+  width:100%;height:420px;border-radius:22px;
   background:#12000c;
 }
-.video video{object-fit:cover;}
-.video iframe{border:none;}
-.sound-btn{
-  position:absolute;top:18px;right:18px;z-index:2;
-  display:inline-flex;align-items:center;gap:10px;
-  border:none;border-radius:999px;
-  padding:10px 16px 10px 10px;cursor:pointer;
-  color:white;
-  background:linear-gradient(135deg,rgba(67,17,40,.92),rgba(147,35,87,.88));
-  box-shadow:0 18px 34px rgba(106,13,59,.28);
-  backdrop-filter:blur(10px);
-  transition:transform .25s ease,box-shadow .25s ease,background .25s ease;
-}
-.sound-btn::before{
-  content:"";position:absolute;inset:1px;border-radius:999px;
-  border:1px solid rgba(255,255,255,.18);pointer-events:none;
-}
-.sound-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 22px 38px rgba(106,13,59,.35);
-}
-.sound-btn.is-on{
-  background:linear-gradient(135deg,rgba(216,27,96,.95),rgba(173,20,87,.90));
-}
-.sound-btn-icon{
-  width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,.14);
-  font-size:17px;font-weight:700;flex-shrink:0;
-}
-.sound-btn-text{
-  display:flex;flex-direction:column;align-items:flex-start;
-  line-height:1.1;
-}
-.sound-btn-text strong{
-  font-size:12px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;
-}
-.sound-btn-text small{
-  font-size:10px;letter-spacing:.5px;color:rgba(255,240,246,.82);
+.video-frame video{object-fit:cover;}
+.video-frame iframe{border:none;}
+.drive-open-mask{
+  position:absolute;top:0;right:0;z-index:3;
+  width:92px;height:54px;
+  background:#12000c;
+  border-top-right-radius:22px;
+  border-bottom-left-radius:18px;
+  pointer-events:auto;
 }
 
-.sidebar{flex:1;background:white;padding:20px;border-radius:15px;}
+.sidebar{
+  flex:1;min-width:320px;
+  background:rgba(255,255,255,.92);
+  padding:24px;border-radius:28px;
+  box-shadow:0 18px 45px rgba(106,13,59,.08);
+  border:1px solid rgba(255,210,230,.75);
+  backdrop-filter:blur(10px);
+}
 .tabs{display:grid;gap:12px;}
 .tab-btn{
   width:100%;padding:14px 16px;border:none;border-radius:18px;
@@ -233,7 +221,19 @@ body {
 }
 .tab-btn.active .tab-btn-arrow{color:rgba(255,255,255,.92);}
 
-.content{margin-top:15px;padding:15px;background:#fff;border-radius:10px;}
+.content{
+  margin-top:18px;
+  padding:18px;
+  background:rgba(255,255,255,.92);
+  border-radius:20px;
+  min-height:220px;
+}
+.content iframe{
+  width:100%;
+  max-width:100%;
+  border:none;
+  border-radius:16px;
+}
 
 /* ===== CARDS ===== */
 .card{
@@ -284,21 +284,276 @@ body {
 .btn-voltar:hover{background:#fce4ec;}
 
 /* ===== FOOTER ===== */
-footer{background:linear-gradient(135deg,#d81b60,#ad1457);color:white;text-align:center;padding:15px;}
+footer{
+  background:linear-gradient(135deg,#d81b60,#ad1457);
+  color:white;text-align:center;padding:15px 18px;
+  font-size:13px;
+}
 
 /* ===== RESPONSIVO ===== */
+@media(max-width:1024px){
+  .container{
+    flex-direction:column;
+    padding:18px 16px 24px;
+    gap:16px;
+  }
+  .video,
+  .sidebar{
+    width:100%;
+  }
+  .sidebar{
+    min-width:0;
+  }
+  .video-frame video,
+  .video-frame video,
+  .video-frame iframe{
+    height:360px;
+  }
+}
+
 @media(max-width:768px){
-  .container{flex-direction:column;}
-  .intro-name{font-size:28px;letter-spacing:4px;}
+  .intro{
+    padding:24px 18px;
+  }
+  .intro-ring:nth-child(1){width:250px;height:250px;}
+  .intro-ring:nth-child(2){width:340px;height:340px;}
+  .intro-ring:nth-child(3){width:430px;height:430px;}
+  .intro-floor{width:320px;height:90px;}
+  .intro-logo{margin-bottom:32px;}
+  .intro-name-row{
+    gap:14px;
+    width:100%;
+    justify-content:center;
+  }
+  .intro-name{
+    font-size:28px;
+    letter-spacing:4px;
+    white-space:normal;
+    text-align:center;
+    line-height:1.15;
+  }
+  .intro-studio{
+    font-size:10px;
+    letter-spacing:7px;
+  }
+  .intro-tagline{
+    font-size:9px;
+    letter-spacing:4px;
+    text-align:center;
+  }
   .intro-line{width:32px;}
-  .logo-main-name{font-size:26px;letter-spacing:5px;}
-  .logo-deco-line{max-width:40px;}
-  .video video,
-  .video iframe{height:240px;}
-  .sound-btn{top:14px;right:14px;padding:9px 14px 9px 9px;}
-  .sound-btn-icon{width:34px;height:34px;}
-  .tab-btn{padding:13px 14px;}
-  .detalhe-img-wrap{height:260px;border-radius:0;margin:-15px -15px 16px -15px;width:calc(100% + 30px);}
+  .intro-tap-btn{
+    width:min(100%,280px);
+    padding:15px 22px;
+    text-align:center;
+    letter-spacing:3px;
+  }
+  .header-premium{
+    padding:28px 16px 24px;
+  }
+  .logo-studio-tag{
+    font-size:9px;
+    letter-spacing:6px;
+  }
+  .logo-name-row{
+    gap:10px;
+    width:100%;
+  }
+  .logo-main-name{
+    font-size:26px;
+    letter-spacing:4px;
+    white-space:normal;
+    text-align:center;
+    line-height:1.15;
+  }
+  .logo-deco-line{max-width:34px;}
+  .logo-thin-line{width:72px;}
+  .logo-tagline-bottom{
+    font-size:8px;
+    letter-spacing:4px;
+    text-align:center;
+  }
+  .container{
+    padding:14px 12px 22px;
+    gap:14px;
+  }
+  .video{
+    gap:12px;
+  }
+  .video-frame video,
+  .video-frame iframe{
+    height:auto;
+    aspect-ratio:16 / 9;
+    min-height:240px;
+    max-height:420px;
+    border-radius:20px;
+  }
+  .sidebar{
+    padding:16px;
+    border-radius:22px;
+  }
+  .tabs{
+    gap:10px;
+  }
+  .tab-btn{
+    padding:13px 14px;
+    border-radius:16px;
+  }
+  .tab-btn-icon{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+  }
+  .tab-btn-label strong{
+    font-size:16px;
+  }
+  .tab-btn-label span{
+    font-size:12px;
+  }
+  .content{
+    margin-top:14px;
+    padding:16px;
+    min-height:180px;
+    border-radius:18px;
+  }
+  .content h3{
+    font-size:21px !important;
+    margin-bottom:12px !important;
+  }
+  .content p{
+    font-size:14px !important;
+    line-height:1.75 !important;
+  }
+  .card{
+    padding:14px;
+    border-radius:14px;
+    align-items:flex-start;
+  }
+  .card-thumb{
+    width:56px;
+    height:56px;
+  }
+  .card-title{
+    font-size:15px;
+  }
+  .card-desc-mini{
+    font-size:12px;
+  }
+  .detalhe-img-wrap{
+    height:220px;
+    border-radius:16px;
+    margin:0 0 16px;
+    width:100%;
+  }
+  .detalhe-img-label{
+    letter-spacing:2px;
+    font-size:10px;
+  }
+  .detalhe-nome{
+    font-size:20px;
+    letter-spacing:1px;
+  }
+  .detalhe-texto{
+    font-size:14px;
+  }
+  .detalhe-badge{
+    font-size:11px;
+  }
+  .btn-voltar{
+    padding:13px 16px;
+    font-size:14px;
+  }
+  footer{
+    font-size:12px;
+    padding:14px 16px;
+  }
+}
+
+@media(max-width:480px){
+  .intro{
+    padding:22px 14px;
+  }
+  .intro-line,
+  .logo-deco-line{
+    display:none;
+  }
+  .intro-name{
+    font-size:24px;
+    letter-spacing:3px;
+  }
+  .intro-tagline{
+    max-width:220px;
+    line-height:1.5;
+  }
+  .header-premium{
+    padding:24px 14px 20px;
+  }
+  .logo-main-name{
+    font-size:22px;
+    letter-spacing:3px;
+  }
+  .logo-thin-line{
+    width:42px;
+  }
+  .container{
+    padding:12px 10px 18px;
+  }
+  .video-frame video,
+  .video-frame iframe{
+    min-height:210px;
+    border-radius:18px;
+  }
+  .drive-open-mask{
+    width:80px;
+    height:46px;
+    border-top-right-radius:18px;
+    border-bottom-left-radius:14px;
+  }
+  .content iframe{
+    min-height:220px;
+  }
+  .sidebar{
+    padding:14px;
+    border-radius:20px;
+  }
+  .tab-btn{
+    padding:12px;
+    gap:10px;
+  }
+  .tab-btn-left{
+    gap:10px;
+  }
+  .tab-btn-icon{
+    width:34px;
+    height:34px;
+    font-size:17px;
+  }
+  .tab-btn-label strong{
+    font-size:15px;
+  }
+  .tab-btn-label span{
+    font-size:11px;
+  }
+  .tab-btn-arrow{
+    font-size:18px;
+  }
+  .content{
+    padding:14px;
+  }
+  .card{
+    gap:10px;
+    padding:12px;
+  }
+  .card-thumb{
+    width:50px;
+    height:50px;
+  }
+  .detalhe-img-wrap{
+    height:190px;
+  }
+  .detalhe-info{
+    gap:6px;
+  }
 }
 </style>
 </head>
@@ -351,17 +606,13 @@ footer{background:linear-gradient(135deg,#d81b60,#ad1457);color:white;text-align
 <!-- SITE -->
 <div class="container">
   <div class="video">
-    <video id="videoPlayer" autoplay muted loop controls hidden>
-      <source id="videoSource" src="" type="video/mp4">
-    </video>
-    <iframe id="drivePlayer" title="Video de apresentacao" allow="autoplay; fullscreen" hidden></iframe>
-    <button class="sound-btn is-muted" id="soundBtn" type="button" onclick="toggleSound()" aria-label="Ativar audio" aria-pressed="false" hidden>
-      <span class="sound-btn-icon" id="soundIcon">&#9835;</span>
-      <span class="sound-btn-text">
-        <strong>Som do video</strong>
-        <small id="soundState">Toque para ativar</small>
-      </span>
-    </button>
+    <div class="video-frame">
+      <video id="videoPlayer" autoplay muted loop controls playsinline preload="auto" hidden>
+        <source id="videoSource" src="" type="video/mp4">
+      </video>
+      <iframe id="drivePlayer" title="Video de apresentacao" allow="autoplay; fullscreen; picture-in-picture" hidden></iframe>
+      <div class="drive-open-mask" id="driveOpenMask" hidden aria-hidden="true"></div>
+    </div>
   </div>
   <div class="sidebar">
     <div class="tabs">
@@ -440,59 +691,72 @@ function isDriveLink(link){
   return /drive\.google\.com/i.test(link || '');
 }
 
-function applyVideoSource(){
+function showDrivePreview(fileId){
   var video=document.getElementById('videoPlayer');
   var source=document.getElementById('videoSource');
   var drivePlayer=document.getElementById('drivePlayer');
-  var soundBtn=document.getElementById('soundBtn');
-  var link=(VIDEO_URL || '').trim();
-  var fileId=getDriveFileId(link);
+  var driveOpenMask=document.getElementById('driveOpenMask');
 
-  if(!link) return;
+  currentVideoMode='drive';
+  source.src='';
+  video.pause();
+  video.hidden=true;
+  drivePlayer.src='https://drive.google.com/file/d/'+fileId+'/preview?autoplay=1';
+  drivePlayer.hidden=false;
+  driveOpenMask.hidden=false;
+}
 
-  if(isDriveLink(link) && fileId){
-    source.src='';
-    video.pause();
-    video.hidden=true;
-    drivePlayer.src='https://drive.google.com/file/d/'+fileId+'/preview';
-    drivePlayer.hidden=false;
-    soundBtn.hidden=true;
-    return;
+function showDirectVideo(src){
+  var video=document.getElementById('videoPlayer');
+  var source=document.getElementById('videoSource');
+  var drivePlayer=document.getElementById('drivePlayer');
+  var driveOpenMask=document.getElementById('driveOpenMask');
+  var playPromise;
+
+  currentVideoMode='file';
+  if(driveFallbackTimer){
+    clearTimeout(driveFallbackTimer);
+    driveFallbackTimer=null;
   }
 
   drivePlayer.src='';
   drivePlayer.hidden=true;
+  driveOpenMask.hidden=true;
   video.hidden=false;
-  soundBtn.hidden=false;
-  source.src=link;
+  source.src=src;
   video.load();
+  playPromise=video.play();
+  if(playPromise && typeof playPromise.catch==='function'){
+    playPromise.catch(function(){});
+  }
+}
+
+function applyVideoSource(){
+  var link=(VIDEO_URL || '').trim();
+  var fileId=getDriveFileId(link);
+  var directDriveUrl;
+
+  if(!link) return;
+
+  if(isDriveLink(link) && fileId){
+    directDriveUrl='https://drive.google.com/uc?export=download&id='+fileId;
+    showDirectVideo(directDriveUrl);
+    driveFallbackTimer=setTimeout(function(){
+      var video=document.getElementById('videoPlayer');
+      if(currentVideoMode==='file' && video.readyState<2){
+        showDrivePreview(fileId);
+      }
+    },4000);
+    return;
+  }
+
+  showDirectVideo(link);
 }
 
 function fecharIntro(){
   var el=document.getElementById('intro');
   el.classList.add('hide');
   setTimeout(function(){el.style.display='none';},1100);
-}
-
-function updateSoundButton(){
-  var v=document.getElementById('videoPlayer');
-  var btn=document.getElementById('soundBtn');
-  var icon=document.getElementById('soundIcon');
-  var state=document.getElementById('soundState');
-  var muted=v.muted;
-
-  btn.classList.toggle('is-muted',muted);
-  btn.classList.toggle('is-on',!muted);
-  btn.setAttribute('aria-label',muted ? 'Ativar audio' : 'Desativar audio');
-  btn.setAttribute('aria-pressed',(!muted).toString());
-  icon.innerHTML=muted ? '&#9835;' : '&#9834;';
-  state.textContent=muted ? 'Toque para ativar' : 'Som ligado';
-}
-
-function toggleSound(){
-  var v=document.getElementById('videoPlayer');
-  v.muted=!v.muted;
-  updateSoundButton();
 }
 
 function updateActiveTab(tab){
@@ -549,8 +813,21 @@ function detalhe(nome){
   }
 }
 
+document.getElementById('videoPlayer').addEventListener('loadeddata',function(){
+  if(driveFallbackTimer){
+    clearTimeout(driveFallbackTimer);
+    driveFallbackTimer=null;
+  }
+});
+
+document.getElementById('videoPlayer').addEventListener('error',function(){
+  var fileId=getDriveFileId((VIDEO_URL || '').trim());
+  if(fileId && currentVideoMode==='file'){
+    showDrivePreview(fileId);
+  }
+});
+
 applyVideoSource();
-updateSoundButton();
 </script>
 </body>
 </html>
