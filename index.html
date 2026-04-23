@@ -11,6 +11,7 @@
 <script>
 const VIDEO_URL = 'https://drive.google.com/file/d/1vKWkvMAR3tg35BvBdgQIXNjh4fMMdfRR/view?usp=sharing';
 var currentVideoMode = 'file';
+var driveFallbackTimer = null;
 </script>
 
 <style>
@@ -892,7 +893,7 @@ function showDrivePreview(fileId){
   videoControls.hidden=true;
   videoFrame.classList.remove('is-direct-video');
   videoFrame.classList.add('is-drive-preview');
-  drivePlayer.src='https://drive.google.com/file/d/'+fileId+'/preview?autoplay=1';
+  drivePlayer.src='https://drive.google.com/file/d/'+fileId+'/preview';
   drivePlayer.hidden=false;
 }
 
@@ -906,6 +907,11 @@ function showDirectVideo(src){
   var playPromise;
 
   currentVideoMode='file';
+  if(driveFallbackTimer){
+    clearTimeout(driveFallbackTimer);
+    driveFallbackTimer=null;
+  }
+
   drivePlayer.src='';
   drivePlayer.hidden=true;
   videoControls.hidden=false;
@@ -1005,11 +1011,22 @@ function toggleMute(){
 function applyVideoSource(){
   var link=(VIDEO_URL || '').trim();
   var fileId=getDriveFileId(link);
+  var directDriveUrl;
+  var driveThumbnailUrl;
 
   if(!link) return;
 
   if(isDriveLink(link) && fileId){
-    showDrivePreview(fileId);
+    directDriveUrl='https://drive.google.com/uc?export=download&id='+fileId;
+    driveThumbnailUrl='https://drive.google.com/thumbnail?id='+fileId+'&sz=w1600';
+    document.getElementById('videoPlayer').poster=driveThumbnailUrl;
+    showDirectVideo(directDriveUrl);
+    driveFallbackTimer=setTimeout(function(){
+      var video=document.getElementById('videoPlayer');
+      if(currentVideoMode==='file' && video.readyState<2){
+        showDrivePreview(fileId);
+      }
+    },3000);
     return;
   }
 
@@ -1078,6 +1095,10 @@ function detalhe(nome){
 }
 
 document.getElementById('videoPlayer').addEventListener('loadeddata',function(){
+  if(driveFallbackTimer){
+    clearTimeout(driveFallbackTimer);
+    driveFallbackTimer=null;
+  }
   updateMuteButton();
   updatePlayButton();
   updateVideoProgress();
