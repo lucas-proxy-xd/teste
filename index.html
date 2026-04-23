@@ -158,6 +158,11 @@ body {
   width:100%;height:420px;border-radius:22px;
   background:#12000c;
 }
+.video-frame video[hidden],
+.video-frame iframe[hidden],
+.drive-open-mask[hidden]{
+  display:none !important;
+}
 .video-frame video{object-fit:cover;}
 .video-frame iframe{border:none;}
 .video-frame.is-drive-preview{
