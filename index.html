@@ -11,7 +11,6 @@
 <script>
 const VIDEO_URL = 'https://drive.google.com/file/d/1vKWkvMAR3tg35BvBdgQIXNjh4fMMdfRR/view?usp=sharing';
 var currentVideoMode = 'file';
-var driveFallbackTimer = null;
 </script>
 
 <style>
@@ -43,10 +42,10 @@ body {
 .intro {
   position: fixed; inset: 0;
   background:
-    radial-gradient(circle at 50% 34%, rgba(255,255,255,.86) 0%, rgba(255,234,243,.78) 22%, transparent 46%),
-    radial-gradient(circle at 18% 18%, rgba(255,255,255,.72) 0%, transparent 30%),
-    radial-gradient(circle at 82% 76%, rgba(255,193,217,.46) 0%, transparent 36%),
-    linear-gradient(145deg, #fff9fc 0%, var(--baby-rose) 42%, #ffd5e6 100%);
+    radial-gradient(circle at 50% 34%, rgba(255,216,232,.68) 0%, rgba(255,193,217,.7) 26%, transparent 50%),
+    radial-gradient(circle at 18% 18%, rgba(255,216,232,.88) 0%, transparent 32%),
+    radial-gradient(circle at 82% 76%, rgba(247,125,172,.5) 0%, transparent 40%),
+    linear-gradient(145deg, #ffe1ec 0%, #ffc7dc 48%, #f7a6c7 100%);
   display: flex; flex-direction: column;
   justify-content: center; align-items: center;
   color: var(--rose-800); z-index: 9999; overflow: hidden;
@@ -61,9 +60,9 @@ body {
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
-.intro-ring:nth-child(1) { width:360px;height:360px;border:.8px solid rgba(247,125,172,.2);animation:ring-pulse 5s ease-in-out infinite 0s; }
-.intro-ring:nth-child(2) { width:540px;height:540px;border:.5px solid rgba(255,193,217,.26);animation:ring-pulse 5s ease-in-out infinite 1s; }
-.intro-ring:nth-child(3) { width:720px;height:720px;border:.5px solid rgba(255,216,232,.32);animation:ring-pulse 5s ease-in-out infinite 2s; }
+.intro-ring:nth-child(1) { width:360px;height:360px;border:.8px solid rgba(238,95,151,.24);animation:ring-pulse 5s ease-in-out infinite 0s; }
+.intro-ring:nth-child(2) { width:540px;height:540px;border:.5px solid rgba(247,125,172,.28);animation:ring-pulse 5s ease-in-out infinite 1s; }
+.intro-ring:nth-child(3) { width:720px;height:720px;border:.5px solid rgba(255,193,217,.34);animation:ring-pulse 5s ease-in-out infinite 2s; }
 @keyframes ring-pulse {
   0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1);}
   50%{opacity:1;transform:translate(-50%,-50%) scale(1.025);}
@@ -72,7 +71,7 @@ body {
 .intro-floor {
   position:absolute;bottom:0;left:50%;transform:translateX(-50%);
   width:500px;height:120px;
-  background:radial-gradient(ellipse at center bottom,rgba(247,125,172,.25) 0%,transparent 70%);
+  background:radial-gradient(ellipse at center bottom,rgba(238,95,151,.32) 0%,transparent 70%);
   pointer-events:none;
 }
 
@@ -80,7 +79,7 @@ body {
   position:absolute;top:50%;left:50%;
   transform:translate(-50%,-50%);
   width:280px;height:280px;
-  background:radial-gradient(ellipse at center,rgba(255,255,255,.62) 0%,rgba(255,193,217,.24) 45%,transparent 72%);
+  background:radial-gradient(ellipse at center,rgba(255,193,217,.42) 0%,rgba(238,95,151,.24) 48%,transparent 74%);
   border-radius:50%;animation:glow-breathe 4.5s ease-in-out infinite;pointer-events:none;
 }
 @keyframes glow-breathe {
@@ -108,7 +107,7 @@ body {
 .intro-tap-btn{
   font-size:11px;letter-spacing:5px;color:var(--rose-800);text-transform:uppercase;
   padding:16px 48px;border:1px solid rgba(247,125,172,.34);border-radius:60px;
-  background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,216,232,.68));
+  background:linear-gradient(135deg,rgba(255,246,250,.8),rgba(255,193,217,.76));
   animation:ripple-pulse 2.2s ease-out infinite;white-space:nowrap;
   box-shadow:0 18px 42px rgba(238,95,151,.18);
   transition:background .3s,border-color .3s,transform .3s;
@@ -183,20 +182,35 @@ body {
 }
 .video-frame video[hidden],
 .video-frame iframe[hidden],
-.drive-open-mask[hidden],
 .video-controls[hidden]{
   display:none !important;
 }
 .video-frame video{object-fit:cover;}
 .video-frame iframe{border:none;}
 .video-frame.is-drive-preview{
-  padding:12px;
-  background:
-    radial-gradient(circle at top right,rgba(247,125,172,.24),transparent 38%),
-    linear-gradient(180deg,var(--rose-900) 0%,var(--rose-950) 100%);
+  padding:8px;
 }
 .video-frame.is-drive-preview iframe{
-  border-radius:16px;
+  height:auto;
+  aspect-ratio:16 / 9;
+  min-height:0;
+  border-radius:20px;
+}
+.video-frame.is-drive-preview .video-player-badge{
+  display:none;
+}
+.video-frame.is-drive-preview::after{
+  content:"";
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:3;
+  width:118px;
+  height:62px;
+  background:#000;
+  border-top-right-radius:20px;
+  border-bottom-left-radius:18px;
+  pointer-events:auto;
 }
 .video-frame.is-direct-video video{
   border-radius:22px;
@@ -274,15 +288,6 @@ body {
   background:linear-gradient(90deg,var(--rose-500),var(--rose-700));
   transition:width .2s linear;
 }
-.drive-open-mask{
-  position:absolute;top:0;right:0;z-index:3;
-  width:132px;height:74px;
-  background:var(--rose-950);
-  border-top-right-radius:22px;
-  border-bottom-left-radius:26px;
-  pointer-events:auto;
-}
-
 .sidebar{
   flex:1;min-width:320px;
   background:rgba(255,255,255,.92);
@@ -522,18 +527,6 @@ footer{
     max-height:none;
     border-radius:20px;
   }
-  .video-frame.is-drive-preview{
-    padding:10px;
-    border-radius:24px;
-  }
-  .video-frame.is-drive-preview iframe{
-    height:auto;
-    aspect-ratio:auto;
-    min-height:340px;
-    height:min(72vh,520px);
-    max-height:none;
-    border-radius:18px;
-  }
   .sidebar{
     padding:16px;
     border-radius:22px;
@@ -666,15 +659,6 @@ footer{
     min-height:280px;
     height:clamp(280px,74vw,360px);
   }
-  .video-frame.is-drive-preview{
-    padding:8px;
-    border-radius:20px;
-  }
-  .video-frame.is-drive-preview iframe{
-    min-height:300px;
-    height:min(68vh,460px);
-    border-radius:16px;
-  }
   .video-player-badge{
     top:18px;
     left:18px;
@@ -698,12 +682,6 @@ footer{
   }
   .video-progress-track{
     height:7px;
-  }
-  .drive-open-mask{
-    width:118px;
-    height:68px;
-    border-top-right-radius:20px;
-    border-bottom-left-radius:24px;
   }
   .content iframe{
     min-height:220px;
@@ -806,7 +784,7 @@ footer{
       <video id="videoPlayer" autoplay muted loop playsinline preload="auto" hidden>
         <source id="videoSource" src="" type="video/mp4">
       </video>
-      <iframe id="drivePlayer" title="Video de apresentacao" allow="autoplay; fullscreen; picture-in-picture" hidden></iframe>
+      <iframe id="drivePlayer" title="Video de apresentacao" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen hidden></iframe>
       <div class="video-player-badge">Apresentacao</div>
       <div class="video-controls" id="videoControls" hidden>
         <button class="video-control-btn video-play-btn" id="videoPlayBtn" type="button" aria-label="Pausar video" aria-pressed="true">
@@ -819,7 +797,6 @@ footer{
           <span id="videoMuteIcon">&#128264;</span>
         </button>
       </div>
-      <div class="drive-open-mask" id="driveOpenMask" hidden aria-hidden="true"></div>
     </div>
   </div>
   <div class="sidebar">
@@ -903,7 +880,6 @@ function showDrivePreview(fileId){
   var video=document.getElementById('videoPlayer');
   var source=document.getElementById('videoSource');
   var drivePlayer=document.getElementById('drivePlayer');
-  var driveOpenMask=document.getElementById('driveOpenMask');
   var videoControls=document.getElementById('videoControls');
   var videoMuteBtn=document.getElementById('videoMuteBtn');
   var videoFrame=document.querySelector('.video-frame');
@@ -918,28 +894,20 @@ function showDrivePreview(fileId){
   videoFrame.classList.add('is-drive-preview');
   drivePlayer.src='https://drive.google.com/file/d/'+fileId+'/preview?autoplay=1';
   drivePlayer.hidden=false;
-  driveOpenMask.hidden=false;
 }
 
 function showDirectVideo(src){
   var video=document.getElementById('videoPlayer');
   var source=document.getElementById('videoSource');
   var drivePlayer=document.getElementById('drivePlayer');
-  var driveOpenMask=document.getElementById('driveOpenMask');
   var videoControls=document.getElementById('videoControls');
   var videoMuteBtn=document.getElementById('videoMuteBtn');
   var videoFrame=document.querySelector('.video-frame');
   var playPromise;
 
   currentVideoMode='file';
-  if(driveFallbackTimer){
-    clearTimeout(driveFallbackTimer);
-    driveFallbackTimer=null;
-  }
-
   drivePlayer.src='';
   drivePlayer.hidden=true;
-  driveOpenMask.hidden=true;
   videoControls.hidden=false;
   videoMuteBtn.hidden=false;
   videoFrame.classList.remove('is-drive-preview');
@@ -1037,22 +1005,15 @@ function toggleMute(){
 function applyVideoSource(){
   var link=(VIDEO_URL || '').trim();
   var fileId=getDriveFileId(link);
-  var directDriveUrl;
 
   if(!link) return;
 
   if(isDriveLink(link) && fileId){
-    directDriveUrl='https://drive.google.com/uc?export=download&id='+fileId;
-    showDirectVideo(directDriveUrl);
-    driveFallbackTimer=setTimeout(function(){
-      var video=document.getElementById('videoPlayer');
-      if(currentVideoMode==='file' && video.readyState<2){
-        showDrivePreview(fileId);
-      }
-    },4000);
+    showDrivePreview(fileId);
     return;
   }
 
+  document.getElementById('videoPlayer').removeAttribute('poster');
   showDirectVideo(link);
 }
 
@@ -1117,10 +1078,6 @@ function detalhe(nome){
 }
 
 document.getElementById('videoPlayer').addEventListener('loadeddata',function(){
-  if(driveFallbackTimer){
-    clearTimeout(driveFallbackTimer);
-    driveFallbackTimer=null;
-  }
   updateMuteButton();
   updatePlayButton();
   updateVideoProgress();
