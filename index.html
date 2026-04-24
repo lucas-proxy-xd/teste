@@ -176,7 +176,8 @@ body { font-family: 'Jost', sans-serif; background: var(--b-blush); min-height: 
 
 /* ── ABAS PRINCIPAIS (apenas 2) ── */
 .tabs-main {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   width: 100%;
 }
@@ -322,19 +323,34 @@ footer strong{color:#fff;font-weight:600;}
 
 /* ── RESPONSIVO ── */
 @media(max-width:768px){
-  .site-body{flex-direction:column;padding:20px 16px 32px;gap:20px;}
+  .site-body{flex-direction:column;padding:20px 16px 32px;gap:20px;width:100%;}
+  .video-col, .sidebar-col { width: 100%; flex: none; }
+  .sidebar-col { align-items: stretch; }
   .video-frame video{height:220px;}
   .intro-name{font-size:32px;letter-spacing:6px;}
   .intro-deco-line{width:30px;}
   .logo-main{font-size:30px;letter-spacing:6px;}
   .logo-line{max-width:44px;}
   .detalhe-img{height:160px;}
-  .tabs-main { gap: 6px; }
-  .tab-main-btn { padding: 12px 8px; gap: 6px; }
+  .tabs-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+  .tab-main-btn {
+    width: 100%;
+    padding: 14px 8px;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
   .tab-main-icon { width: 38px; height: 38px; font-size: 16px; }
   .tab-main-label strong { font-size: 12px; }
-  .sub-tabs { gap: 4px; }
-  .sub-tab-btn { font-size: 10px; padding: 8px 6px; }
+  .tab-main-label small { font-size: 10px; }
+  .sub-tabs { gap: 4px; width: 100%; }
+  .sub-tab-btn { font-size: 10px; padding: 8px 4px; }
+  .content-panel { width: 100%; }
 }
 </style>
 </head>
