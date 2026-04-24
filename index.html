@@ -61,20 +61,16 @@ body { font-family: 'Jost', sans-serif; background: var(--b-blush); min-height: 
 .intro-d.lg{width:6px;height:6px;background:#fff;}
 .intro-dthin{width:70px;height:.5px;background:rgba(255,255,255,.35);}
 .intro-cta{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:18px;opacity:0;animation:fade-up .9s ease forwards 1.05s;}
-.intro-cta-btn{
-  font-family:'Jost',sans-serif;font-size:11px;font-weight:600;letter-spacing:5px;text-transform:uppercase;
-  color:var(--b);background:#fff;border:none;border-radius:60px;padding:20px 60px;cursor:pointer;
-  transition:background .3s,transform .25s,box-shadow .3s;
-  animation:pulse-btn 2.5s ease-out infinite 1.4s;
-  box-shadow:0 8px 32px rgba(0,0,0,.15);
-}
-.intro-cta-btn:hover{background:var(--b-pale);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.2);}
-@keyframes pulse-btn{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5);}65%{box-shadow:0 0 0 18px rgba(255,255,255,0);}100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}}
-.intro-arrows{display:flex;flex-direction:column;align-items:center;gap:4px;animation:arrows-drop 1.8s ease-in-out infinite 2s;}
-.intro-arrows span{display:block;width:9px;height:9px;border-right:1.5px solid rgba(255,255,255,.6);border-bottom:1.5px solid rgba(255,255,255,.6);transform:rotate(45deg);}
-.intro-arrows span:nth-child(2){opacity:.5;}
-.intro-arrows span:nth-child(3){opacity:.22;}
-@keyframes arrows-drop{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+.intro-counter-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.intro-counter-ring{position:relative;width:96px;height:96px;}
+.intro-counter-ring svg{position:absolute;inset:0;transform:rotate(-90deg);}
+.intro-counter-ring circle{fill:none;stroke-width:2.5;}
+.intro-counter-ring .track{stroke:rgba(255,255,255,.18);}
+.intro-counter-ring .progress{stroke:#fff;stroke-linecap:round;transition:stroke-dashoffset .05s linear;}
+.intro-counter-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',Georgia,serif;font-size:44px;font-weight:300;color:#fff;letter-spacing:2px;}
+.intro-counter-label{font-size:10px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.6);}
+.intro-skip{font-family:'Jost',sans-serif;font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);background:none;border:none;cursor:pointer;padding:4px 8px;transition:color .2s;margin-top:4px;}
+.intro-skip:hover{color:rgba(255,255,255,.8);}
 @keyframes fade-up{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 
 /* ── HEADER ── */
@@ -163,6 +159,7 @@ body { font-family: 'Jost', sans-serif; background: var(--b-blush); min-height: 
 .sidebar-header {
   padding: 0 2px 14px;
   border-bottom: .5px solid rgba(240,98,146,.2);
+  text-align: center;
 }
 .sidebar-header p {
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -379,8 +376,18 @@ footer strong{color:#fff;font-weight:600;}
     </div>
   </div>
   <div class="intro-cta">
-    <button class="intro-cta-btn" type="button">Toque para entrar</button>
-    <div class="intro-arrows"><span></span><span></span><span></span></div>
+    <div class="intro-counter-wrap">
+      <div class="intro-counter-ring">
+        <svg viewBox="0 0 96 96" width="96" height="96">
+          <circle class="track" cx="48" cy="48" r="44"/>
+          <circle class="progress" id="introProgress" cx="48" cy="48" r="44"
+            stroke-dasharray="276.46" stroke-dashoffset="0"/>
+        </svg>
+        <div class="intro-counter-num" id="introNum">3</div>
+      </div>
+      <div class="intro-counter-label">Carregando o studio</div>
+      <button class="intro-skip" type="button" onclick="fecharIntro()">Pular</button>
+    </div>
   </div>
 </div>
 
@@ -551,6 +558,30 @@ function fecharIntro(){
   el.classList.add('hide');
   setTimeout(function(){el.style.display='none';},1200);
 }
+
+/* ── CONTADOR REGRESSIVO 3→1 ── */
+(function(){
+  var total = 3000;
+  var interval = 30;
+  var elapsed = 0;
+  var circumference = 276.46;
+  var numEl = document.getElementById('introNum');
+  var progEl = document.getElementById('introProgress');
+
+  var timer = setInterval(function(){
+    elapsed += interval;
+    var ratio = elapsed / total;
+    var remaining = Math.ceil(3 - ratio * 3);
+    if(remaining < 1) remaining = 1;
+    numEl.textContent = remaining;
+    progEl.style.strokeDashoffset = circumference * ratio;
+
+    if(elapsed >= total){
+      clearInterval(timer);
+      fecharIntro();
+    }
+  }, interval);
+})();
 
 function updateSoundButton(){
   var v=document.getElementById('videoPlayer'),btn=document.getElementById('soundBtn'),icon=document.getElementById('soundIcon'),st=document.getElementById('soundState'),m=v.muted;
